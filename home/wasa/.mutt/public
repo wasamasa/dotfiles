@@ -1,0 +1,14 @@
+# vim: ft=muttrc
+
+  set from      = "v.schneidermann@gmail.com"
+  set sendmail  = "/usr/bin/msmtp -a public"
+  set mbox      = "+public/archive"
+unset record
+  set postponed     = "+public/drafts"
+  set realname      = "Vasilij Schneidermann"
+  set signature     = ~/.mutt/public_sig
+
+color status green default
+
+macro index ,c "<change-folder>+private/inbox<return>" "change accounts"
+macro index D "<save-message>+public/trash<enter>" "move message to the trash"
