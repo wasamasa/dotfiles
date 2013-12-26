@@ -1,0 +1,126 @@
+# shorthand
+<Multi_key> <l> <o> <o> <k>           : "ಠ_ಠ"
+
+# silly signs
+<Multi_key> <c> <c> <c> <p>           : "☭"
+<Multi_key> <less> <3>                : "♥"
+<Multi_key> <l> <o> <v> <e>           : "♥"
+
+# math
+<Multi_key> <plus> <minus>            : "±"
+<Multi_key> <minus> <plus>            : "±"
+<Multi_key> <equal> <slash>           : "≠"
+<Multi_key> <slash> <equal>           : "≠"
+<Multi_key> <equal> <asciitilde>      : "≈"
+<Multi_key> <asciitilde> <equal>      : "≈"
+<Multi_key> <asciitilde> <asciitilde> : "≈"
+<Multi_key> <8>                       : "∞"
+<Multi_key> <x> <x>                   : "×"
+<Multi_key> <comma> <minus>           : "¬"
+<Multi_key> <minus> <comma>           : "¬"
+<Multi_key> <p> <i>                   : "π"
+
+# copyright
+<Multi_key> <c> <o>                   : "©"
+<Multi_key> <r> <o>                   : "®"
+<Multi_key> <t> <m>                   : "™"
+
+# currency
+<Multi_key> <e> <equal>               : "€"
+<Multi_key> <equal> <e>               : "€"
+<Multi_key> <l> <minus>               : "£"
+<Multi_key> <minus> <l>               : "£"
+<Multi_key> <l> <equal>               : "¥"
+<Multi_key> <equal> <l>               : "¥"
+
+# quotes
+<Multi_key> <greater> <space>         : "›"
+<Multi_key> <less> <space>            : "‹"
+<Multi_key> <less> <less>             : "«"
+<Multi_key> <greater> <greater>       : "»"
+
+<Multi_key> <grave> <space>           : "‘"
+<Multi_key> <apostrophe> <space>      : "’"
+<Multi_key> <comma> <space>           : "‚"
+<Multi_key> <grave> <grave>           : "“"
+<Multi_key> <apostrophe> <apostrophe> : "”"
+<Multi_key> <comma> <comma>           : "„"
+<Multi_key> <apostrophe> <minus>      : "｢"
+<Multi_key> <minus> <apostrophe>      : "｣"
+
+# punctuation
+<Multi_key> <period> <period>         : "…"
+<Multi_key> <exclam> <exclam>         : "¡"
+<Multi_key> <question> <question>     : "¿"
+<Multi_key> <exclam> <question>       : "‽"
+<Multi_key> <question> <exclam>       : "⸘"
+
+# spaces
+# TODO
+
+# other typographical necessities
+<Multi_key> <e> <n>                   : "–"
+<Multi_key> <e> <m>                   : "—"
+<Multi_key> <s> <o>                   : "§"
+<Multi_key> <o> <s>                   : "§"
+<Multi_key> <n> <o>                   : "№"
+<Multi_key> <o> <o>                   : "°"
+<Multi_key> <bracketleft> <space>     : "␣"
+<Multi_key> <bracketright> <space>    : "␣"
+
+# compound letters
+<Multi_key> <s> <s>                   : "ß"
+<Multi_key> <S> <S>                   : "ẞ"
+
+# diacritics
+<Multi_key> <a> <e>                   : "ä"
+<Multi_key> <a> <g>                   : "à"
+<Multi_key> <a> <a>                   : "á"
+<Multi_key> <a> <c>                   : "â"
+<Multi_key> <A> <E>                   : "Ä"
+<Multi_key> <A> <e>                   : "Ä"
+<Multi_key> <A> <g>                   : "À"
+<Multi_key> <A> <a>                   : "Á"
+<Multi_key> <A> <c>                   : "Â"
+
+<Multi_key> <e> <e>                   : "ë"
+<Multi_key> <e> <g>                   : "è"
+<Multi_key> <e> <a>                   : "é"
+<Multi_key> <e> <c>                   : "ê"
+<Multi_key> <E> <E>                   : "Ë"
+<Multi_key> <E> <e>                   : "Ë"
+<Multi_key> <E> <g>                   : "È"
+<Multi_key> <E> <a>                   : "É"
+<Multi_key> <E> <c>                   : "Ê"
+
+<Multi_key> <i> <e>                   : "ï"
+<Multi_key> <i> <g>                   : "ì"
+<Multi_key> <i> <a>                   : "í"
+<Multi_key> <i> <c>                   : "î"
+<Multi_key> <I> <E>                   : "Ï"
+<Multi_key> <I> <e>                   : "Ï"
+<Multi_key> <I> <g>                   : "Ì"
+<Multi_key> <I> <a>                   : "Í"
+<Multi_key> <I> <c>                   : "Î"
+
+<Multi_key> <n> <n>                   : "ñ"
+
+<Multi_key> <o> <e>                   : "ö"
+<Multi_key> <o> <g>                   : "ò"
+<Multi_key> <o> <a>                   : "ó"
+<Multi_key> <o> <c>                   : "ô"
+<Multi_key> <O> <E>                   : "Ö"
+<Multi_key> <O> <e>                   : "Ö"
+<Multi_key> <O> <g>                   : "Ò"
+<Multi_key> <O> <a>                   : "Ó"
+<Multi_key> <O> <c>                   : "Ô"
+
+<Multi_key> <u> <e>                   : "ü"
+<Multi_key> <u> <g>                   : "ù"
+<Multi_key> <u> <a>                   : "ú"
+<Multi_key> <u> <c>                   : "û"
+<Multi_key> <U> <E>                   : "Ü"
+<Multi_key> <U> <e>                   : "Ü"
+<Multi_key> <U> <g>                   : "Ù"
+<Multi_key> <U> <a>                   : "Ú"
+<Multi_key> <U> <c>                   : "Û"
