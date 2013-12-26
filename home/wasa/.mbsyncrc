@@ -1,0 +1,105 @@
+IMAPAccount private
+Host imap.gmail.com
+User hurrus.durrus@gmail.com
+PassCmd "sed -n -e 's,^machine mail.gmail.com login hurrus.durrus@gmail.com password \(.*\),\1,p' < ~/.netrc"
+UseIMAPS yes
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore private-remote
+Account private
+
+MaildirStore private-local
+Path ~/.mail/private/
+Inbox ~/.mail/private/inbox
+
+Channel private-default
+Master :private-remote:
+Slave :private-local:
+Create Slave
+SyncState *
+Patterns "INBOX"
+
+Channel private-archive
+Master :private-remote:"[Google Mail]/All Mail"
+Slave :private-local:archive
+Create Slave
+SyncState *
+
+Channel private-sent
+Master :private-remote:"[Google Mail]/Sent Mail"
+Slave :private-local:sent
+Create Slave
+SyncState *
+
+Channel private-drafts
+Master :private-remote:"[Google Mail]/Drafts"
+Slave :private-local:drafts
+Create Slave
+SyncState *
+
+Channel private-trash
+Master :private-remote:"[Google Mail]/Trash"
+Slave :private-local:trash
+Create Slave
+SyncState *
+
+Group private
+Channel private-default
+Channel private-archive
+Channel private-sent
+Channel private-drafts
+Channel private-trash
+
+# Public account
+
+IMAPAccount public
+Host imap.gmail.com
+User v.schneidermann@gmail.com
+PassCmd "sed -n -e 's,^machine mail.gmail.com login v.schneidermann@gmail.com password \(.*\),\1,p' < ~/.netrc"
+UseIMAPS yes
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore public-remote
+Account public
+
+MaildirStore public-local
+Path ~/.mail/public/
+Inbox ~/.mail/public/inbox
+
+Channel public-default
+Master :public-remote:
+Slave :public-local:
+Create Slave
+SyncState *
+Patterns "INBOX"
+
+Channel public-archive
+Master :public-remote:"[Gmail]/All Mail"
+Slave :public-local:archive
+Create Slave
+SyncState *
+
+Channel public-sent
+Master :public-remote:"[Gmail]/Sent Mail"
+Slave :public-local:sent
+Create Slave
+SyncState *
+
+Channel public-drafts
+Master :public-remote:"[Gmail]/Drafts"
+Slave :public-local:drafts
+Create Slave
+SyncState *
+
+Channel public-trash
+Master :public-remote:"[Gmail]/Trash"
+Slave :public-local:trash
+Create Slave
+SyncState *
+
+Group public
+Channel public-default
+Channel public-archive
+Channel public-sent
+Channel public-drafts
+Channel public-trash
