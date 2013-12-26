@@ -1,0 +1,15 @@
+auto-reload yes 
+reload-time 10 
+reload-threads 2 
+notify-beep yes
+confirm-exit yes
+browser "urlhandler %u"
+
+bind-key j down
+bind-key k up
+
+color background default default
+color listnormal default default
+color listfocus  black   yellow
+color info       black   yellow
+color article    default default
