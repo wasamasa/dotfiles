@@ -1,0 +1,157 @@
+# general settings
+set $mod Mod4
+font pango:DejaVu Sans Mono 7
+floating_modifier $mod+Shift
+workspace_layout tabbed
+workspace_auto_back_and_forth yes
+new_window pixel 1
+new_float pixel 1
+hide_edge_borders both
+
+# autostart
+exec_always --no-startup-id xrdb ~/.Xresources
+exec_always --no-startup-id xsetroot -cursor_name left_ptr
+exec_always --no-startup-id feh --bg-fill ~/images/wallpapers/checkout/pixelmavs.png
+exec --no-startup-id unclutter -root -idle 3
+exec --no-startup-id fallkiste
+exec --no-startup-id mpd
+exec --no-startup-id es
+exec --no-startup-id udiskie
+exec --no-startup-id compton
+exec scratchpad_termite
+
+# interesting binds
+bindsym Print exec scrot
+bindsym XF86AudioMute exec dvolume -t
+bindsym XF86AudioRaiseVolume exec dvolume -i 5
+bindsym XF86AudioLowerVolume exec dvolume -d 5
+bindsym $mod+Return exec termite
+bindsym $mod+p exec dmenu_run
+bindsym $mod+c exec dcpu
+bindsym $mod+m exec dmpc
+bindsym $mod+Shift+m exec dmpc2
+bindsym $mod+q kill
+bindsym $mod+Shift+q exit
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Left exec mpc prev
+bindsym $mod+Right exec mpc next
+bindsym $mod+Up exec mpc pause
+bindsym $mod+Down exec mpc stop
+bindsym $mod+Shift+Left exec mpc seek -5 && sleep 1
+bindsym $mod+Shift+Right exec mpc seek +5 && sleep 1
+bindsym $mod+Shift+Up exec mpc play
+bindsym $mod+Shift+Down exec mpc update
+
+# bertha mode
+mode "bertha" {
+    bindsym g exec bertha --mode=retroarch favorites; mode "default"
+    bindsym Shift+g exec bertha --mode=retroarch general; mode "default"
+    bindsym c exec bertha --mode=directory comics; mode "default"
+    bindsym m exec bertha --mode=directory manga; mode "default"
+    bindsym p exec bertha --mode=directory pdfs; mode "default"
+    bindsym i exec bertha --mode=directory images; mode "default"
+    bindsym v exec bertha --mode=directory movies; mode "default"
+    bindsym Escape mode "default"
+} bindsym $mod+b mode "bertha"
+
+# system mode
+mode "system" {
+    bindsym s exec systemctl suspend; mode "default"
+    bindsym h exec systemctl hibernate; mode "default"
+    bindsym r exec systemctl reboot; mode "default"
+    bindsym p exec systemctl poweroff; mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+x mode "system"
+
+# resize mode
+mode "resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# scratchpad
+for_window [class="scratchpad_termite"] move to scratchpad
+#bindsym $mod+grave [class="scratchpad_termite"] scratchpad show; move position 0px 17px; exec xdotool getactivewindow windowsize 100% 72
+bindsym $mod+grave [class="scratchpad_termite"] scratchpad show
+
+# fixing some annoyances
+for_window [title="^Skype.*?for Linux$"] floating enable
+
+# boring binds
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+g split h
+bindsym $mod+v split v
+
+bindsym $mod+f fullscreen
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+a focus parent
+bindsym $mod+d focus child
+
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# colors
+# color class           border  background text    indicator
+client.focused          #eee8d5 #93a1a1    #073642 #93a1a1
+client.focused_inactive #657b83 #586e75    #eee8d5 #657b83
+client.unfocused        #073642 #002b36    #839496 #073642
+client.urgent           #cb4b16 #dc322f    #eee8d5 #dc322f
+
+# bar settings
+bar {
+    colors {
+        background         #073642
+        statusline         #00ff00
+        separator          #eee8d5
+        focused_workspace  #eee8d5 #93a1a1 #073642
+        active_workspace   #657b83 #586e75 #eee8d5
+        inactive_workspace #002b36 #073642 #839496
+        urgent_workspace   #cb4b16 #dc322f #eee8d5
+    }
+    output LVDS1
+    output DP2
+    output VGA1
+    font pango:cure 8
+    position top
+    tray_output none
+    status_command conky-i3bar ~/.config/i3/system.conkyrc
+}
