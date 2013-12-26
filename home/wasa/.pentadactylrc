@@ -1,0 +1,36 @@
+"looks
+colorscheme solarized-light
+set guioptions=Cs
+set showtabline=never
+hi -a FontCode font: 10pt monospace !important;
+hi -a FontFixed font: 8pt monospace !important;
+
+"...
+set defsearch=g
+set hintkeys=asdfghjkl;
+hi -a Hint text-transform: uppercase;
+set! browser.tabs.onTop=false
+set! browser.tabs.closeWindowWithLastTab=false
+"set! plugins.notify.MissingFlash=false
+
+"scrolling
+"set scrollsteps=1
+nmap -b h 5h
+nmap -b j 5j
+nmap -b k 5k
+nmap -b l 5l
+
+"tabs
+nmap -b J gT
+nmap -b K gt
+
+" Open the current URL as an argument to the urlhandler
+nmap <S-q> -s -js <<EOF
+commands.execute('!urlhandler "' + content.location.href.replace(/([$`"\\])/g, "\\$1")
+                           + '" &> /dev/null &');
+EOF
+
+sty youtube.com div#rc {display: none;}
+sty foreignpolicy.com iframe {display: none;}
+sty foreignpolicy.com div#TB_window {display: none;}
+sty foreignpolicy.com div#TB_overlay {display: none;}
