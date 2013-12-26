@@ -1,0 +1,10 @@
+application/octet-stream ; /usr/bin/echo %s "can be anything..."                                        ; copiousoutput;
+text/plain               ; /usr/bin/cat %s                                                              ; copiousoutput;
+#text/plain               ; /usr/bin/less %s                                                             ; copiousoutput;
+#text/plain               ; /home/wasa/bin/txt2html %s                                                   ; copiousoutput;
+text/html                ; lynx -hiddenlinks=merge -display_charset=utf-8 -dump %s; nametemplate=%s.html; copiousoutput;
+#text/html                ; /usr/bin/links -html-numbered-links 1 -dump %s                               ; copiousoutput;
+application/pdf          ; /usr/bin/llpp %s
+image/*                  ; /usr/bin/sxiv %s
+audio/*                  ; /usr/bin/mplayer %s
+video/*                  ; /usr/bin/mplayer %s
