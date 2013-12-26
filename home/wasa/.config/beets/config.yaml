@@ -1,0 +1,19 @@
+directory:      ~/tmp/beets/music/DONE
+library:        ~/tmp/beets/library.blb
+plugins:        discogs replaygain scrub zero
+original_date:  yes
+threaded:       no
+paths:
+    default:    $albumartist - $album ($year)/$track - $title
+    comp:       $albumartist - $album ($year)/$track - $artist - $title
+    singleton:  Singletons/$artist - $title
+import:
+    detail:     yes
+    timid:      yes
+    move:       yes
+replaygain:
+    overwrite:  yes
+    albumgain:  yes
+zero:
+    #fields:     id album_id artist_sort artist_credit albumartist_sort albumartist_credit grouping month day lyrics comments bpm comp mb_trackid mb_albumid mb_artistid mb_albumartistid albumtype label acoustid_fingerprint acoustid_id mb_releasegroupid asin catalognum script language country albumstatus media albumdisambig disctitle encoder original_year original_month original_day length bitrate format samplerate bitdepth channels
+    fields:     artist_sort artist_credit albumartist_sort albumartist_credit grouping month day lyrics comments bpm comp mb_trackid mb_albumid mb_artistid mb_albumartistid albumtype label acoustid_fingerprint acoustid_id mb_releasegroupid asin catalognum script language country albumstatus media albumdisambig disctitle encoder original_year original_month original_day length bitrate format samplerate bitdepth channels
