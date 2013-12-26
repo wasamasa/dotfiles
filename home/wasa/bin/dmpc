@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cmd=$(mpc ls | sort -f | dmenu -i -l 15)
+if [[ "$cmd" == "" ]]; then
+  echo "bye"
+else
+  if [[ "$cmd" == "Singletons" ]]; then
+    mpc stop
+    mpc clear
+    mpc add "$cmd"
+    mpc shuffle
+    mpc play
+  elif [[ -d "/home/wasa/music/$cmd" ]]; then
+    mpc stop
+    mpc clear
+    mpc add "$cmd"
+    mpc play
+  else
+    mpc update
+  fi
+fi

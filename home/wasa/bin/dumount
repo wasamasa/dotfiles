@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cmd=$(ls /media | dmenu -i -l 15)
+if [[ $cmd == "" ]]; then
+  echo "bye"
+else
+  output=$(udiskie-umount /media/$cmd)
+  echo $cmd
+  echo $output
+  if [[ $output == "" ]]; then
+    notify-send $output
+  fi
+fi

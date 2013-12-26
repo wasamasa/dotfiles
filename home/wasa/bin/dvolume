@@ -1,0 +1,76 @@
+#!/bin/bash
+# many thanks to bruenig and Thayer
+
+#Customize this stuff
+SECS="3"            # sleep $SECS
+BG="#073642"        # background colour of window
+FG="#eee8d5"        # foreground colour of text/icon
+BAR_FG="#eee8d5"    # foreground colour of volume bar
+BAR_BG="#93a1a1"    # background colour of volume bar
+XPOS="624"          # horizontal positioning
+YPOS="438"          # vertical positioning
+HEIGHT="24"         # window height
+WIDTH="192"         # window width
+BAR_WIDTH="160"     # width of volume bar
+ICON="~/bin/vol-hi.xbm"
+FONT="fixed"
+
+#Probably do not customize
+PIPE="/tmp/dvolpipe"
+
+err() {
+  echo "$1"
+  exit 1
+}
+
+usage() {
+  echo "usage: dvol [option] [argument]"
+  echo
+  echo "Options:"
+  echo "     -i, --increase - increase volume by \`argument'"
+  echo "     -d, --decrease - decrease volume by \`argument'"
+  echo "     -t, --toggle   - toggle mute on and off"
+  echo "     -h, --help     - display this"
+  exit
+}
+
+#Argument Parsing
+case "$1" in
+  '-i'|'--increase')
+    [ -z "$2" ] && err "No argument specified for increase."
+    PMIXARG="increase ${2}"
+    ;;
+  '-d'|'--decrease')
+    [ -z "$2" ] && err "No argument specified for decrease."
+    PMIXARG="decrease ${2}"
+    ;;
+  '-t'|'--toggle')
+    PMIXARG="toggle"
+    ;;
+  ''|'-h'|'--help')
+    usage
+    ;;
+  *)
+    err "Unrecognized option \`$1', see dvol --help"
+    ;;
+esac
+
+#Actual volume changing (readability low)
+echo ponymix $PMIXARG
+PMIXOUT="$(ponymix $PMIXARG)"
+MUTE="$(ponymix is-muted && echo muted)"
+if [ "$MUTE" = "muted" ]; then
+  VOL="0"
+else
+  VOL=$PMIXOUT
+fi
+
+#Using named pipe to determine whether previous call still exists
+#Also prevents multiple volume bar instances
+if [ ! -e "$PIPE" ]; then
+  mkfifo "$PIPE"
+  (dzen2 -tw "$WIDTH" -h "$HEIGHT" -x "$XPOS" -y "$YPOS" -fn "$FONT" -bg "$BG" -fg "$FG" < "$PIPE"; rm -f "$PIPE") &
+fi
+
+#Feed the pipe!
+(echo "$VOL" | gdbar -h 8 -l "^i(${ICON})" -fg "$BAR_FG" -bg "$BAR_BG" -w "$BAR_WIDTH" ; sleep "$SECS") > "$PIPE"

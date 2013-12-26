@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import os.path as op
+import subprocess
+import sys
+
+ABORT_STRING = "Not a known VCS repository."
+ARGPARSE_DESCRIPTION = "Compares a VCS repository with a local directory, outputs modified files."
+GIT_COMMAND = ['git', 'ls-files', '--full-name']
+GIT_DIRECTORY = '.git'
+GIT_IGNORE = '.gitignore'
+HG_COMMAND = ['hg', 'locate']
+HG_DIRECTORY = '.hg'
+HG_IGNORE = '.hgignore'
+
+def vcs_diff(repos, directory):
+    repos = op.expanduser(repos)
+    repos_type = vcs_type(repos)
+    if repos_type == 'git':
+        repos_files = git_files(repos)
+    elif repos_type == 'hg':
+        repos_files = hg_files(repos)
+    else:
+        sys.exit(ABORT_STRING)
+
+    for path in repos_files:
+        remote, local = [op.expanduser(op.join(d, path)) for d in [repos, directory]]
+        if op.exists(local) and op.isfile(local):
+            remote_hash, local_hash = [md5_sum(f) for f in [remote, local]]
+            if remote_hash != local_hash:
+                print(path)
+
+def vcs_type(repos):
+    if op.isdir(repos):
+        if op.exists(op.join(repos, GIT_DIRECTORY)):
+            return 'git'
+        elif op.exists(op.join(repos, HG_DIRECTORY)):
+            return 'hg'
+        else:
+            return 'directory'
+    elif op.isfile(repos):
+        return 'file'
+
+def git_files(repos):
+    return vcs_files(repos, GIT_COMMAND, GIT_IGNORE)
+
+def hg_files(repos):
+    return vcs_files(repos, HG_COMMAND, HG_IGNORE)
+
+def vcs_files(repos, command, ignore_file):
+    original_directory = os.getcwd()
+    os.chdir(repos)
+    relative_paths = command_output(command)
+    os.chdir(original_directory)
+    return [path for path in relative_paths if path != ignore_file]
+
+def md5_sum(path):
+    return command_output(['md5sum', op.expanduser(path)])[0].split()[0]
+
+def command_output(command):
+    return subprocess.check_output(command, universal_newlines=True).split('\n')
+
+def main():
+    parser = argparse.ArgumentParser(description=ARGPARSE_DESCRIPTION)
+    parser.add_argument('repository', help="VCS repository")
+    parser.add_argument('directory', help="Local directory")
+    args = parser.parse_args()
+    vcs_diff(args.repository, args.directory)
+
+if __name__ == '__main__':
+    main()

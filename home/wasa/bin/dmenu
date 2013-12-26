@@ -1,0 +1,17 @@
+#!/bin/sh
+# dmenu wrapper, assing some options if they weren't given.
+# thanks to Cloudef for this one
+
+main() {
+   local ARGS=
+   local FONT=
+   [[ "$@" != *-fn ]] && FONT="DejaVu Sans Mono-7"
+   [[ "$@" != *-nb ]] && ARGS="$ARGS -nb #002b36"
+   [[ "$@" != *-nf ]] && ARGS="$ARGS -nf #839496"
+   [[ "$@" != *-sb ]] && ARGS="$ARGS -sb #859900"
+   [[ "$@" != *-sf ]] && ARGS="$ARGS -sf #002b36"
+   [[ -n "$FONT" ]] && {
+      /usr/bin/dmenu -fn "$FONT" $ARGS "$@"; return;
+   } || { /usr/bin/dmenu $ARGS "$@"; return; }
+}
+main "$@"

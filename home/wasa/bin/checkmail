@@ -1,0 +1,3 @@
+#!/bin/bash
+ping -c1 8.8.8.8 &> /dev/null && mbsync -a  &> /dev/null
+find /home/wasa/.mail/*/inbox/{new,cur,tmp} -type f | grep -vE ',[^,]*S[^,]*$' | wc -l > ~/var/mails

@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ $(xrandr | grep mm | wc -l) -eq 2 ]]; then
+  xrandr --output $(xrandr | grep mm | tail -n 1 | awk '{print $1}') --off
+fi
+xrandr --output VGA1 --off --output DP2 --off --output LVDS1 --auto --mode 1440x900 --primary --preferred
+killall compton
+sleep 1
+feh --bg-fill ~/images/wallpapers/checkout/pixelmavs.png
+compton -b --vsync opengl --dbe

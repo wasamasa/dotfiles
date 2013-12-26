@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+"""Simple URL handler based on domains"""
+
+import argparse
+import re
+import subprocess
+import sys
+from urllib.parse import urlparse
+
+BROWSER = 'firefox'
+YOUTUBE_DOMAINS = ['youtube.com', 'youtu.be']
+SUPPORTED_DOMAINS = YOUTUBE_DOMAINS + ['vimeo.com']
+
+def contains_any(element, choices):
+    """Checks whether the given element contains any of the choices"""
+    return any(choice in element for choice in choices)
+
+def parse_yt_timestamp(timestamp):
+    """Converts a youtube timestamp to a number of seconds"""
+    time = 0
+    while True:
+        if len(timestamp.split('h')) > 1:
+            time += int(timestamp.split('h')[0])*3600
+            timestamp = timestamp.split('h')[1]
+        elif len(timestamp.split('m')) > 1:
+            time += int(timestamp.split('m')[0])*60
+            timestamp = timestamp.split('m')[1]
+        elif len(timestamp.split('s')) > 1:
+            time += int(timestamp.split('s')[0])
+            break
+        else:
+            if timestamp:
+                time += int(timestamp)
+            break
+    return time
+
+def detect_youtube_timestamp(url):
+    """Retrieve the youtube timestamp"""
+    query, fragment = urlparse(url).query, urlparse(url).fragment
+    query_dict = {}
+    if '=' in query:
+        query_dict = dict((k, v) for k, v in (item.split('=') for item in query.split('&')))
+    if 't' in query_dict:
+        return parse_yt_timestamp(query_dict['t'])
+    elif 't=' in fragment:
+        return parse_yt_timestamp(fragment.split('=')[1])
+    else:
+        return 0
+
+def play(url, seek=0):
+    """Wraps youtube-dl and mpv"""
+    output = subprocess.check_output(
+        ['youtube-dl', '-eg', '--user-agent', '', url],
+        stderr=subprocess.STDOUT, universal_newlines=True).split('\n')
+    title, direct_url = output[-3], output[-2]
+    subprocess.call(['mpv', '--start', str(seek), '--title', title, '--cache', '8192', direct_url])
+
+def main():
+    """main function"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('url')
+    args = parser.parse_args()
+    domain = urlparse(args.url).netloc
+    if not domain:
+        sys.exit("invalid URL specified")
+    if contains_any(domain, SUPPORTED_DOMAINS):
+        if contains_any(domain, YOUTUBE_DOMAINS):
+            timestamp = detect_youtube_timestamp(args.url)
+            play(args.url, seek=timestamp)
+        else:
+            play(args.url)
+    else:
+        subprocess.call([BROWSER, args.url])
+
+if __name__ == '__main__':
+    main()

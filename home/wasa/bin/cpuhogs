@@ -1,0 +1,2 @@
+#!/bin/bash
+top -b -n 1 2> /dev/null | head -n 13 | tail -n 6 | grep -v top | awk '{print $9, $10, $12, $1}'

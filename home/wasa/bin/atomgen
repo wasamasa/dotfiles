@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+#-*- mode: Python -*-
+
+from datetime import datetime, timedelta
+import json
+import os.path as op
+import sys
+from operator import itemgetter
+from urllib.parse import urlparse
+
+from dateutil.parser import parse as parse_date
+from lxml.html import document_fromstring
+from requests import get
+import werkzeug.contrib.atom as atom
+
+
+YAHOO_JAPAN_URL = 'http://auctions.search.yahoo.co.jp/search'
+YAHOO_JAPAN_PAYLOAD = {
+    'p': 'おやすみプンプン',
+    'disp_number': 100000,
+    'n': 100
+}
+YAHOO_JAPAN_URL_SELECTOR = 'div#AS1m1 div#list01 tr td.a1 h3 a'
+YAHOO_JAPAN_DESC_SELECTOR = 'div.untHead+div.modUsrPrv'
+BUYEE_JAPAN_DATE_SELECTOR = 'ul#itemDetail_data'
+BUYEE_TIMESTAMP_FORMAT = '%d %b %Y %H:%M:%S'
+BUYEE_URL = 'http://buyee.jp/item/yahoo/auction/'
+JSON_FILE = '~/rss/yahoo.json'
+ATOM_FILE = '~/rss/yahoo.atom'
+
+
+def get_selections(url, selector, params=None):
+    r = get(url, params=params)
+    dom = document_fromstring(r.text)
+    return dom.cssselect(selector)
+
+
+def get_yahoo_auctions():
+    results = []
+    yahoo_urls = [result.get('href') for result in
+                  get_selections(YAHOO_JAPAN_URL,
+                                 YAHOO_JAPAN_URL_SELECTOR,
+                                 params=YAHOO_JAPAN_PAYLOAD)]
+
+    print('{} auctions found!'.format(len(yahoo_urls)))
+    for yahoo_url in yahoo_urls:
+        yahoo_id = urlparse(yahoo_url).path.split('/')[-1]
+        buyee_url = '{}{}{}'.format(BUYEE_URL, yahoo_id, '/lang/en')
+
+        for item in get_selections(
+                buyee_url,
+                BUYEE_JAPAN_DATE_SELECTOR)[0].text_content().split('\n'):
+            if 'Closing Time' in item:
+                buyee_datetime = datetime.strptime(
+                    item.split(')')[-1],
+                    BUYEE_TIMESTAMP_FORMAT).isoformat(sep=' ')
+                break
+
+        current_datetime = datetime.now().isoformat(sep=' ')
+        result = {'yahoo_id': yahoo_id, 'yahoo_url': yahoo_url,
+                  'buyee_url': buyee_url, 'buyee_datetime':
+                  buyee_datetime, 'current_datetime':
+                  current_datetime}
+        print('Auction {} processed'.format(yahoo_id))
+        results.append(result)
+
+    return(sorted(results, key=itemgetter('buyee_datetime')))
+
+
+def create_yahoo_feed(feed_data):
+    yahoo_feed = atom.AtomFeed(
+        title='おやすみプンプン', title_type='txt', author='Wasa',
+        subtitle='Search on Yahoo Auctions JP for おやすみプンプン',
+        feed_url='file:///home/wasa/rss/yahoo')
+    for feed in feed_data:
+        title = feed['yahoo_id']
+        url = feed['yahoo_url']
+        description_url = feed['buyee_url']
+        updated = parse_date(feed['current_datetime'])
+        published = parse_date(feed['buyee_datetime'])
+
+        content = '''Ending on {}, <a href="{}">metadata</a>'''.format(
+            published, description_url)
+
+        yahoo_feed.add(title=title, content=content,
+                       content_type='html', url=url, updated=updated,
+                       published=published)
+    return yahoo_feed
+
+
+def main():
+    auctions = get_yahoo_auctions()
+    new_auctions = []
+
+    if op.exists(op.expanduser(JSON_FILE)):
+        with open(op.expanduser(JSON_FILE), 'r') as json_file:
+            try:
+                new_auctions = json.load(json_file)
+            except ValueError:
+                sys.exit("Invalid JSON")
+    print('{} auctions loaded'.format(len(new_auctions)))
+
+    now = datetime.now()
+    raw_feed = sorted({
+        a['yahoo_id']: a for a in auctions + new_auctions
+        if now - parse_date(a['buyee_datetime']) < timedelta(hours=1)
+    }.values(), key=itemgetter('buyee_datetime'))
+
+    with open(op.expanduser(JSON_FILE), 'w') as json_file:
+        json_file.write(json.dumps(raw_feed, sort_keys=True, indent=2,
+                                   separators=(',', ': ')))
+    print('{} auctions saved'.format(len(raw_feed)))
+
+    yahoo_feed = create_yahoo_feed(raw_feed)
+    with open(op.expanduser(ATOM_FILE), 'w') as atom_file:
+        atom_file.write(yahoo_feed.to_string())
+
+
+if __name__ == '__main__':
+    main()

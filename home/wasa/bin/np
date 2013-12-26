@@ -1,0 +1,3 @@
+#!/bin/bash
+echo -n $(mpc current --format '%artist% - [#[%album% ##%track%#] - ]%title%') | xsel --clipboard -i
+echo -n $(mpc current --format '%artist% - [#[%album% ##%track%#] - ]%title%') | xsel --primary -i

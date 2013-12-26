@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+# dmenu on steroids
+
+import argparse
+import os
+import os.path as op
+import subprocess
+import sys
+
+from bertha_config import FAVORITES, SYSTEMS, DIRECTORIES, ARGPARSE_DESCRIPTION
+
+def main():
+    parser = argparse.ArgumentParser(description=ARGPARSE_DESCRIPTION)
+    parser.add_argument('dest')
+    parser.add_argument('--mode')
+    args = parser.parse_args()
+    if args.mode == 'directory':
+        launch_from_directory(DIRECTORIES[args.dest])
+    elif args.mode == 'retroarch':
+        launch_retroarch(args.dest)
+
+def launch_from_directory(args):
+    viewer, directory_path = args
+    paths = get_paths(directory_path)
+    document_path = dmenu_select(paths)
+    if document_path and document_path in paths:
+        launch(viewer, document_path)
+
+def launch_retroarch(mode='general'):
+    if mode == 'general':
+        paths = get_paths(['~/roms/'])
+        path = dmenu_select(paths)
+    elif mode == 'favorites':
+        titles = sorted(FAVORITES.keys())
+        path = FAVORITES[dmenu_select(titles)]
+    path = op.expanduser(path)
+    system = guess_system(path)
+    if system:
+        lib, config = SYSTEMS[system]
+        further_args = ['-L', lib]
+        if config:
+            further_args.extend(['--appendconfig', op.expanduser(config)])
+#       if 'libretro-nx' in lib:
+#           os.chdir(op.expanduser('~/nxengine-libretro/nxengine-1.0.0.4/'))
+        launch(['/usr/bin/retroarch'], path, further_args=further_args)
+
+def guess_system(path):
+    for system in SYSTEMS.keys():
+        if system in path.split('/'):
+            return system
+
+def get_paths(directories):
+    paths = []
+    for directory in directories:
+        if os.path.exists(op.expanduser(directory)):
+            for root, _, files in os.walk(op.expanduser(directory)):
+                paths.extend(op.join(root, name) for name in files)
+    return sorted(paths)
+
+def dmenu_select(paths, command='dmenu -i -l 15'):
+    process = subprocess.Popen(
+        command.split(), stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    output = process.communicate(input=bytes('\n'.join(paths), 'utf-8'))
+    selection = output[0].decode('utf-8').strip()
+    if selection and selection in paths:
+        return selection
+    else:
+        sys.exit()
+
+def launch(viewer, path, further_args=None):
+    subprocess_args = viewer
+    if further_args:
+        subprocess_args.extend(further_args)
+    subprocess_args.append(path)
+    subprocess.call(subprocess_args)
+
+if __name__ == '__main__':
+    main()

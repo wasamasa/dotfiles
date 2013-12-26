@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cmd=$(mpc ls Singletons| sed 's/Singletons\///' | sort -f | dmenu -i -l 15)
+if [[ "$cmd" == "" ]]; then
+  echo "bye"
+else
+  echo $cmd
+  if [[ -f "/home/wasa/music/Singletons/$cmd" ]]; then
+    mpc stop
+    mpc clear
+    mpc add "Singletons/$cmd"
+    mpc play
+  else
+    mpc update
+  fi
+fi

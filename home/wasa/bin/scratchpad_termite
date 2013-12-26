@@ -1,0 +1,3 @@
+#!/bin/bash
+termite --class=scratchpad_termite
+xdotool search --class scratchpad_termite windowsize 100% 7%

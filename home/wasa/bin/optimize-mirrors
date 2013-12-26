@@ -1,0 +1,6 @@
+#!/bin/bash
+# creates an optimized mirrorlist based on the default list
+sudo rm /etc/pacman.d/mirrorlist
+sudo cp /etc/pacman.d/original_mirrorlist /etc/pacman.d/mirrorlist
+sudo reflector -f 5 -l 5 --sort rate --save /etc/pacman.d/mirrorlist
+tail -n 5 /etc/pacman.d/mirrorlist

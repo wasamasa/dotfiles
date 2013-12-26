@@ -1,0 +1,6 @@
+#!/bin/bash
+#if [[ $# -gt 0 ]]; then
+  emacsclient -c "$@"
+#else
+  #emacsclient -c ~/org/inbox.org
+#fi

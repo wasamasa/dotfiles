@@ -1,0 +1,12 @@
+#!/bin/bash
+
+ALL_OFF="$(tput sgr0)"
+ITALICS="$(tput sitm)"
+NOITALICS="$(tput ritm)"
+BOLD="$(tput bold)"
+#RED="${BOLD}$(tput setaf 1)"
+TEXT="Hamburgefonts (C)[T]{X}>_<O0oI1l,.;:?'\"\\/=-+68923457~@!#$%^&*"
+
+echo -e "$BOLD $TEXT $ALL_OFF"
+echo -e " $TEXT "
+echo -e "$ITALICS $TEXT $NOITALICS"
