@@ -1,0 +1,6 @@
+vo=opengl-old
+title="mpv: ${filename}"
+alang=jp,jpn
+slang=en,eng
+osc=no
+keep-open
