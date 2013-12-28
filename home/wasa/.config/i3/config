@@ -26,7 +26,8 @@ bindsym XF86AudioMute exec dvolume -t
 bindsym XF86AudioRaiseVolume exec dvolume -i 5
 bindsym XF86AudioLowerVolume exec dvolume -d 5
 bindsym $mod+Return exec termite
-bindsym $mod+p exec dmenu_run
+bindsym $mod+p exec dfavourites
+bindsym $mod+Shift+p exec dmenu_run
 bindsym $mod+c exec dcpu
 bindsym $mod+m exec dmpc
 bindsym $mod+Shift+m exec dmpc2
