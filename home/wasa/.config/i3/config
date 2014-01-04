@@ -18,7 +18,7 @@ exec --no-startup-id mpd
 exec --no-startup-id es
 exec --no-startup-id udiskie
 exec --no-startup-id compton
-exec scratchpad_termite
+exec scratchpad
 
 # interesting binds
 bindsym Print exec scrot
