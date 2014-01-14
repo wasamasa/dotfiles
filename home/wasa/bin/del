@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+
+import argparse
+from datetime import datetime
+import os.path as op
+import subprocess
+
+TRASH_DIRECTORY = op.expanduser('~/.crap/TRASH')
+
+parser = argparse.ArgumentParser(description="A safer rm command")
+parser.add_argument('files', nargs='*')
+args = parser.parse_args()
+
+directory = op.join(TRASH_DIRECTORY, str(datetime.now()))
+mkdir_command = ['mkdir', directory]
+subprocess.call(mkdir_command)
+for f in args.files:
+    move_command = ['mv', f, directory]
+    subprocess.call(move_command)
