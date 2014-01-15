@@ -1,0 +1,2 @@
+#!/bin/bash
+emacs -q --load=~/.emacs.d/init-org.el 
