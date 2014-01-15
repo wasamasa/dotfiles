@@ -1,3 +1,0 @@
-#!/bin/bash
-# script for dwm to execute upon pressing mod-i
-ssh -o ServerAliveInterval=600 -t wasa@minimalr.net TERM=screen tmux a
