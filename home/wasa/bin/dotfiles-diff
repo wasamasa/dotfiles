@@ -14,6 +14,10 @@ GIT_IGNORE = '.gitignore'
 HG_COMMAND = ['hg', 'locate']
 HG_DIRECTORY = '.hg'
 HG_IGNORE = '.hgignore'
+IGNORE_FILES = {'dotfiles': ['home/wasa/.config/llpp.conf',
+                             'home/wasa/.config/mcomix/preferences.conf',
+                             'home/wasa/.mutt/aliases'],
+                'dotemacs': ['private/private.el']}
 
 def vcs_diff(repos, directory):
     repos = op.expanduser(repos)
@@ -25,11 +29,15 @@ def vcs_diff(repos, directory):
     else:
         sys.exit(ABORT_STRING)
 
+    repos_basename = op.basename(repos)
+    ignored_files = []
+    if repos_basename in IGNORE_FILES:
+        ignored_files = IGNORE_FILES[repos_basename]
     for path in repos_files:
         remote, local = [op.expanduser(op.join(d, path)) for d in [repos, directory]]
         if op.exists(local) and op.isfile(local):
             remote_hash, local_hash = [md5_sum(f) for f in [remote, local]]
-            if remote_hash != local_hash:
+            if remote_hash != local_hash and path not in ignored_files:
                 print(path)
 
 def vcs_type(repos):
