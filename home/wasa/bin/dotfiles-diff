@@ -33,7 +33,7 @@ def vcs_diff(repos, directory):
     else:
         sys.exit(ABORT_STRING)
 
-    repos_basename = op.basename(repos)
+    repos_basename = op.basename(op.abspath(repos))
     ignored_files = []
     if repos_basename in IGNORE_FILES:
         ignored_files = IGNORE_FILES[repos_basename]
