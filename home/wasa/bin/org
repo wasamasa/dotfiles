@@ -1,2 +1,2 @@
 #!/bin/bash
-emacs -q --load=~/.emacs.d/init-org.el 
+emacs --eval='(setq initial-buffer-choice "~/org/org.org")'
