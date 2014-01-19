@@ -1,3 +1,3 @@
 #!/bin/bash
-favourites="em\nes\nemacs\n|\nfirefox\nprn\nskype\n|\nscratchpad\n|\nvga\neizo\nlvds\nleizo\nevga"
+favourites="em\norg\nemacs\n|\nfirefox\nprn\nskype\n|\nscratchpad\n|\nvga\neizo\nlvds\nleizo\nevga"
 exec $(echo -ne $favourites | dmenu) &
