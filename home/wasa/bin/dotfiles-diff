@@ -6,6 +6,10 @@ import os.path as op
 import subprocess
 import sys
 
+# Possible usages
+# dotfiles diff <repos> <directory>
+# dotfiles copy <repos> <directory>
+
 ABORT_STRING = "Not a known VCS repository."
 ARGPARSE_DESCRIPTION = "Compares a VCS repository with a local directory, outputs modified files."
 GIT_COMMAND = ['git', 'ls-files', '--full-name']
