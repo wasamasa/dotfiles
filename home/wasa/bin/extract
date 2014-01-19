@@ -1,5 +1,5 @@
-#!/bin/sh
-# extracts various archives, thnaks to Cloudef!
+#!/bin/bash
+# extracts various archives, thanks to Cloudef!
 
 main() {
    while [[ -n "$1" ]]; do
