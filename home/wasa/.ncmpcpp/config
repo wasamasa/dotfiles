@@ -20,7 +20,7 @@
 ## (eg. ncmpc) also use that location.
 ##
 #
-lyrics_directory = "~/.config/mpd_lyrics"
+lyrics_directory = "~/.config/lyrics"
 #
 ##### connection settings #####
 #
