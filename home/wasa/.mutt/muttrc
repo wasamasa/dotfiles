@@ -4,6 +4,7 @@
   set alias_format      = "%4n %t %-20a %r"
   set askcc
   set beep_new
+unset collapse_unread
 unset confirmappend
   set date_format       = "%m/%d/%y at %I:%M%P"
   set delete
@@ -42,7 +43,9 @@ unset markers
   set sidebar_visible   = no
   set sidebar_width     = 24
 unset sig_dashes        # empty signatures, use set sig_dashes otherwise
-  set sort              = reverse-date-received
+  set sort              = threads
+  set strict_threads    = yes
+  set sort_browser      = reverse-date
   set sort_aux          = reverse-last-date-received
 unset sort_re
   set spoolfile         = "+private/inbox"
