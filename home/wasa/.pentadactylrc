@@ -1,6 +1,6 @@
 "looks
 colorscheme solarized-light
-set guioptions=Cs
+set guioptions=Csr
 set showtabline=never
 hi -a FontCode font: 10pt monospace !important;
 hi -a FontFixed font: 8pt monospace !important;
