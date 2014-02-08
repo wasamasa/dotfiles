@@ -3,14 +3,12 @@
 import argparse
 import os
 import os.path as op
+import shutil
 import subprocess
 import sys
 
-# Possible usages
-# dotfiles diff <repos> <directory>
-# dotfiles copy <repos> <directory>
-
 ABORT_STRING = "Not a known VCS repository."
+NOTHING_TODO_STRING = "There's nothing else to do."
 ARGPARSE_DESCRIPTION = "Compares a VCS repository with a local directory, outputs modified files."
 GIT_COMMAND = ['git', 'ls-files', '--full-name']
 GIT_DIRECTORY = '.git'
@@ -22,8 +20,30 @@ IGNORE_FILES = {'dotfiles': ['home/wasa/.config/llpp.conf',
                              'home/wasa/.config/mcomix/preferences.conf',
                              'home/wasa/.mutt/aliases'],
                 'dotemacs': ['private/private.el']}
+def main():
+    parser = argparse.ArgumentParser(description=ARGPARSE_DESCRIPTION)
+    subparsers = parser.add_subparsers()
 
-def vcs_diff(repos, directory):
+    parser_diff = subparsers.add_parser('diff', help="Print different files")
+    parser_diff.add_argument('repository', help="VCS repository")
+    parser_diff.add_argument('directory', help="Local directory")
+    parser_diff.set_defaults(call=do_diff)
+
+    parser_copy = subparsers.add_parser('copy', help="Copy different files")
+    parser_copy.add_argument('repository', help="VCS repository")
+    parser_copy.add_argument('directory', help="Local directory")
+    parser_copy.set_defaults(call=do_copy)
+
+    args = parser.parse_args()
+    args.call(args)
+
+def do_diff(args):
+    vcs_action(args.repository, args.directory, 'diff')
+
+def do_copy(args):
+    vcs_action(args.repository, args.directory, 'copy')
+
+def vcs_action(repos, directory, action):
     repos = op.expanduser(repos)
     repos_type = vcs_type(repos)
     if repos_type == 'git':
@@ -37,12 +57,27 @@ def vcs_diff(repos, directory):
     ignored_files = []
     if repos_basename in IGNORE_FILES:
         ignored_files = IGNORE_FILES[repos_basename]
+    interesting_files = []
+
     for path in repos_files:
-        remote, local = [op.expanduser(op.join(d, path)) for d in [repos, directory]]
+        remote, local = [op.expanduser(op.join(op.abspath(d), path))
+                         for d in [repos, directory]]
         if op.exists(local) and op.isfile(local):
             remote_hash, local_hash = [md5_sum(f) for f in [remote, local]]
             if remote_hash != local_hash and path not in ignored_files:
-                print(path)
+                interesting_files.append({'path': path,
+                                          'remote': remote,
+                                          'local': local})
+
+    if action == 'diff':
+        paths = [f['path'] for f in interesting_files]
+        if paths:
+            print('\n'.join(paths))
+        else:
+            print(NOTHING_TODO_STRING)
+    elif action == 'copy':
+        for f in interesting_files:
+            shutil.copy(f['local'], f['remote'])
 
 def vcs_type(repos):
     if op.isdir(repos):
@@ -73,13 +108,6 @@ def md5_sum(path):
 
 def command_output(command):
     return subprocess.check_output(command, universal_newlines=True).split('\n')
-
-def main():
-    parser = argparse.ArgumentParser(description=ARGPARSE_DESCRIPTION)
-    parser.add_argument('repository', help="VCS repository")
-    parser.add_argument('directory', help="Local directory")
-    args = parser.parse_args()
-    vcs_diff(args.repository, args.directory)
 
 if __name__ == '__main__':
     main()
