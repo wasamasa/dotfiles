@@ -9,6 +9,7 @@ import sys
 
 ABORT_STRING = "Not a known VCS repository."
 NOTHING_TODO_STRING = "There's nothing else to do."
+NOTHING_TODO_2_STRING = "Every me and every you."
 ARGPARSE_DESCRIPTION = "Compares a VCS repository with a local directory, outputs modified files."
 GIT_COMMAND = ['git', 'ls-files', '--full-name']
 GIT_DIRECTORY = '.git'
@@ -76,8 +77,11 @@ def vcs_action(repos, directory, action):
         else:
             print(NOTHING_TODO_STRING)
     elif action == 'copy':
-        for f in interesting_files:
-            shutil.copy(f['local'], f['remote'])
+        if interesting_files:
+            for f in interesting_files:
+                shutil.copy(f['local'], f['remote'])
+        else:
+            print(NOTHING_TODO_2_STRING)
 
 def vcs_type(repos):
     if op.isdir(repos):
