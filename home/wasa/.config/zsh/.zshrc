@@ -27,6 +27,8 @@ musicvideo() {
   ffmpeg -shortest -loop 1 -i $1 -i $2 -acodec copy -vcodec libx264 $3
 }
 
+rm() { echo Use del }
+
 fortune
 stty -ixon
 xrdb ~/.Xresources
