@@ -15,9 +15,8 @@ exec_always --no-startup-id feh --bg-fill ~/images/wallpapers/checkout/pixelmavs
 exec --no-startup-id unclutter -root -idle 3
 exec --no-startup-id fallkiste
 exec --no-startup-id mpd
-exec --no-startup-id es
+#exec --no-startup-id es
 exec --no-startup-id udiskie
-exec --no-startup-id compton
 exec scratchpad
 
 # interesting binds
