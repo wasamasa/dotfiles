@@ -12,10 +12,10 @@ hide_edge_borders both
 exec_always --no-startup-id xrdb ~/.Xresources
 exec_always --no-startup-id xsetroot -cursor_name left_ptr
 exec_always --no-startup-id feh --bg-fill ~/images/wallpapers/checkout/pixelmavs.png
-exec --no-startup-id unclutter -root -idle 3
+exec --no-startup-id hhpc -i 2
 exec --no-startup-id fallkiste
 exec --no-startup-id mpd
-#exec --no-startup-id es
+exec --no-startup-id es
 exec --no-startup-id udiskie
 exec scratchpad
 
