@@ -20,7 +20,8 @@ HG_IGNORE = '.hgignore'
 IGNORE_FILES = {'dotfiles': ['home/wasa/.config/llpp.conf',
                              'home/wasa/.config/mcomix/preferences.conf',
                              'home/wasa/.mutt/aliases'],
-                'dotemacs': ['private/private.el']}
+                'dotemacs': ['etc/private.el',
+                             'etc/custom.el']}
 def main():
     parser = argparse.ArgumentParser(description=ARGPARSE_DESCRIPTION)
     subparsers = parser.add_subparsers()
