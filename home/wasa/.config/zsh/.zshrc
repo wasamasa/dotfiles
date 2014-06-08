@@ -10,7 +10,8 @@ zstyle ':vcs_info:*' enable hg git bzr svn
 precmd() {
   vcs_info
 }
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' rehash true
 
 HISTFILE=~/.config/zsh/.zhistory
 HISTSIZE=10000
