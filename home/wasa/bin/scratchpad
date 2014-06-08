@@ -1,2 +1,7 @@
 #!/bin/bash
-termite --class=scratchpad_termite --exec=tmux
+pgrep tmux
+if [[ $? -ne 0 ]]; then
+  termite --class=scratchpad_termite --exec=tmux
+else
+  termite --class=scratchpad_termite --exec='tmux a'
+fi
