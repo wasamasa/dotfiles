@@ -7,3 +7,5 @@
 [alias]
 	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
 	p = push origin master
+[push]
+        default = current
