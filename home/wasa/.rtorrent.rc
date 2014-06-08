@@ -87,6 +87,11 @@ peer_exchange = no
 #==> Options: done_fg_color, done_bg_color, active_fg_color, active_bg_color
 #==> Colors: 0 = black 1 = red 2 = green 3 = yellow 4 = blue 5 = magenta 6 = cyan 7 = white
 #==> Example: done_fg_color = 1
-
-done_fg_color = 2
-active_fg_color = 3
+#color_inactive_fg = 1
+color_inactive_bg = 0
+color_dead_fg = 1
+#color_dead_bg = 1
+color_active_fg = 4
+#color_active_bg = 1
+color_finished_fg = 2
+#color_finished_bg = 1
