@@ -6,7 +6,7 @@ hi -a FontCode font: 10pt monospace !important;
 hi -a FontFixed font: 8pt monospace !important;
 
 "...
-set defsearch=g
+set defsearch=d
 set hintkeys=asdfghjkl;
 hi -a Hint text-transform: uppercase;
 set! browser.tabs.onTop=false
