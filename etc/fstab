@@ -4,4 +4,5 @@
 # <file system>	<dir>	<type>	<options>	<dump>	<pass>
 # /dev/sda1
 UUID=e88f86d7-f0be-4303-9a0e-3d160c0931b3	/         	ext4      	rw,relatime,data=ordered,discard	0 1
+/swap none swap defaults 0 0
 
