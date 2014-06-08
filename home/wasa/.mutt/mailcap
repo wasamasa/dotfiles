@@ -1,5 +1,6 @@
 application/octet-stream ; echo %s "can be anything..."
-text/plain               ; LC_CTYPE=en_US luit less %s; copiousoutput
+text/plain               ; cat %s
+#text/plain               ; LC_CTYPE=en_US luit less %s; copiousoutput
 text/html                ; lynx -hiddenlinks=merge -display_charset=utf-8 -dump %s; nametemplate=%s.html; copiousoutput;
 application/pdf          ; llpp %s
 image/*                  ; sxiv %s

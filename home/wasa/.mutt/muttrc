@@ -2,10 +2,13 @@
 
   set alias_file        = ~/.mutt/aliases
   set alias_format      = "%4n %t %-20a %r"
+  set ascii_chars       = no
   set askcc
+  set assumed_charset   = "utf-8:us-ascii:iso-8859-1"
   set beep_new
 unset collapse_unread
 unset confirmappend
+  set charset           = "utf-8"
   set date_format       = "%m/%d/%y at %I:%M%P"
   set delete
   set edit_headers
@@ -38,6 +41,7 @@ unset markers
   set reverse_alias
   set reverse_name
   set sendmail_wait     = -1
+  set send_charset      = "utf-8:us-ascii:iso-8859-1"
   set sleep_time        = 0
   set sidebar_delim     = '│'
   set sidebar_visible   = no
@@ -63,7 +67,8 @@ unset wait_key
 alternates hurrus\.durrus@gmail\.com v\.schneidermann@gmail\.com webspider@farce\.de wassili@ip6\.li v\.schneidermann@web\.de
 
 auto_view text/html text/plain text/enriched
-alternative_order text/enriched text/html text/plain
+#alternative_order text/enriched text/html text/plain
+alternative_order text/plain text/enriched
 
 folder-hook private/*  source ~/.mutt/private
 folder-hook public/* source ~/.mutt/public
