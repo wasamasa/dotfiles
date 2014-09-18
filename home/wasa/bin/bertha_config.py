@@ -121,8 +121,10 @@ FAVORITES = {
     "Cyberbots - Fullmetal Madness [FBA]":                  "~/roms/FBA/roms/cybots.zip",
     "Darkstalkers - The Night Warriors [FBA]":              "~/roms/FBA/roms/dstlk.zip",
     "DoDonPachi [FBA]":                                     "~/roms/FBA/roms/ddonpach.zip",
+    "DoDonPachi Hack [FBA]":                                "~/roms/FBA/roms/ddonpachjh.zip",
     "DoDonPachi II - Bee Storm [FBA]":                      "~/roms/FBA/roms/ddp2.zip",
     "DoDonPachi Dai-Ou-Jou [FBA]":                          "~/roms/FBA/roms/ddpdoj.zip",
+    "DoDonPachi Dai-Ou-Jou - Black Edition [FBA]":          "~/roms/FBA/roms/ddpdojblk.zip",
     "Double Dragon (Neo-Geo) [FBA]":                        "~/roms/FBA/roms/doubledr.zip",
     "Final Fight [FBA]":                                    "~/roms/FBA/roms/ffight.zip",
     "Ghouls'n Ghosts [FBA]":                                "~/roms/FBA/roms/ghouls.zip",
@@ -156,6 +158,7 @@ FAVORITES = {
     "The Punisher [FBA]":                                   "~/roms/FBA/roms/punisher.zip",
     "Willow [FBA]":                                         "~/roms/FBA/roms/willow.zip",
     "X-Men vs Street Fighter [FBA]":                        "~/roms/FBA/roms/xmvsf.zip",
+
     "Cave Story [NX]":                                      "~/roms/NX/datafiles/Doukutsu.exe"
 }
 
