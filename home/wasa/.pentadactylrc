@@ -30,7 +30,5 @@ commands.execute('!urlhandler "' + content.location.href.replace(/([$`"\\])/g, "
                            + '" &> /dev/null &');
 EOF
 
-sty youtube.com div#rc {display: none;}
-sty foreignpolicy.com iframe {display: none;}
-sty foreignpolicy.com div#TB_window {display: none;}
-sty foreignpolicy.com div#TB_overlay {display: none;}
+sty youtube.com #rc {display: none;}
+sty vice.com #masthead {position: static !important;}
