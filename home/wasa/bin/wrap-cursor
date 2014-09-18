@@ -1,0 +1,6 @@
+#!/bin/bash
+
+killall hhpc &>/dev/null
+sleep 0.1
+$@
+hhpc -i 2 &
