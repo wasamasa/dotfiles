@@ -1,17 +1,29 @@
-http://iwdrm.tumblr.com/rss
-http://fluxmachine.tumblr.com/rss
-http://www.oglaf.com/feeds/rss/
-http://www.johnnywander.com/feed
-http://www.questionablecontent.net/QCRSS.xml
-http://xkcd.com/atom.xml
-http://natazilla.tumblr.com/rss
-http://chibird.tumblr.com/rss
-http://prequeladventure.com/feed/
-http://hoxtranslations.blogspot.com/feeds/posts/default
-http://feeds.feedburner.com/stevelosh?format=xml
-http://lucumr.pocoo.org/feed.atom
-http://me.veekun.com/atom.xml
-http://www.archlinux.org/feeds/news/
-http://feeds.feedburner.com/newsyc100?format=xml
-http://blog.fefe.de/rss.xml?html
-file:///home/wasa/rss/yahoo.atom
+"query:Unread:unread = \"yes\""
+"query:Read:unread = \"no\""
+"query:Webcomics:tags # \"webcomic\""
+"query:Art:tags # \"art\""
+"query:Fun:tags # \"fun\""
+"query:Scanlations:tags # \"scanlations\""
+"query:Cool People:tags # \"cool\""
+"query:News:tags # \"news\""
+http://iwdrm.tumblr.com/rss art !art
+http://fluxmachine.tumblr.com/rss art !art
+http://www.oglaf.com/feeds/rss/ webcomic !webcomic
+http://www.johnnywander.com/feed webcomic !webcomic
+http://www.questionablecontent.net/QCRSS.xml webcomic !webcomic
+http://xkcd.com/atom.xml webcomic !webcomic
+http://natazilla.tumblr.com/rss webcomic !webcomic
+http://chibird.tumblr.com/rss webcomic !webcomic
+http://prequeladventure.com/feed/ webcomic !webcomic
+http://thebbrofoz.the-comic.org/rss webcomic !webcomic
+http://moviecode.tumblr.com/rss fun !fun
+http://hoxtranslations.blogspot.com/feeds/posts/default scanlations !scanlations
+http://feeds.feedburner.com/stevelosh?format=xml cool !cool
+http://lucumr.pocoo.org/feed.atom cool !cool
+http://me.veekun.com/atom.xml cool !cool
+http://www.archlinux.org/feeds/news/ news !news
+http://vdwaa.nl/feed cool !cool
+http://feeds.feedburner.com/newsyc100?format=xml news !news
+http://blog.fefe.de/rss.xml?html news !news
+file:///home/wasa/rss/yahoo.atom news !news
+http://127.0.0.1:5000/feed news !news

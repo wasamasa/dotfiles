@@ -4,6 +4,11 @@ reload-threads 2
 notify-beep yes
 confirm-exit yes
 browser "urlhandler %u"
+prepopulate-query-feeds yes
+# articlelist-format  "%4i %f %D   %t"
+reset-unread-on-update http://127.0.0.1:5000/feed
+always-download http://127.0.0.1:5000/feed
+# reset-unread-on-update http://blog.fefe.de/rss.xml?html
 
 bind-key j down
 bind-key k up
