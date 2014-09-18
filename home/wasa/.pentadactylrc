@@ -7,6 +7,7 @@ hi -a FontFixed font: 8pt monospace !important;
 
 "...
 set defsearch=d
+set editor='emacsclient -c +<line>:<column> <file>'
 set hintkeys=asdfghjkl;
 hi -a Hint text-transform: uppercase;
 set! browser.tabs.onTop=false
