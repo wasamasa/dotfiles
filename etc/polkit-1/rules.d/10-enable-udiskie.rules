@@ -1,0 +1,9 @@
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.udisks.filesystem-mount" ||
+         action.id == "org.freedesktop.udisks.luks-unlock" ||
+         action.id == "org.freedesktop.udisks.drive-eject" ||
+         action.id == "org.freedesktop.udisks.drive-detach") &&
+       subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
