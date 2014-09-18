@@ -2,5 +2,5 @@
 
 fallkiste=~/fallkiste/
 while inotifywait -qre close_write,delete,move $fallkiste; do
-  rsync -auz --chmod=a+r --delete -e ssh $fallkiste wasa@minimalr.net:html/fallkiste/
+  rsync -auvzz --chmod=a+r --delete -e 'ssh -p9000' $fallkiste lab:/srv/http/fallkiste/
 done
