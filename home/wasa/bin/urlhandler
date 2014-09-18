@@ -2,14 +2,14 @@
 """Simple URL handler based on domains"""
 
 import argparse
-import re
+import os
 import subprocess
 import sys
 from urllib.parse import urlparse
 
 BROWSER = 'firefox'
 YOUTUBE_DOMAINS = ['youtube.com', 'youtu.be']
-SUPPORTED_DOMAINS = YOUTUBE_DOMAINS + ['vimeo.com']
+SUPPORTED_DOMAINS = YOUTUBE_DOMAINS + ['vimeo.com', 'soundcloud.com']
 
 def contains_any(element, choices):
     """Checks whether the given element contains any of the choices"""
@@ -56,13 +56,15 @@ def play(url, seek=0):
         stderr=subprocess.STDOUT, universal_newlines=True).split('\n')
     title, direct_url = output[-3], output[-2]
 
+    if urlparse(direct_url).scheme == 'https':
+        direct_url = direct_url.replace('https://', 'http://')
+
     command = ['mpv']
     if seek:
         command.extend(['--start', str(seek)])
     command.extend(['--title', title, '--cache', '8192', direct_url])
     print(command)
     subprocess.call(command)
-        
 
 def main():
     """main function"""
@@ -79,6 +81,7 @@ def main():
         else:
             play(args.url)
     else:
+        # os.execlp(BROWSER, url)
         subprocess.call([BROWSER, args.url])
 
 if __name__ == '__main__':
