@@ -19,6 +19,8 @@ nmap -b h 5h
 nmap -b j 5j
 nmap -b k 5k
 nmap -b l 5l
+"ddg fix
+set passkeys=duckduckgo.com:<Space>
 
 "tabs
 nmap -b J gT
