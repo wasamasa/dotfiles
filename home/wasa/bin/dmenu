@@ -5,7 +5,7 @@
 main() {
    local ARGS=
    local FONT=
-   [[ "$@" != *-fn ]] && FONT="DejaVu Sans Mono-7"
+   [[ "$@" != *-fn ]] && FONT="DejaVu Sans Mono-9"
    [[ "$@" != *-nb ]] && ARGS="$ARGS -nb #002b36"
    [[ "$@" != *-nf ]] && ARGS="$ARGS -nf #839496"
    [[ "$@" != *-sb ]] && ARGS="$ARGS -sb #859900"
