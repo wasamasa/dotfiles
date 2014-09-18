@@ -1,19 +1,20 @@
 #!/bin/bash
 
-cmd=$(mpc ls | sort -f | dmenu -i -l 15)
+music="/home/wasa/music"
+if [[ "$1" == "todo" ]]; then
+  dir="todo"
+else
+  dir="albums"
+fi
+
+cmd=$(mpc ls $dir | sort -f | cut -d / -f 2 | dmenu -i -l 15)
 if [[ "$cmd" == "" ]]; then
   echo "bye"
 else
-  if [[ "$cmd" == "Singletons" ]]; then
+  if [[ -d "$music/$dir/$cmd" ]]; then
     mpc stop
     mpc clear
-    mpc add "$cmd"
-    mpc shuffle
-    mpc play
-  elif [[ -d "/home/wasa/music/$cmd" ]]; then
-    mpc stop
-    mpc clear
-    mpc add "$cmd"
+    mpc add "$dir/$cmd"
     mpc play
   else
     mpc update
