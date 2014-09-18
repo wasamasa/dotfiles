@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+require 'open3'
+require 'slop'
+
+opts = Slop.parse do
+
+  on '-h', '--help' do
+    puts opts
+  end
+
+  on 'o', 'outfile=', 'Output file'
+
+  # options[:outfile] = false
+  # opts.on('-o', '--outfile', 'Output file') do |file|
+  #   options[:outfile] = file
+  # end
+end
+
+puts opts.to_h
+
+opts.parse!
+
+if ARGV and ARGV.length > 0
+  file = ARGV[0]
+  puts "Processing #{file}"
+  # curl -X POST -H 'Transfer-Encoding: chunked' -T hurr 'http://jsnice.org/beautify?pretty=1&rename=1&types=1&suggest=1'
+else
+  puts "Processing input"
+  # hurr | curl -X POST -H 'Transfer-Encoding: chunked' -T - 'http://jsnice.org/beautify?pretty=1&rename=1&types=1&suggest=1'
+  puts ARGF.read
+end

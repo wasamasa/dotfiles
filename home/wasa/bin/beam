@@ -1,0 +1,126 @@
+#!/usr/bin/env ruby
+
+require 'dimensions'
+require 'filemagic'
+require 'fileutils'
+require 'natural_sort_kernel'
+require 'open3'
+require 'pathname'
+require 'slop'
+
+KOBO_PATH = '/media/KOBOeReader'
+
+def pad_width(size)
+  [2, Math.log10(size).floor + 1].max
+end
+
+def execute(command)
+  _, stderr, status = Open3.capture3(*command)
+  if status.to_i != 0
+    puts stderr
+  end
+end
+
+def process(file, digit, title)
+  mime = FileMagic.mime
+  # TODO use Dir.mktmpdir
+  FileUtils.mkdir_p('/tmp/beam/unpack')
+  FileUtils.mkdir_p('/tmp/beam/trash')
+  # TODO use individual commands instead of aunpack
+  execute(['aunpack', '-X', '/tmp/beam/unpack', file])
+
+  # do a pass to unpack every archive inside
+  Dir.glob('/tmp/beam/unpack/**/*').each do |f|
+    mimetype = mime.file(f)
+    if mimetype[/^application\/(zip|x-rar)/]
+      puts 'Archive detected!', f
+      FileUtils.chdir(Pathname(f).dirname)
+      # TODO use individual commands instead of aunpack
+      execute(['aunpack', f])
+      FileUtils.mv(f, '/tmp/beam/trash')
+    end
+  end
+  FileUtils.chdir('/tmp/beam/unpack')
+
+  # do a pass to move every non-image file
+  Dir.glob('/tmp/beam/unpack/**/*').reject { |f| File.directory?(f) }
+                                   .each do |f|
+    mimetype = mime.file(f)
+    if !mimetype[/^image\//]
+      FileUtils.mv(f, '/tmp/beam/trash')
+    end
+  end
+
+  # do a pass to copy every image file naturally sorted to a flattened directory
+  digits = pad_width(Dir.glob('/tmp/beam/unpack/**/*').size)
+  FileUtils.mkdir_p('/tmp/beam/flatten')
+  Dir.glob('/tmp/beam/unpack/**/*').reject { |f| File.directory?(f) }
+                                   .natural_sort.each_with_index do |f, i|
+    index = "%0#{digits}i" % i
+    FileUtils.cp(f, "/tmp/beam/flatten/#{index}_#{Pathname(f).basename}")
+  end
+
+  # do a pass to rotate every overly wide image in-place with IM by 270 degrees
+  # TODO add an compression/downscaling/desaturation option
+  Dir.glob('/tmp/beam/flatten/*').reject { |f| File.directory?(f) }.each do |f|
+    width, height = Dimensions.dimensions(f)
+    if width > height
+      execute(['mogrify', '-rotate', '270', f])
+    end
+  end
+
+  FileUtils.chdir('/tmp/beam/')
+  # TODO rename directory to make unpacking it for debugging purposes
+  # less annoying
+  execute(['apack', 'output.zip'] + Dir.glob('flatten/*').sort)
+
+  # move to correct place on kobo
+  if title
+    destination = "#{KOBO_PATH}/#{title}/#{title} ##{digit}.cbz"
+  else
+    bare_name = Pathname(file).basename.to_s.split(Pathname(file).extname)[0]
+    destination = "#{KOBO_PATH}/#{bare_name} ##{digit}.cbz"
+  end
+  FileUtils.mv('/tmp/beam/output.zip', destination)
+
+  # clean up temporary files
+  FileUtils.chdir('/tmp')
+  FileUtils.rm_rf('/tmp/beam')
+end
+
+opts = Slop.parse do
+  banner 'Usage: beam [options] <files>'
+  on 't', 'title=', 'Title of the manga'
+  on 's', 'start=', 'Start counting from i', :as => Integer, :default => 1
+end
+
+opts.parse!
+files = ARGV
+
+if files.empty?
+  puts opts
+  exit(1)
+end
+
+if !File.exist?(KOBO_PATH)
+  puts 'Kobo not mounted'
+  exit(1)
+end
+
+if opts[:title] && !File.exist?("#{KOBO_PATH}/#{opts[:title]}")
+  Dir.mkdir("#{KOBO_PATH}/#{opts[:title]}")
+end
+
+files = files.map { |f| Pathname(f).realpath.to_s }.natural_sort
+
+number_of_files = files.size + opts[:start] - 1
+files.each_index do |index|
+  file = files[index]
+  digit = "%0#{pad_width(number_of_files)}i" % (index + opts[:start])
+  puts "Processing file ##{digit}/#{number_of_files}..."
+  process(file, digit, opts[:title])
+end
+
+# another thing that would nice to have would be is database support
+# would be nice to create collections after importing a set of books with one common title and add them to the newly created collection
+# there's some stupid default sorting method, would be nice to set it to something more sensible for every collection

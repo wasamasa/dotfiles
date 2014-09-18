@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'uri'
+
+BASE_DIR = '/home/wasa/fallkiste/'
+
+if ARGV.empty?
+  puts "Usage: permalink FILE1 ..."
+else
+  ARGV.each do |file|
+    f = File.expand_path(file)
+    if File.fnmatch("#{BASE_DIR}**", f)
+      name = f.split(BASE_DIR)[1]
+      url = URI.join('http://brause.cc/', URI.encode_www_form_component(name))
+      `echo -e '#{url}' | xsel -i --clipboard`
+      `echo -e '#{url}' | xsel -i --primary`
+      puts url
+    end
+  end
+end
