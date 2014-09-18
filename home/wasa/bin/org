@@ -1,2 +1,0 @@
-#!/bin/bash
-emacs --eval='(setq initial-buffer-choice "~/org/org.org")'
