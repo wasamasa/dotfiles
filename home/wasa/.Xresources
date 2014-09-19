@@ -1,4 +1,8 @@
 !Xft settings
-Xft.dpi:                 140.3
-Xft.antialias:           1
-Xft.rgba:                rgb
+!Xft.dpi:         140.3
+Xft.antialias:   1
+Xft.rgba:        rgb
+
+!Emacs settings
+Emacs.Fontset-0: -*-DejaVu Sans Mono-*-*-*-*-14-*-*-*-*-*-fontset-dejavu14, symbol:-*-DejaVu Sans-*-*-*-*-14-*-*-*-*-*-*, symbol:-*-Symbola-*-*-*-*-14-*-*-*-*-*-*
+Emacs.font:      fontset-dejavu14
