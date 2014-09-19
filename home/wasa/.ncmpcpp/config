@@ -347,7 +347,7 @@ titles_visibility = "no"
 #
 #show_hidden_files_in_local_browser = "no"
 #
-display_screens_numbers_on_start = "no"
+# display_screens_numbers_on_start = "no"
 #
 ##
 ## How shall key_screen_switcher work?
