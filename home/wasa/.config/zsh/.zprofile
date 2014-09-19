@@ -1,5 +1,4 @@
 typeset -U path
-path=(~/bin ~/.cask/bin $path)
 
 export DISPLAY=:0
 export EDITOR=em
