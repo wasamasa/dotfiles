@@ -155,6 +155,6 @@ bar {
     output VGA1
     font pango:cure 8
     position top
-    tray_output none
+    tray_output LVDS1
     status_command conky-i3bar ~/.config/i3/system.conkyrc
 }
