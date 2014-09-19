@@ -33,6 +33,7 @@ bindsym $mod+Shift+p exec dmenu_run
 bindsym $mod+c exec dcpu
 bindsym $mod+m exec dmpc music
 bindsym $mod+Shift+m exec dmpc todo
+bindsym $mod+u exec dumount
 bindsym $mod+q kill
 bindsym $mod+Shift+q exit
 bindsym $mod+Shift+c reload
