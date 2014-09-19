@@ -21,7 +21,8 @@ exec em
 exec scratchpad
 
 # interesting binds
-bindsym Print exec scrot
+bindsym Print exec scr
+bindsym Shift+Print exec scr -s
 bindsym XF86AudioMute exec dvolume -t
 bindsym XF86AudioRaiseVolume exec dvolume -i 5
 bindsym XF86AudioLowerVolume exec dvolume -d 5
