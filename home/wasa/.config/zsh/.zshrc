@@ -4,7 +4,7 @@ compinit
 promptinit
 colors
 setopt promptsubst \
-  histappend histverify sharehistory \
+  incappendhistory histverify sharehistory \
   histsavenodups histignorespace histreduceblanks histignorealldups
 zstyle ':vcs_info:*' enable hg git bzr svn
 precmd() {
