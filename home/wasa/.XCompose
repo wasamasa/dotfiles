@@ -1,5 +1,7 @@
 # shorthand
 <Multi_key> <l> <o> <o> <k>           : "ಠ_ಠ"
+<Multi_key> <p> <o> <o>               : "💩"
+<Multi_key> <s> <h> <r> <u> <g>       : "¯\_(ツ)_/¯"
 
 # silly signs
 <Multi_key> <c> <c> <c> <p>           : "☭"
@@ -32,7 +34,7 @@
 <Multi_key> <minus> <l>               : "£"
 <Multi_key> <l> <equal>               : "¥"
 <Multi_key> <equal> <l>               : "¥"
-
+ 
 # quotes
 <Multi_key> <greater> <space>         : "›"
 <Multi_key> <less> <space>            : "‹"
