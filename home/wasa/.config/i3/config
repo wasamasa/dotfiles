@@ -31,8 +31,8 @@ bindsym $mod+Return exec termite
 bindsym $mod+p exec dfavourites
 bindsym $mod+Shift+p exec dmenu_run
 bindsym $mod+c exec dcpu
-bindsym $mod+m exec dmpc
-bindsym $mod+Shift+m exec dmpc2
+bindsym $mod+m exec dmpc music
+bindsym $mod+Shift+m exec dmpc todo
 bindsym $mod+q kill
 bindsym $mod+Shift+q exit
 bindsym $mod+Shift+c reload
