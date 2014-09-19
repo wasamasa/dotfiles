@@ -18,8 +18,17 @@ HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 READNULLCMD=$PAGER
 
+alias sudo='sudo '
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
+
+compdef sc=systemctl
+compdef jc=journalctl
+compdef pc=pacman
+
+alias sc=systemctl
+alias jc=journalctl
+alias pc=pacman
 
 splice_frames() {
   ffmpeg -ss $2 -i "$1" -f image2 -t $3 -qscale 0 img%5d.png
