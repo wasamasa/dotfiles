@@ -84,7 +84,7 @@ for_window [class="scratchpad_termite"] move to scratchpad
 bindsym $mod+grave [class="scratchpad_termite"] scratchpad show
 
 # fixing some annoyances
-for_window [title="^Skype.*?for Linux$"] floating enable
+for_window [class="skype"] floating enable
 
 # boring binds
 bindsym $mod+h focus left
