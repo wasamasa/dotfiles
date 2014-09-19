@@ -1,3 +1,27 @@
+# Work account
+
+IMAPAccount work
+Host mail.networkname.de
+User vasilij.schneidermann@bevuta.com
+PassCmd "sed -n -e 's,^machine mail.networkname.de login vasilij.schneidermann@bevuta.com password \(.*\),\1,p' < ~/.netrc"
+CertificateFile ~/.mail/networkname.pem
+
+IMAPStore work-remote
+Account work
+
+MaildirStore work-local
+Path ~/.mail/work/
+Inbox ~/.mail/work/inbox
+
+Channel work
+Master :work-remote:
+Slave :work-local:
+Patterns *
+Create Both
+SyncState *
+
+# Private account
+
 IMAPAccount private
 Host imap.gmail.com
 User hurrus.durrus@gmail.com

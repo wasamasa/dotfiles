@@ -72,6 +72,7 @@ alternative_order text/plain text/enriched
 
 folder-hook private/*  source ~/.mutt/private
 folder-hook public/* source ~/.mutt/public
+folder-hook work/* source ~/.mutt/work
 folder-hook * "exec collapse-all"
 
 ignore *
@@ -81,6 +82,7 @@ hdr_order from: to: cc: date: subject:
 
 mailboxes +private/inbox +private/archive +private/sent +private/trash
 mailboxes +public/inbox +public/archive +public/sent +public/trash
+mailboxes +work/inbox +work/sent
 
 bind index i  noop
 bind index x  noop
@@ -127,6 +129,8 @@ macro index,pager 5 "<change-folder>+public/inbox<return>" "go to public inbox"
 macro index,pager 6 "<change-folder>+public/archive<return>" "go to public archive"
 macro index,pager 7 "<change-folder>+public/sent<return>" "go to public sent"
 macro index,pager 8 "<change-folder>+public/trash<return>" "go to public trash"
+macro index,pager 9 "<change-folder>+work/inbox<return>" "go to work inbox"
+macro index,pager 0 "<change-folder>+work/sent<return>" "go to work sent"
 
 macro index b "<enter-command>toggle sidebar_visible<enter>" "toggle sidebar"
 macro pager b "<enter-command>toggle sidebar_visible<enter>" "toggle sidebar"
