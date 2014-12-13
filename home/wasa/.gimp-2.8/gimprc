@@ -6,8 +6,6 @@
 # Most values can be set within GIMP by changing some options in the
 # Preferences dialog.
 
-(monitor-xresolution 140.000000)
-(monitor-yresolution 140.000000)
 (default-view
     (show-menubar yes)
     (show-statusbar yes)
@@ -32,8 +30,10 @@
     (show-sample-points yes)
     (padding-mode default)
     (padding-color (color-rgb 1.000000 1.000000 1.000000)))
-(default-snap-to-grid yes)
+(default-snap-to-grid no)
 (default-snap-to-canvas yes)
+(save-tool-options yes)
+(dock-window-hint normal)
 
 
 # end of gimprc
