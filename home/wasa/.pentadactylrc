@@ -1,15 +1,11 @@
 "looks
-colorscheme solarized-light
 set guioptions=Csr
 set showtabline=never
-hi -a FontCode font: 10pt monospace !important;
-hi -a FontFixed font: 8pt monospace !important;
 
 "...
 set defsearch=d
 set editor='emacsclient -c +<line>:<column> <file>'
 set hintkeys=asdfghjkl;
-hi -a Hint text-transform: uppercase;
 set! browser.tabs.onTop=false
 set! browser.tabs.closeWindowWithLastTab=false
 "set! plugins.notify.MissingFlash=false
@@ -35,3 +31,150 @@ EOF
 
 sty youtube.com #rc {display: none;}
 sty vice.com #masthead {position: static !important;}
+
+" theming (avoids long loading times for Reasons™)
+" hi clear
+
+hi s_base03 color: #002b36 !important;
+hi s_base02 color: #073642 !important;
+hi s_base01 color: #586e75 !important;
+hi s_base00 color: #657b83 !important;
+hi s_base0 color: #839496 !important;
+hi s_base1 color: #93a1a1 !important;
+hi s_base2 color: #eee8d5 !important;
+hi s_base3 color: #fdf6e3 !important;
+hi s_yellow color: #b58900 !important;
+hi s_orange color: #cb4b16 !important;
+hi s_red color: #dc322f !important;
+hi s_magenta color: #d33682 !important;
+hi s_violet color: #6c71c4 !important;
+hi s_blue color: #268bd2 !important;
+hi s_cyan color: #2aa198 !important;
+hi s_green color: #859900 !important;
+
+hi s_base03_back background-color: #002b36 !important;
+hi s_base02_back background-color: #073642 !important;
+hi s_base01_back background-color: #586e75 !important;
+hi s_base00_back background-color: #657b83 !important;
+hi s_base0_back background-color: #839496 !important;
+hi s_base1_back background-color: #93a1a1 !important;
+hi s_base2_back background-color: #eee8d5 !important;
+hi s_base3_back background-color: #fdf6e3 !important;
+hi s_yellow_back background-color: #b58900 !important;
+hi s_orange_back background-color: #cb4b16 !important;
+hi s_red_back background-color: #dc322f !important;
+hi s_magenta_back background-color: #d33682 !important;
+hi s_violet_back background-color: #6c71c4 !important;
+hi s_blue_back background-color: #268bd2 !important;
+hi s_cyan_back background-color: #2aa198 !important;
+hi s_green_back background-color: #859900 !important;
+
+hi s_comp_title background: -moz-linear-gradient(60deg, #839496, #fdf6e3) !important;
+hi s_comp_sep background: -moz-linear-gradient(60deg, #2aa198, #fdf6e3) !important;
+
+hi -l=s_base00,s_base2_back StatusLineNormal
+hi -l=s_base3,s_orange_back StatusLineBroken
+hi -l=s_base3,s_blue_back StatusLineSecure
+hi -l=s_base3,s_violet_back StatusLineExtended
+hi -l=s_base3,s_magenta_back StatusWarningMsg
+hi StatusQuestion -a color: inherit !important; background-color: inherit !important;
+
+hi -l=s_base00,s_base3_back Normal
+hi -l=s_base3,s_magenta_back CompItem[selected]
+hi CompItem:nth-child(2n+1) -a background: rgba(0, 43, 54, .04);
+hi -l=s_base3,s_comp_title CompTitle
+hi -l=s_base1 CompDesc -a
+hi -l=s_base1 Preview -a
+hi -l=s_comp_sep CompTitleSep height: 2px;
+hi -l=s_base00,s_base3_back Message
+hi -l=s_base3,s_yellow_back WarningMsg
+hi -l=s_base3,s_magenta_back ErrorMsg
+hi -l=s_base1 URL
+hi -l=s_base1 URLExtra
+hi MoreMsg -a color: inherit !important; background-color: inherit !important;
+hi -l=s_green Filter -a
+hi -l=s_base00 InfoMsg
+hi -l=s_base1 ModeMsg
+hi -l=s_base0 CmdInput
+hi -l=s_base00,s_base3_back CmdCmdLine
+hi -l=s_base3,s_magenta_back CmdErrorMsg
+
+hi -l=s_base03 Hint -a outline: 1px solid rgba(0, 43, 54, .5); background: rgba(253, 246, 227, .8);
+hi -l=s_base3,s_blue_back HintElem
+hi -l=s_base3,s_magenta_back HintActive
+
+hi -l=s_red_back Bell
+hi -l=s_blue,s_base3_back NonText -a min-height: 16px; padding-left: 2px;
+hi -l=s_magenta_back Search -a
+hi -l=s_red Title -a
+hi -l=s_blue Indicator -a
+hi -l=s_cyan Question
+hi -l=s_blue Enabled -a
+hi -l=s_blue_back FrameIndicator -a
+hi -l=s_base0,s_base03_back LinkInfo -a
+hi -l=s_base3,s_base2_back LineNr
+hi -l=s_blue Tag -a
+hi -l=s_base3,s_orange_back EditorBlink1
+hi -l=s_base01 EditorBlink2
+hi -l=s_base2,s_base3_back EditorEditing>*
+hi -l=s_base2,s_base3_back EditorEditing
+hi -l=s_base3,s_red_back EditorError
+hi -l=s_base01 Disabled -a
+hi -l=s_base01 Addon:not([active]) -a
+hi Addon:nth-child(2n+1) -a background: rgba(0, 43, 54, .04);
+hi UsageItem:nth-of-type(2n) -a background: rgba(0, 43, 54, .04);
+hi -l=s_base01 Download:not([active]) -a
+hi Download:nth-child(2n+1) -a background: rgba(0, 43, 54, .04);
+hi -l=s_base3 TabIconNumber -a text-shadow: #002b36 -1px 0 1px, #002b36 0 1px 1px, #002b36 1px 0 1px, #002b36 0 -1px 1px;
+hi -l=s_blue Button -a
+hi -l=s_blue Button::after -a
+hi -l=s_blue Button::before -a
+
+hi -l=s_base00,s_base3_back HelpBody -a
+hi HelpLink[href] -a color: #268bd2;
+hi -l=s_blue HelpTopic -a
+hi -l=s_blue HelpType margin-right: 2ex;
+hi -l=s_magenta HelpInfoLabel -a
+hi -l=s_magenta HelpWarning -a
+hi -l=s_magenta HelpNote -a
+hi -l=s_orange HelpEx -a
+hi -l=s_green HelpKey -a
+hi -l=s_red HelpKeyword -a
+hi -l=s_red HelpTag -a
+hi -l=s_green HelpNewsTag -a
+hi -l=s_yellow HelpHead -a
+hi HelpBorder -a border-color: #93a1a1 !important;
+hi -l=s_cyan HelpSpec -a
+hi -l=s_cyan HelpArg -a
+hi -l=s_cyan HelpOptionalArg -a
+hi -l=s_violet HelpString -a
+hi -l=s_cyan HelpOpt -a
+hi -l=s_base0 HelpXMLText -a
+hi -l=s_base0,s_base03_back HelpXMLBase -a padding: 7px;
+hi -l=s_blue HelpXMLTagStart -a
+hi -l=s_blue HelpXMLTagEnd -a
+hi -l=s_orange HelpXMLAttribute -a
+hi -l=s_cyan HelpXMLString -a
+hi -l=s_base01 HelpXMLComment -a
+hi -l=s_base0 HelpXMLAttribute::after -a
+hi -l=s_orange HelpXMLNamespace -a
+hi -l=s_cyan HelpXMLNamespace::after -a
+hi -l=s_cyan HelpXMLProcessing -a
+hi -l=s_base0 HelpXMLProcessing::before -a
+hi -l=s_base0 HelpXMLProcessing::after -a
+hi HelpXML -a border: none;
+hi HelpXMLBlock -a border: none;
+hi -l=s_cyan Boolean -a
+hi -l=s_yellow Keyword -a
+hi -l=s_blue Function -a
+hi -l=s_blue Null -a
+hi -l=s_blue Number -a
+hi -l=s_green Object -a
+hi -l=s_base1 Comment -a
+hi -l=s_base00 Comment -a
+
+" own theme tweaks
+
+hi -a FontCode font: 10pt monospace !important;
+hi -a FontFixed font: 8pt monospace !important;
+hi -a Hint text-transform: uppercase;
