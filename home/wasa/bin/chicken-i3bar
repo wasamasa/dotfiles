@@ -40,24 +40,6 @@
       (title . ,title)
       (progress . ,progress))))
 
-(define (mpd-status)
-  (let* ((current-status (mpd-get-status mpd-connection))
-         (state (alist-ref 'state current-status))
-         (elapsed (alist-ref 'elapsed current-status)))
-    (if (equal? 'stop state)
-        "._."
-        (let* ((current-song (mpd-get-current-song mpd-connection))
-               (artist (alist-ref 'Artist current-song))
-               (album (alist-ref 'Album current-song))
-               (track (alist-ref 'Track current-song))
-               (title (alist-ref 'Title current-song))
-               (duration (alist-ref 'Time current-song)))
-          (if album
-              (format "~a - [~a #~a] - ~a" artist album track title)
-              (format "~a - [~a] - ~a"
-                      artist (format-track-progress elapsed duration)
-                      title))))))
-
 (define (file-lines path)
   (string-split
    (call-with-input-file path
@@ -129,9 +111,7 @@
 
 (define (preamble)
   (print "{\"version\":1}")
-  (print "[")
-  (print "[],") ; TODO necessary?
-  )
+  (print "["))
 
 (define (main)
   (preamble)
