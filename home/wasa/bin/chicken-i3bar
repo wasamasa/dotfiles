@@ -5,7 +5,6 @@
      (only srfi-19 format-date current-date)
      (only medea write-json)
      (prefix mpd-client mpd-)
-     (only utils read-all)
      format)
 
 (define mpd-connection (mpd-connect))
@@ -41,9 +40,8 @@
       (progress . ,progress))))
 
 (define (file-lines path)
-  (string-split
-   (call-with-input-file path
-     (lambda (input) (read-all input))) "\n"))
+  (call-with-input-file path
+    (lambda (input) (read-lines input))))
 
 (define wifi-max-quality 70) ; something magic, driver-specific
 (define (wifi-quality)
