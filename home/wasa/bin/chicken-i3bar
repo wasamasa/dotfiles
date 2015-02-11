@@ -7,6 +7,9 @@
      (prefix mpd-client mpd-)
      format)
 
+;; TODO look into matchable egg for simplifying huge let-forms
+;; TODO get mpd-client fix upstream
+
 (define sleep-time 1)
 
 (define mpd-connection (mpd-connect))
@@ -42,8 +45,7 @@
       (progress . ,progress))))
 
 (define (file-lines path)
-  (call-with-input-file path
-    (lambda (input) (read-lines input))))
+  (with-input-from-file path read-lines))
 
 (define wifi-max-quality 70) ; something magic, driver-specific
 (define (wifi-quality)
