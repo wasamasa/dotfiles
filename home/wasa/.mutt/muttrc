@@ -91,6 +91,7 @@ bind index J  next-unread
 bind index K  previous-unread
 bind index L  display-message
 bind index G  last-entry
+bind index n  next-new-then-unread
 bind pager i  exit
 bind pager q  toggle-quoted
 bind pager /  search
