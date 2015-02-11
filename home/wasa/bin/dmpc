@@ -3,6 +3,8 @@
 music="/home/wasa/music"
 if [[ "$1" == "todo" ]]; then
   dir="todo"
+elif [[ "$1" == "bootlegs" ]]; then
+  dir="bootlegs"
 else
   dir="albums"
 fi
@@ -15,6 +17,9 @@ else
     mpc stop
     mpc clear
     mpc add "$dir/$cmd"
+    if [[ "$dir" == "bootlegs" ]]; then
+      mpc shuffle
+    fi
     mpc play
   else
     mpc update
