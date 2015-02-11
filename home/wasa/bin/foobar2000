@@ -1,2 +1,2 @@
 #!/bin/bash
-wine ~/.wine/drive_c/Program\ Files\ \(x86\)/foobar2000/foobar2000.exe
+WINEPREFIX="$HOME/.wine/foobar2000/" wine "$HOME/.wine/foobar2000/drive_c/Program Files (x86)/foobar2000/foobar2000.exe"

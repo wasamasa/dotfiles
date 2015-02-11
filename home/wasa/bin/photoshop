@@ -1,0 +1,2 @@
+#!/bin/bash
+WINEPREFIX="$HOME/.wine/photoshop/" wine "$HOME/.wine/photoshop/drive_c/Program Files (x86)/Adobe/Adobe Photoshop CS2/Photoshop.exe"
