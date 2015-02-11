@@ -7,7 +7,7 @@
      (prefix mpd-client mpd-)
      format)
 
-;; TODO take time delta in account for CPU and Up/Down
+(define sleep-time 1)
 
 (define mpd-connection (mpd-connect))
 
@@ -67,11 +67,11 @@
   (let* ((lines (take (drop (file-lines "/proc/net/dev") 2) 2))
          (downloads (process-net-dev lines download-column))
          (download (if last-downloads
-                       (- downloads last-downloads)
+                       (/ (- downloads last-downloads) sleep-time)
                        0))
          (uploads (process-net-dev lines upload-column))
          (upload (if last-uploads
-                     (- uploads last-uploads)
+                     (/ (- uploads last-uploads) sleep-time)
                      0)))
     (cons (cons downloads (/ download 1024))
           (cons uploads (/ upload 1024)))))
@@ -85,7 +85,7 @@
          (system (string->number (list-ref summary 2)))
          (used (+ user nice system))
          (percentage (if last-cpu-usage
-                         (/ (- used last-cpu-usage) cpu-count)
+                         (/ (- used last-cpu-usage) cpu-count sleep-time)
                          0))) ;; hack for displaying 0% at beginning
     (cons used (inexact->exact (round percentage)))))
 
@@ -216,7 +216,7 @@
                `((full_text . ,time) (color . ,foreground))))
       (print ",")
       (flush-output)
-      (thread-sleep! 1)
+      (thread-sleep! sleep-time)
       (loop (not battery-blinker)
             last-cpu-usage
             last-downloads
