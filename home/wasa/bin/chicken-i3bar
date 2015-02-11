@@ -1,11 +1,13 @@
 #!/usr/bin/env chicken-scheme
 
-(use (only srfi-1 fold)
+(use (only srfi-1 fold take drop)
      (only srfi-18 thread-sleep!)
      (only srfi-19 format-date current-date)
      (only medea write-json)
      (prefix mpd-client mpd-)
      format)
+
+;; TODO take time delta in account for CPU and Up/Down
 
 (define mpd-connection (mpd-connect))
 
@@ -45,49 +47,47 @@
 
 (define wifi-max-quality 70) ; something magic, driver-specific
 (define (wifi-quality)
-  (let ((lines (cddr (file-lines "/proc/net/wireless"))))
-    (if lines
+  (let ((lines (drop (file-lines "/proc/net/wireless") 2)))
+    (if (>= (length lines) 1)
         (let* ((summary (string-split (car lines)))
                (quality (string->number (list-ref summary 2))))
           (inexact->exact (round (* (/ quality wifi-max-quality) 100))))
         0)))
 
-(define internet-last-download #f)
-(define internet-last-upload #f)
-(define (internet-speed)
-  (let* ((lines (cddr (file-lines "/proc/net/dev")))
-         (download-columns
-          (map (lambda (line)
-                 (string->number (cadr (string-split line)))) lines))
-         (downloads (/ (fold + 0 download-columns) 1))
-         (download (if internet-last-download
-                       (- downloads internet-last-download)
+(define download-column 1)
+(define upload-column 9)
+(define (internet-speed last-downloads last-uploads)
+  (define (process-net-dev lines column)
+    (let ((columns
+           (map (lambda (line)
+                  (string->number (list-ref (string-split line) column)))
+                lines)))
+      (fold + 0 columns)))
+  ;; use the sum of eth0 and wlan0, drop lo
+  (let* ((lines (take (drop (file-lines "/proc/net/dev") 2) 2))
+         (downloads (process-net-dev lines download-column))
+         (download (if last-downloads
+                       (- downloads last-downloads)
                        0))
-         (upload-columns
-          (map (lambda (line)
-                 (string->number (list-ref (string-split line) 9))) lines))
-         (uploads (/ (fold + 0 upload-columns) 1))
-         (upload (if internet-last-upload
-                     (- uploads internet-last-upload)
+         (uploads (process-net-dev lines upload-column))
+         (upload (if last-uploads
+                     (- uploads last-uploads)
                      0)))
-    (set! internet-last-download downloads)
-    (set! internet-last-upload uploads)
-    (cons (/ download 1024) (/ upload 1024))))
+    (cons (cons downloads (/ download 1024))
+          (cons uploads (/ upload 1024)))))
 
 (define cpu-count 2)
-(define cpu-last-used #f)
-(define (cpu-average-percentage)
+(define (cpu-usage last-cpu-usage)
   (let* ((lines (file-lines "/proc/stat"))
          (summary (cdr (string-split (car lines))))
          (user (string->number (car summary)))
          (nice (string->number (cadr summary)))
          (system (string->number (list-ref summary 2)))
          (used (+ user nice system))
-         (percentage (if cpu-last-used
-                         (/ (- used cpu-last-used) cpu-count)
+         (percentage (if last-cpu-usage
+                         (/ (- used last-cpu-usage) cpu-count)
                          0))) ;; hack for displaying 0% at beginning
-    (set! cpu-last-used used)
-    (inexact->exact (round percentage))))
+    (cons used (inexact->exact (round percentage)))))
 
 (define (used-ram-percentage)
   (let* ((lines (file-lines "/proc/meminfo"))
@@ -95,10 +95,6 @@
          (available (string->number (cadr (string-split (car lines))))))
     (inexact->exact (round (* (/ used available) 100)))))
 
-;; TODO mark green when full, mark red when critical, mark orange when
-;; discharging, mark cyan when charging
-;; TODO additionally, make it blink when discharging at a critical
-;; status, would be a much better eyecatcher
 (define (battery-state)
   (car (file-lines "/sys/class/power_supply/BAT0/status")))
 (define (battery-percentage)
@@ -113,7 +109,10 @@
 
 (define (main)
   (preamble)
-  (let loop ()
+  (let loop ((battery-blinker #f)
+             (last-cpu-usage #f)
+             (last-downloads #f)
+             (last-uploads #f))
     (let* ((mpd-state (mpd-state))
            (mpd-playing? (alist-ref 'playing? mpd-state))
            (mpd-artist (alist-ref 'artist mpd-state))
@@ -122,15 +121,23 @@
            (mpd-title (alist-ref 'title mpd-state))
            (mpd-progress (alist-ref 'progress mpd-state))
            (wifi (wifi-quality))
-           (cpu (cpu-average-percentage))
-           (download-upload (internet-speed))
+           (cpu (cpu-usage last-cpu-usage))
+           (last-cpu-usage (car cpu))
+           (cpu-percentage (cdr cpu))
+           (download-upload (internet-speed last-downloads last-uploads))
            (download (car download-upload))
+           (last-downloads (car download))
+           (download-speed (cdr download))
            (upload (cdr download-upload))
+           (last-uploads (car upload))
+           (upload-speed (cdr upload))
            (ram (used-ram-percentage))
-           (battery (battery-percentage))
+           (battery-state (battery-state))
+           (battery-percentage (battery-percentage))
            (time (current-time))
 
            (foreground "#839496")
+           (background "#073642")
            (highlight "#eee8d5")
            (purple "#d33682")
            (cyan "#2aa198")
@@ -174,16 +181,16 @@
                `((full_text . "%") (color . ,foreground))
                `((full_text . "Down: ") (color . ,green)
                  (separator . #f) (separator_block_width . 1))
-               `((full_text . ,(format "~,1f" download))
-                 (color . ,(if (>= download 500) red foreground)))
+               `((full_text . ,(format "~,1f" download-speed))
+                 (color . ,(if (>= download-speed 500) red foreground)))
                `((full_text . "Up: ") (color . ,orange)
                  (separator . #f) (separator_block_width . 1))
-               `((full_text . ,(format "~,1f" upload))
-                 (color . ,(if (>= upload 90) red foreground)))
+               `((full_text . ,(format "~,1f" upload-speed))
+                 (color . ,(if (>= upload-speed 90) red foreground)))
                `((full_text . "CPU: ") (color . ,blue)
                  (separator . #f) (separator_block_width . 1))
-               `((full_text . ,(number->string cpu))
-                 (color . ,(if (>= cpu 50) red foreground))
+               `((full_text . ,(number->string cpu-percentage))
+                 (color . ,(if (>= cpu-percentage 50) red foreground))
                  (separator . #f) (separator_block_width . 1))
                `((full_text . "%") (color . ,foreground))
                `((full_text . "RAM: ") (color . ,red)
@@ -194,8 +201,14 @@
                `((full_text . "%") (color . ,foreground))
                `((full_text . "BAT: ") (color . ,violet)
                  (separator . #f) (separator_block_width . 1))
-               `((full_text . ,(number->string battery))
-                 (color . ,(if (<= battery 20) red foreground))
+               `((full_text . ,(number->string battery-percentage))
+                 (color . ,(cond
+                            ((string=? battery-state "Full") green)
+                            ((<= battery-percentage 20)
+                             (if battery-blinker red background))
+                            ((string=? battery-state "Discharging") yellow)
+                            ((string=? battery-state "Charging") cyan)
+                            (else foreground)))
                  (separator . #f) (separator_block_width . 1))
                `((full_text . "%") (color . ,foreground))
                `((full_text . "Time: ") (color . ,yellow)
@@ -204,6 +217,9 @@
       (print ",")
       (flush-output)
       (thread-sleep! 1)
-      (loop))))
+      (loop (not battery-blinker)
+            last-cpu-usage
+            last-downloads
+            last-uploads))))
 
 (main)
