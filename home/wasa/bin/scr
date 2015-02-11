@@ -1,8 +1,8 @@
 #!/bin/bash
 
-scrot_path="$HOME/scrots/%Y-%m-%d_%H:%M:%S_\$wx\$h.png"
+scrot_path="$HOME/scrots/$(date +%F_%T).png"
 if [[ $1 == '-s' ]]; then
-  wrap-cursor scrot -s $scrot_path
+  wrap-cursor maim --hidecursor -s $scrot_path
 else
-  scrot $scrot_path
+  maim --hidecursor $scrot_path
 fi
