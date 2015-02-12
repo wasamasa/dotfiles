@@ -22,9 +22,8 @@
     (format "~2,'0d:~2,'0d" minutes seconds)))
 
 (define (format-track-progress elapsed duration)
-  (if (and elapsed duration)
-      (format "~a/~a" (format-seconds elapsed) (format-seconds duration))
-      #f))
+  (and elapsed duration
+       (format "~a/~a" (format-seconds elapsed) (format-seconds duration))))
 
 (define (mpd-state)
   (let* ((current-status (mpd-get-status mpd-connection))
@@ -43,7 +42,7 @@
 (define wifi-max-quality 70) ; something magic, driver-specific
 (define (wifi-quality)
   (let ((lines (drop (read-lines "/proc/net/wireless") 2)))
-    (if (>= (length lines) 1)
+    (if (not (null? lines))
         (let* ((summary (string-split (car lines)))
                (quality (string->number (list-ref summary 2))))
           (inexact->exact (round (* (/ quality wifi-max-quality) 100))))
