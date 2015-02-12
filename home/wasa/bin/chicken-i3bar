@@ -5,9 +5,9 @@
      (only srfi-19 format-date current-date)
      (only medea write-json)
      (prefix mpd-client mpd-)
-     format)
+     format
+     matchable)
 
-;; TODO look into matchable egg for simplifying huge let-forms
 ;; TODO get mpd-client fix upstream
 
 (define sleep-time 1)
@@ -37,12 +37,7 @@
          (title (alist-ref 'Title current-song))
          (duration (alist-ref 'Time current-song))
          (progress (format-track-progress elapsed duration)))
-    `((playing? . ,playing?)
-      (artist . ,artist)
-      (album . ,album)
-      (track . ,track)
-      (title . ,title)
-      (progress . ,progress))))
+    (list playing? artist album track title progress)))
 
 (define (file-lines path)
   (with-input-from-file path read-lines))
@@ -75,8 +70,7 @@
          (upload (if last-uploads
                      (/ (- uploads last-uploads) sleep-time)
                      0)))
-    (cons (cons downloads (/ download 1024))
-          (cons uploads (/ upload 1024)))))
+    (list downloads (/ download 1024) uploads (/ upload 1024))))
 
 (define cpu-count 2)
 (define (cpu-usage last-cpu-usage)
@@ -89,7 +83,7 @@
          (percentage (if last-cpu-usage
                          (/ (- used last-cpu-usage) cpu-count sleep-time)
                          0))) ;; hack for displaying 0% at beginning
-    (cons used (inexact->exact (round percentage)))))
+    (list used (inexact->exact (round percentage)))))
 
 (define (used-ram-percentage)
   (let* ((lines (file-lines "/proc/meminfo"))
@@ -97,10 +91,12 @@
          (available (string->number (cadr (string-split (car lines))))))
     (inexact->exact (round (* (/ used available) 100)))))
 
-(define (battery-state)
-  (car (file-lines "/sys/class/power_supply/BAT0/status")))
-(define (battery-percentage)
-  (string->number (car (file-lines "/sys/class/power_supply/BAT0/capacity"))))
+(define (battery)
+  (let ((state (car (file-lines "/sys/class/power_supply/BAT0/status")))
+        (capacity
+         (string->number
+          (car (file-lines "/sys/class/power_supply/BAT0/capacity")))))
+    (list state capacity)))
 
 (define (current-time)
   (format-date "~H:~M" (current-date)))
@@ -115,27 +111,14 @@
              (last-cpu-usage #f)
              (last-downloads #f)
              (last-uploads #f))
-    (let* ((mpd-state (mpd-state))
-           (mpd-playing? (alist-ref 'playing? mpd-state))
-           (mpd-artist (alist-ref 'artist mpd-state))
-           (mpd-album (alist-ref 'album mpd-state))
-           (mpd-track (alist-ref 'track mpd-state))
-           (mpd-title (alist-ref 'title mpd-state))
-           (mpd-progress (alist-ref 'progress mpd-state))
+    (match-let* (((mpd-playing? mpd-artist mpd-album mpd-track
+                                mpd-title mpd-progress) (mpd-state))
            (wifi (wifi-quality))
-           (cpu (cpu-usage last-cpu-usage))
-           (last-cpu-usage (car cpu))
-           (cpu-percentage (cdr cpu))
-           (download-upload (internet-speed last-downloads last-uploads))
-           (download (car download-upload))
-           (last-downloads (car download))
-           (download-speed (cdr download))
-           (upload (cdr download-upload))
-           (last-uploads (car upload))
-           (upload-speed (cdr upload))
+           ((download-speed last-downloads upload-speed last-uploads)
+            (internet-speed last-downloads last-uploads))
+           ((last-cpu-usage cpu-percentage) (cpu-usage last-cpu-usage))
            (ram (used-ram-percentage))
-           (battery-state (battery-state))
-           (battery-percentage (battery-percentage))
+           ((battery-state battery-percentage) (battery))
            (time (current-time))
 
            (foreground "#839496")
