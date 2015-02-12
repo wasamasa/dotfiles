@@ -112,7 +112,7 @@
     (match-let (((mpd-playing? mpd-artist mpd-album mpd-track mpd-title mpd-progress)
                  (mpd-state))
                 (wifi (wifi-quality))
-                ((download-speed last-downloads upload-speed last-uploads)
+                ((last-downloads download-speed last-uploads upload-speed)
                  (internet-speed last-downloads last-uploads))
                 ((last-cpu-usage cpu-percentage) (cpu-usage last-cpu-usage))
                 (ram (used-ram-percentage))
