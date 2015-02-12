@@ -1,4 +1,5 @@
 #!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
 
 (use (only srfi-1 fold take drop)
      (only srfi-18 thread-sleep!)
