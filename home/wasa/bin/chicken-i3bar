@@ -98,12 +98,9 @@
 (define (current-time)
   (time->string (seconds->local-time) "%H:%M"))
 
-(define (preamble)
-  (print "{\"version\":1}")
-  (print "["))
-
 (define (main)
-  (preamble)
+  (print "{\"version\":1}")
+  (print "[")
   (let loop ((battery-blinker #f)
              (last-cpu-usage #f)
              (last-downloads #f)
