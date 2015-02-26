@@ -95,7 +95,7 @@
           (car (read-lines "/sys/class/power_supply/BAT0/capacity")))))
     (list state capacity)))
 
-(define (current-time)
+(define (format-time)
   (time->string (seconds->local-time) "%H:%M"))
 
 (define (main)
@@ -114,7 +114,7 @@
                 ((last-cpu-usage cpu-percentage) (cpu-usage last-cpu-usage))
                 (ram (used-ram-percentage))
                 ((battery-state battery-percentage) (battery))
-                (time (current-time))
+                (time (format-time))
 
                 (foreground "#839496")
                 (background "#073642")
