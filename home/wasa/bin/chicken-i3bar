@@ -69,6 +69,9 @@
                      0)))
     (list downloads (/ download 1024) uploads (/ upload 1024))))
 
+(define (clamp value)
+  (min (max value 0) 100))
+
 (define cpu-count 2)
 (define (cpu-usage last-cpu-usage)
   (let* ((lines (read-lines "/proc/stat"))
@@ -80,7 +83,7 @@
          (percentage (if last-cpu-usage
                          (/ (- used last-cpu-usage) cpu-count sleep-time)
                          0))) ;; hack for displaying 0% at beginning
-    (list used (inexact->exact (round percentage)))))
+    (list used (clamp (inexact->exact (round percentage))))))
 
 (define (used-ram-percentage)
   (let* ((lines (read-lines "/proc/meminfo"))
@@ -93,7 +96,7 @@
         (capacity
          (string->number
           (car (read-lines "/sys/class/power_supply/BAT0/capacity")))))
-    (list state capacity)))
+    (list state (clamp capacity))))
 
 (define (format-time)
   (time->string (seconds->local-time) "%H:%M"))
