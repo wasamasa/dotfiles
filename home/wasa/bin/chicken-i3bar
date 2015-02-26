@@ -5,9 +5,9 @@
      (only srfi-18 thread-sleep!)
      (only posix time->string seconds->local-time)
      (only medea write-json)
+     (only matchable match-let)
      (prefix mpd-client mpd-)
-     format
-     matchable)
+     format)
 
 ;; TODO get mpd-client fix upstream
 
