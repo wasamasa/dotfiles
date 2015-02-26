@@ -13,8 +13,6 @@
 
 (define sleep-time 1)
 
-(define mpd-connection (mpd-connect))
-
 (define (format-seconds seconds)
   (let* ((time (inexact->exact (round seconds)))
          (minutes (quotient time 60))
@@ -25,19 +23,36 @@
   (and elapsed duration
        (format "~a/~a" (format-seconds elapsed) (format-seconds duration))))
 
+(define mpd-connection
+  (condition-case
+   (mpd-connect)
+   ((exn) #f)))
+
+(define (mpd-reconnect)
+  (condition-case
+   (set! mpd-connection (mpd-connect))
+   ((exn) #f)))
+
+(define (mpd-available)
+  (condition-case
+   (alist-ref 'state (mpd-get-status mpd-connection))
+   ((exn) (begin (mpd-reconnect) #f))))
+
 (define (mpd-state)
-  (let* ((current-status (mpd-get-status mpd-connection))
-         (state (alist-ref 'state current-status))
-         (playing? (not (equal? 'stop state)))
-         (elapsed (alist-ref 'elapsed current-status))
-         (current-song (mpd-get-current-song mpd-connection))
-         (artist (alist-ref 'Artist current-song))
-         (album (alist-ref 'Album current-song))
-         (track (alist-ref 'Track current-song))
-         (title (alist-ref 'Title current-song))
-         (duration (alist-ref 'Time current-song))
-         (progress (format-track-progress elapsed duration)))
-    (list playing? artist album track title progress)))
+  (if (mpd-available)
+      (let* ((current-status (mpd-get-status mpd-connection))
+             (state (alist-ref 'state current-status))
+             (playing? (not (equal? 'stop state)))
+             (elapsed (alist-ref 'elapsed current-status))
+             (current-song (mpd-get-current-song mpd-connection))
+             (artist (alist-ref 'Artist current-song))
+             (album (alist-ref 'Album current-song))
+             (track (alist-ref 'Track current-song))
+             (title (alist-ref 'Title current-song))
+             (duration (alist-ref 'Time current-song))
+             (progress (format-track-progress elapsed duration)))
+        (list playing? artist album track title progress))
+      (list #f #f #f #f #f #f)))
 
 (define wifi-max-quality 70) ; something magic, driver-specific
 (define (wifi-quality)
