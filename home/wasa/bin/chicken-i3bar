@@ -87,9 +87,12 @@
 
 (define (used-ram-percentage)
   (let* ((lines (read-lines "/proc/meminfo"))
-         (used (string->number (cadr (string-split (list-ref lines 6)))))
-         (available (string->number (cadr (string-split (car lines))))))
-    (inexact->exact (round (* (/ used available) 100)))))
+         (available (string->number (cadr (string-split (car lines)))))
+         (free (string->number (cadr (string-split (cadr lines)))))
+         (buffers (string->number (cadr (string-split (list-ref lines 3)))))
+         (cached (string->number (cadr (string-split (list-ref lines 4)))))
+         (used (- available free buffers cached)))
+    (clamp (inexact->exact (round (* (/ used available) 100))))))
 
 (define (battery)
   (let ((state (car (read-lines "/sys/class/power_supply/BAT0/status")))
