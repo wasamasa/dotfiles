@@ -99,6 +99,7 @@
   (time->string (seconds->local-time) "%H:%M"))
 
 (define (main)
+  (set-buffering-mode! (current-output-port) #:line)
   (print "{\"version\":1}")
   (print "[")
   (let loop ((battery-blinker #f)
@@ -194,7 +195,6 @@
                  (separator . #f) (separator_block_width . 1))
                `((full_text . ,time) (color . ,foreground))))
       (print ",")
-      (flush-output)
       (thread-sleep! sleep-time)
       (loop (not battery-blinker)
             last-cpu-usage
