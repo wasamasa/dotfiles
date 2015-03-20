@@ -1,0 +1,40 @@
+#!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
+
+(use (only http-client with-input-from-request)
+     (only uri-common update-uri uri-reference)
+     (only medea read-json))
+
+(define token-file "~/.github.credentials")
+
+(define (access-token)
+  (alist-ref 'access-token (read-file token-file)))
+
+(define (retrieve-issues)
+  (let ((response (with-input-from-request
+                   (update-uri (uri-reference "https://api.github.com/issues")
+                               query: `((access_token . ,(access-token))
+                                        (filter . "subscribed")
+                                        (sort . "updated")))
+                   #f
+                   read-string)))
+    (read-json response)))
+
+(define (transform-issues issues)
+  (map (lambda (elt)
+         (let ((url (alist-ref 'url elt))
+               (title (alist-ref 'title elt))
+               (body (alist-ref 'body elt)))
+           ;; apparently github uses DOS-style line endings, that's
+           ;; why I'm using these to to avoid confusing Emacs
+           (format "* [[~A][~A]]\r\n\r\n~A\r\n\r\n" url title body)))
+       (vector->list issues)))
+
+(define (serialize-issues body)
+  (with-output-to-file "~/org/github.org"
+    (lambda () (write-string (string-concatenate body)))))
+
+(define (main)
+  (serialize-issues (transform-issues (retrieve-issues))))
+
+(main)
