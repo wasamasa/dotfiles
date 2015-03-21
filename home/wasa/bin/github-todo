@@ -2,7 +2,7 @@
 ;; -*- mode: scheme; -*-
 
 (use (only http-client with-input-from-request)
-     (only uri-common update-uri uri-reference)
+     (only uri-common uri-path uri-reference)
      (only medea read-json))
 
 (define token-file "~/.github.credentials")
@@ -22,12 +22,17 @@
 
 (define (transform-issues issues)
   (map (lambda (elt)
-         (let ((url (alist-ref 'html_url elt))
-               (title (alist-ref 'title elt))
-               (body (alist-ref 'body elt)))
+         (let* ((url (alist-ref 'html_url elt))
+                (path (uri-path (uri-reference url)))
+                (repository (format "~A/~A" (cadr path) (list-ref path 2)))
+                (title (alist-ref 'title elt))
+                (user (alist-ref 'user elt))
+                (author (alist-ref 'login user))
+                (body (alist-ref 'body elt)))
            ;; apparently github uses DOS-style line endings, that's
            ;; why I'm using these to to avoid confusing Emacs
-           (format "* [[~A][~A]]\r\n\r\n~A\r\n\r\n" url title body)))
+           (format "* [[~A][~A: ~A]]\r\n\r\n~A wrote:\r\n\r\n~A\r\n\r\n"
+                   url repository title author body)))
        (vector->list (alist-ref 'items issues))))
 
 (define (serialize-issues body)
