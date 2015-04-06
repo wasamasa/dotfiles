@@ -98,6 +98,7 @@ FAVORITES = {
     "Super Mario World 2 - Yoshi's Island [SNES]":          "~/roms/SNES/Super Mario World 2 - Yoshi's Island/Super Mario World 2 - Yoshi's Island (U) (V1.0) [!].smc",
     "Super Metroid [SNES]":                                 "~/roms/SNES/Super Metroid/Super Metroid (JU) [!].smc",
     "Super Street Fighter II [SNES]":                       "~/roms/SNES/Super Street Fighter II/Super Street Fighter II - The New Challengers (U).smc",
+    "Tetris Attack [SNES]":                                 "~/roms/SNES/Tetris Attack/Tetris Attack (USA) (En,Ja).sfc",
     "The Legend of Zelda - A Link To The Past [SNES]":      "~/roms/SNES/The Legend of Zelda - A Link To The Past/Legend of Zelda, The - A Link to the Past (U) [!].smc",
 
     "Battletoads [SMD]":                                    "~/roms/SMD/Battletoads/Battletoads (W) [!].bin",
