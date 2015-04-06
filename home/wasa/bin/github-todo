@@ -31,7 +31,7 @@
                 (body (alist-ref 'body elt)))
            ;; apparently github uses DOS-style line endings, that's
            ;; why I'm using these to to avoid confusing Emacs
-           (format "# [~A: ~A](~A:)\r\n\r\n~A wrote:\r\n\r\n~A\r\n\r\n"
+           (format "# [~A: ~A](~A)\r\n\r\n~A wrote:\r\n\r\n~A\r\n\r\n"
                    repository title url author body)))
        (vector->list (alist-ref 'items issues))))
 
