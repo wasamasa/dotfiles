@@ -4,4 +4,4 @@ if [[ $(xrandr | grep mm | wc -l) -eq 2 ]]; then
 fi
 xrandr --output DP2 --off --output LVDS1 --auto --mode 1440x900 --primary --preferred
 sleep 1
-feh --bg-fill ~/images/wallpapers/checkout/pixelmavs.png
+feh --bg-fill ~/images/wallpapers/pixelmavs.png
