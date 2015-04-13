@@ -13,6 +13,9 @@ precmd() {
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' rehash true
 
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
+
 HISTFILE=~/.config/zsh/.zhistory
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
