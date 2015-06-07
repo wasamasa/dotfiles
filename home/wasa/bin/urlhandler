@@ -52,17 +52,14 @@ def detect_youtube_timestamp(url):
 def play(url, seek=0):
     """Wraps youtube-dl and mpv"""
     output = subprocess.check_output(
-        ['youtube-dl', '-eg', '--user-agent', '', url],
+        ['youtube-dl', '-e', '--user-agent', '', url],
         stderr=subprocess.STDOUT, universal_newlines=True).split('\n')
-    title, direct_url = output[-3], output[-2]
-
-    if urlparse(direct_url).scheme == 'https':
-        direct_url = direct_url.replace('https://', 'http://')
+    title = output[0]
 
     command = ['mpv']
     if seek:
         command.extend(['--start', str(seek)])
-    command.extend(['--title', title, '--cache', '8192', direct_url])
+    command.extend(['--title', title, '--cache=8192', url])
     print(command)
     subprocess.call(command)
 
