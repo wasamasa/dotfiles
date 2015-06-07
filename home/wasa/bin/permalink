@@ -12,8 +12,6 @@ else
     if File.fnmatch("#{BASE_DIR}**", f)
       name = f.split(BASE_DIR)[1]
       url = URI.join('http://brause.cc/', URI.encode_www_form_component(name))
-      `echo -e '#{url}' | xsel -i --clipboard`
-      `echo -e '#{url}' | xsel -i --primary`
       puts url
     end
   end
