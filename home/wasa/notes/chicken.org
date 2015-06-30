@@ -1,5 +1,7 @@
 * Build system and packaging work
 
+- =chicken= is using a positional argument for the file name... (note
+  the confusing error message when you try specifying an option first)
 - Missing LICENSE in egg tarballs
 - Implement an option for =chicken-install= to not fetch/install any
   dependencies
