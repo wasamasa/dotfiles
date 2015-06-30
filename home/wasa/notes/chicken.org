@@ -14,7 +14,7 @@
   they're looked up in the global location unless you use environment
   variables, perhaps an approach à la =pip install --user= or =gem=
   and its user option could work)
-- Use <chicken/chicken.h> in generated sources
+- Use =<chicken/chicken.h>= in generated sources
 
 <Earnestly> wasamasa: All chicken needs is the ability for -p to be an actual prefix and an install location
 <Earnestly> wasamasa: So `chicken-install -p /usr "$pkgdir"` for example
