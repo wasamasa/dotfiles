@@ -1,0 +1,51 @@
+* Build system and packaging work
+
+- Missing LICENSE in egg tarballs
+- Implement an option for =chicken-install= to not fetch/install any
+  dependencies
+- http://code.call-cc.org/egg-tarballs/ should be official (see
+  http://www.more-magic.net/posts/vcs-independent-distribution.html
+  for details)
+- Same goes for
+  http://code.call-cc.org/cgi-bin/gitweb.cgi?p=chicken-core.git;a=tree;hb=HEAD
+- Source links in the wiki (svnwiki hacking?)
+- Do something against the hardcoded locations (having a globally
+  installed CHICKEN and locally installed libraries doesn't mix as
+  they're looked up in the global location unless you use environment
+  variables, perhaps an approach à la =pip install --user= or =gem=
+  and its user option could work)
+- Use <chicken/chicken.h> in generated sources
+
+<Earnestly> wasamasa: All chicken needs is the ability for -p to be an actual prefix and an install location
+<Earnestly> wasamasa: So `chicken-install -p /usr "$pkgdir"` for example
+
+* =chicken-src=
+
+The equivalent to =chicken-doc= for (definition) source lookup.
+
+* =moped=
+
+A better MPD library!
+
+* =doodle2=
+
+[[http://wiki.call-cc.org/eggref/4/doodle][doodle]], but with [[http://libsdl.org/][SDL2]] (as it has numerous benefits, including the
+windows behaving more like other toolkit windows with resizing and
+whatnot).
+
+* Lispy grep tool
+
+Basically a less snazzy [[http://mlsec.org/joern/][joern]] which parses lispy languages (with
+support for archives by using the great [[http://libarchive.org/][libarchive]]), uses a query
+language (maybe graph-style or something simpler?) and doesn't require
+a database server.
+
+* Fuzzy matcher
+
+That would be nice to have as basis for fuzzy completion inside Emacs,
+though [[https://github.com/Fuco1/yafmp][yafmp]] might be good enough (as it is very new though it's still
+got the classic plethora of C bugs...).
+
+* Self-hosting [[http://wiki.call-cc.org/eggref/4/spock][spock]] and interpreter
+
+* Linter
