@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'uri'
+require 'open3'
 
 BASE_DIR = '/home/wasa/fallkiste/'
 
@@ -12,6 +13,13 @@ else
     if File.fnmatch("#{BASE_DIR}**", f)
       name = f.split(BASE_DIR)[1]
       url = URI.join('http://brause.cc/', URI.encode_www_form_component(name))
+               .to_s.gsub('%2F', '/')
+      Open3.popen2('xclip') do |stdin, _, _|
+        stdin.print url
+      end
+      Open3.popen2('xclip', '-selection', 'clipboard') do |stdin, _, _|
+        stdin.print url
+      end
       puts url
     end
   end
