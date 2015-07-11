@@ -5,7 +5,8 @@
      (only uri-common uri-path uri-reference)
      (only medea read-json))
 
-(define token-file "~/.github.credentials")
+(define token-file
+  (format "~a/.github.credentials" (get-environment-variable "HOME")))
 
 (define (access-token)
   (alist-ref 'access-token (read-file token-file)))
@@ -36,7 +37,7 @@
        (vector->list (alist-ref 'items issues))))
 
 (define (serialize-issues body)
-  (with-output-to-file "~/org/github.md"
+  (with-output-to-file (format "~a/org/github.md" (get-environment-variable "HOME"))
     (lambda () (write-string (string-concatenate body)))))
 
 (define (main)
