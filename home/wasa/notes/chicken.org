@@ -16,6 +16,10 @@
   they're looked up in the global location unless you use environment
   variables, perhaps an approach à la =pip install --user= or =gem=
   and its user option could work)
+- Eggs using =setup-helper= (like, =posix-utils=) are considered
+  broken (as it's going for the =(include ...)= approach instead of
+  the recommended =(use ...)=) and would need to be fixed before
+  someone attempts packaging it as make dependency!
 - Use =<chicken/chicken.h>= in generated sources
 
 <Earnestly> wasamasa: All chicken needs is the ability for -p to be an actual prefix and an install location
