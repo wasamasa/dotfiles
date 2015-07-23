@@ -50,4 +50,33 @@ got the classic plethora of C bugs...).
 
 * Self-hosting [[http://wiki.call-cc.org/eggref/4/spock][spock]] and interpreter
 
+<wasamasa> I've been looking at http://ceaude.twoticketsplease.de/js-lisps.html thanks to #scheme
+<wasamasa> and was wondering whether spock got an interpreter by now
+<DerGuteMoritz> wasamasa: doesn't look like it
+<wasamasa> DerGuteMoritz: would it be a worthwhile goal to pursue?
+<DerGuteMoritz> I think that would allow it to become self-hosted
+<wasamasa> indeed
+<DerGuteMoritz> well, not necessarily the only way
+<wasamasa> something clojurescript hasn't managed yet :P
+<DerGuteMoritz> but a worthwhile one
+<DerGuteMoritz> heh
+<wasamasa> the reason why I'm asking is because ever since getting started with emacs I really like starting out in an interpreter first
+<wasamasa> which works well enough in `csi` (save some... interesting bugs)
+<DerGuteMoritz> an on-the-fly compiler is also an option
+<DerGuteMoritz> might be possible to conjure something like that for spock already
+<wasamasa> so, if one would keep feeding lines of input into that compiler form, that might suffice?
+<DerGuteMoritz> sure
+<wasamasa> "eval is not supported."
+<DerGuteMoritz> pseudo-js: eval(popen("chicken-spock", "(some-scheme-expression)").read())
+<DerGuteMoritz> (also, pseudo chickne-spock interface, no idea whether it can be called like that)
+<DerGuteMoritz> *chicken-spock
+
 * Linter
+
+- =csc -ASM stoll.scm=
+- =csc -debug analyze-only stoll.scm=
+- Either combine both kinds of output or figure out how to get line
+  numbers into the former
+
+http://wiki.call-cc.org/chicken-internal-structure#the-analysis-database
+
