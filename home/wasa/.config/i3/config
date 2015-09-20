@@ -22,7 +22,6 @@ exec scratchpad
 # interesting binds
 bindsym Print exec scr
 bindsym Shift+Print exec scr -s
-bindsym Pause exec wrap-cursor i3lock --color="#000000"
 bindsym XF86AudioMute exec dvolume -t
 bindsym XF86AudioRaiseVolume exec dvolume -i 5
 bindsym XF86AudioLowerVolume exec dvolume -d 5
@@ -33,6 +32,7 @@ bindsym $mod+c exec dcpu
 bindsym $mod+m exec dmpc music
 bindsym $mod+Shift+m exec dmpc todo
 bindsym $mod+u exec dumount
+bindsym Pause exec i3lock --color="#000000"
 bindsym $mod+q kill
 bindsym $mod+Shift+q exit
 bindsym $mod+Shift+c reload

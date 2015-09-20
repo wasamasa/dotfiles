@@ -2,7 +2,7 @@
 
 scrot_path="$HOME/scrots/$(date +%F_%T).png"
 if [[ $1 == '-s' ]]; then
-  wrap-cursor maim --hidecursor -s $scrot_path
+  maim --hidecursor -s $scrot_path
 else
   maim --hidecursor $scrot_path
 fi
