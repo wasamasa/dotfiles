@@ -22,12 +22,33 @@
   someone attempts packaging it as make dependency!
 - Use =<chicken/chicken.h>= in generated sources
 
+#+BEGIN_SRC
 <Earnestly> wasamasa: All chicken needs is the ability for -p to be an actual prefix and an install location
 <Earnestly> wasamasa: So `chicken-install -p /usr "$pkgdir"` for example
+#+END_SRC
 
 * =chicken-src=
 
 The equivalent to =chicken-doc= for (definition) source lookup.
+
+It should use chicken-install to retrieve eggs to a source location
+and be able to find definitions in both scheme and C sources of these
+retrieved eggs.  Additionally to that it would be nice to have an
+updating command and integration into the REPL.
+
+See also henrietta-cache: https://wiki.call-cc.org/running-an-egg-mirror
+
+http://wiki.call-cc.org/chicken-projects/egg-index-4.html
+http://code.call-cc.org/svn/chicken-eggs/release/4/ (anonymous svn)
+http://code.call-cc.org/svn/chicken-eggs/release/4/egg-locations
+http://code.call-cc.org/release-info?egg=loop
+http://www.more-magic.net/posts/vcs-independent-distribution.html
+http://wiki.call-cc.org/chicken-projects/egg-rss-feed-5.xml
+
+#+BEGIN_SRC
+<C-Keen> wasamasa:  (toplevel-command 'doc (lambda () (repl-doc-dwim (read)))
+<C-Keen>                     ",doc PATHSPEC     Describe identifier or path with chicken-doc"))
+#+END_SRC
 
 * =moped=
 
@@ -38,6 +59,8 @@ A better MPD library!
 [[http://wiki.call-cc.org/eggref/4/doodle][doodle]], but with [[http://libsdl.org/][SDL2]] (as it has numerous benefits, including the
 windows behaving more like other toolkit windows with resizing and
 whatnot).
+
+https://wiki.libsdl.org/MigrationGuide
 
 * Lispy grep tool
 
@@ -54,6 +77,7 @@ got the classic plethora of C bugs...).
 
 * Self-hosting [[http://wiki.call-cc.org/eggref/4/spock][spock]] and interpreter
 
+#+BEGIN_SRC
 <wasamasa> I've been looking at http://ceaude.twoticketsplease.de/js-lisps.html thanks to #scheme
 <wasamasa> and was wondering whether spock got an interpreter by now
 <DerGuteMoritz> wasamasa: doesn't look like it
@@ -74,6 +98,7 @@ got the classic plethora of C bugs...).
 <DerGuteMoritz> pseudo-js: eval(popen("chicken-spock", "(some-scheme-expression)").read())
 <DerGuteMoritz> (also, pseudo chickne-spock interface, no idea whether it can be called like that)
 <DerGuteMoritz> *chicken-spock
+#+END_SRC
 
 * Linter
 
@@ -83,4 +108,23 @@ got the classic plethora of C bugs...).
   numbers into the former
 
 http://wiki.call-cc.org/chicken-internal-structure#the-analysis-database
+
+* Write a dedicated Emacs mode
+
+See http://code.call-cc.org/cgi-bin/gitweb.cgi?p=chicken-core.git;a=blob;f=misc/chicken.el;hb=HEAD
+
+* Experiment with =wlc=
+
+This would allow for writing a tiling window manager for Wayland and Scheme!
+
+* 32C3
+
+- bring switch and cat5 cables
+- bring beamer/screen
+- bring a stuffed alien/chicken (ente suggested two parentheses as
+  sculptures on the ends of the table)
+- procedural image/sound generation
+- maybe even a dsl for interactive debugging?
+- http://youtu.be/s1eNjUgaB-g
+- http://youtu.be/rtR63-ecUNo
 
