@@ -1,4 +1,6 @@
 #!/bin/bash
-pick=$(find /media/neue/Music -mindepth 2 -maxdepth 2 -type d | sort -R | head -1)
-echo $pick
-mv "$pick" ~/music/todo/
+for _ in {1..25}; do
+  pick=$(find /media/neue/Music -mindepth 2 -maxdepth 2 -type d | sort -R | head -1)
+  echo $pick
+  mv "$pick" ~/music/todo/
+done
