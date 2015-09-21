@@ -156,5 +156,5 @@ bar {
     font pango:cure 8
     position top
     tray_output LVDS1
-    status_command conky-i3bar ~/.config/i3/system.conkyrc
+    status_command chicken-i3bar
 }
