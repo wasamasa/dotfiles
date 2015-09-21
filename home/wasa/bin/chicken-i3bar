@@ -1,6 +1,9 @@
 #!/usr/bin/env chicken-scheme
 ;; -*- mode: scheme; -*-
 
+;; NOTE this script will most likely not work on your computer as
+;; everything using /sys or /proc is hardcoded
+
 (use (only srfi-1 fold take drop)
      (only srfi-18 thread-sleep!)
      (only posix time->string seconds->local-time)
