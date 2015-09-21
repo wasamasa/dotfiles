@@ -1,7 +1,7 @@
 typeset -U path
 path=(~/.gem/ruby/2.1.0/bin ~/bin $path)
 
-export DISPLAY=:0
+export GTK_CSD=0
 export EDITOR=em
 export VISUAL=em
 export ALTERNATE_EDITOR=""
