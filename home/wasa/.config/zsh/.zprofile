@@ -1,5 +1,7 @@
 typeset -U path
 path=(~/bin ~/.cask/bin /opt/ruby2.1/bin ~/.gem/ruby/2.1.0/bin ~/.usr/bin $path)
+envoy -t ssh-agent
+source <(envoy -p)
 
 export GTK_CSD=0
 export EDITOR=em
