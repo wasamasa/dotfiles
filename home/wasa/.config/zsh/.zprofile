@@ -1,5 +1,5 @@
 typeset -U path
-path=(~/.gem/ruby/2.1.0/bin ~/bin $path)
+path=(~/bin ~/.cask/bin /opt/ruby2.1/bin ~/.gem/ruby/2.1.0/bin ~/.usr/bin $path)
 
 export GTK_CSD=0
 export EDITOR=em
