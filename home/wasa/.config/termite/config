@@ -1,9 +1,7 @@
 [options]
-resize_grip = false
 scroll_on_output = false
 scroll_on_keystroke = true
 audible_bell = false
-visible_bell = false
 mouse_autohide = true
 allow_bold = true
 dynamic_title = true
@@ -15,9 +13,6 @@ search_wrap = true
 #icon_name = terminal
 #geometry = 640x480
 
-# 0.0: opaque, 1.0: transparent
-transparency = 0.0
-
 # "system", "on" or "off"
 cursor_blink = off
 
@@ -25,41 +20,47 @@ cursor_blink = off
 cursor_shape = block
 
 # $BROWSER is used by default
-#browser = dwb
+#browser = firefox
 
-# termite has the correct terminfo, but some applications hardcode TERM checks
-#term = termite
+# set size hints for the window
+#size_hints = false
 
-# word characters used for word selection
-# (default if unset: all graphic non-punctuation/space characters)
-#word_chars = -A-Za-z0-9,./?%&#:_=+@~
+# emit escape sequences for other keys modified by Control
+#modify_other_keys = false
 
 [colors]
-foreground = #839496
-background = #002b36
 cursor = #93a1a1
+foreground = #839496
+foreground_bold = #ffffff
+background = #002b36
 
 # colors from color0 to color254 can be set
- color0 = #073642
- color8 = #002b36
-
- color1 = #dc322f
- color9 = #cb4b16
-
- color2 = #859900
+color0 = #073642
+color1 = #dc322f
+color2 = #859900
+color3 = #b58900
+color4 = #268bd2
+color5 = #d33682
+color6 = #2aa198
+color7 = #eee8d5
+color8 = #002b36
+color9 = #cb4b16
 color10 = #586e75
-
- color3 = #b58900
 color11 = #657b83
-
- color4 = #268bd2
 color12 = #839496
-
- color5 = #d33682
 color13 = #6c71c4
-
- color6 = #2aa198
 color14 = #93a1a1
-
- color7 = #eee8d5
 color15 = #fdf6e3
+
+[hints]
+#font = Monospace 12
+#foreground = #dcdccc
+#background = #3f3f3f
+#active_foreground = #e68080
+#active_background = #3f3f3f
+#padding = 2
+#border = #3f3f3f
+#border_width = 0.5
+#roundness = 2.0
+
+# vim: ft=dosini cms=#%s
