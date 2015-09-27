@@ -75,8 +75,8 @@
                   (string->number (list-ref (string-split line) column)))
                 lines)))
       (fold + 0 columns)))
-  ;; use the sum of eth0 and wlan0, drop lo
-  (let* ((lines (take (drop (read-lines "/proc/net/dev") 2) 2))
+  ;; drop first two header lines, drop last line (which is always lo)
+  (let* ((lines (drop-right (drop (read-lines "/proc/net/dev") 2) 1))
          (downloads (process-net-dev lines download-column))
          (download (if last-downloads
                        (/ (- downloads last-downloads) sleep-time)
