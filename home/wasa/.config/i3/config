@@ -86,7 +86,6 @@ bindsym $mod+r mode "resize"
 
 # scratchpad
 for_window [class="scratchpad_termite"] move to scratchpad
-#bindsym $mod+grave [class="scratchpad_termite"] scratchpad show; move position 0px 17px; exec xdotool getactivewindow windowsize 100% 72
 bindsym $mod+grave [class="scratchpad_termite"] scratchpad show
 
 # fixing some annoyances
