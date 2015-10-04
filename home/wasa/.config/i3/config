@@ -8,62 +8,68 @@ new_window pixel 1
 new_float pixel 1
 hide_edge_borders both
 
+# we don't need no startup tracking
+set $run exec --no-startup-id
+set $run_always exec_always --no-startup-id
+
 # autostart
-exec_always --no-startup-id xrdb ~/.Xresources
-exec_always --no-startup-id xsetroot -cursor_name left_ptr
-exec_always --no-startup-id feh --bg-fill ~/images/wallpapers/pixelmavs.png
-exec --no-startup-id hhpc -i 2
-exec --no-startup-id fallkiste
-exec --no-startup-id mpd
-exec --no-startup-id udiskie
-exec em
-exec scratchpad
+$run_always xrdb ~/.Xresources
+$run_always xsetroot -cursor_name left_ptr
+$run_always feh --bg-fill ~/images/wallpapers/pixelmavs.png
+#$run hhpc -i 2
+$run fallkiste
+$run mpd
+$run udiskie
+$run xset r rate 300 40
+$run em
+$run scratchpad
 
 # interesting binds
-bindsym Print exec scr
-bindsym Shift+Print exec scr -s
-bindsym XF86AudioMute exec dvolume -t
-bindsym XF86AudioRaiseVolume exec dvolume -i 5
-bindsym XF86AudioLowerVolume exec dvolume -d 5
-bindsym $mod+Return exec termite
-bindsym $mod+p exec dfavourites
-bindsym $mod+Shift+p exec dmenu_run
-bindsym $mod+c exec dcpu
-bindsym $mod+m exec dmpc music
-bindsym $mod+Shift+m exec dmpc todo
-bindsym $mod+u exec dumount
+bindsym Print $run scr
+bindsym Shift+Print $run scr -s
 bindsym Pause exec i3lock --color="#000000"
+bindsym XF86AudioMute $run dvolume -t
+bindsym XF86AudioRaiseVolume $run dvolume -i 5
+bindsym XF86AudioLowerVolume $run dvolume -d 5
+bindsym $mod+Return $run termite
+bindsym $mod+o $run dfavourites
+bindsym $mod+Shift+o $run dmenu_run
+bindsym $mod+c $run dcpu
+bindsym $mod+m $run dmpc music
+bindsym $mod+Shift+m $run dmpc todo
+bindsym $mod+Control+m $run dmpc bootlegs
+bindsym $mod+u $run dumount
 bindsym $mod+q kill
 bindsym $mod+Shift+q exit
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
-bindsym $mod+Left exec mpc prev
-bindsym $mod+Right exec mpc next
-bindsym $mod+Up exec mpc pause
-bindsym $mod+Down exec mpc stop
-bindsym $mod+Shift+Left exec mpc seek -5 && sleep 1
-bindsym $mod+Shift+Right exec mpc seek +5 && sleep 1
-bindsym $mod+Shift+Up exec mpc play
-bindsym $mod+Shift+Down exec mpc update
+bindsym $mod+Left $run mpc prev
+bindsym $mod+Right $run mpc next
+bindsym $mod+Up $run mpc pause
+bindsym $mod+Down $run mpc stop
+bindsym $mod+Shift+Left $run mpc seek -5 && sleep 1
+bindsym $mod+Shift+Right $run mpc seek +5 && sleep 1
+bindsym $mod+Shift+Up $run mpc play
+bindsym $mod+Shift+Down $run mpc update
 
 # bertha mode
 mode "bertha" {
-    bindsym g exec bertha --mode=retroarch favorites; mode "default"
-    bindsym Shift+g exec bertha --mode=retroarch general; mode "default"
-    bindsym c exec bertha --mode=directory comics; mode "default"
-    bindsym m exec bertha --mode=directory manga; mode "default"
-    bindsym p exec bertha --mode=directory pdfs; mode "default"
-    bindsym i exec bertha --mode=directory images; mode "default"
-    bindsym v exec bertha --mode=directory movies; mode "default"
+    bindsym g $run bertha --mode=retroarch favorites; mode "default"
+    bindsym Shift+g $run bertha --mode=retroarch general; mode "default"
+    bindsym c $run bertha --mode=directory comics; mode "default"
+    bindsym m $run bertha --mode=directory manga; mode "default"
+    bindsym p $run bertha --mode=directory pdfs; mode "default"
+    bindsym i $run bertha --mode=directory images; mode "default"
+    bindsym v $run bertha --mode=directory movies; mode "default"
     bindsym Escape mode "default"
 } bindsym $mod+b mode "bertha"
 
 # system mode
 mode "system" {
-    bindsym s exec systemctl suspend; mode "default"
-    bindsym h exec systemctl hibernate; mode "default"
-    bindsym r exec systemctl reboot; mode "default"
-    bindsym p exec systemctl poweroff; mode "default"
+    bindsym s $run systemctl suspend; mode "default"
+    bindsym h $run systemctl hibernate; mode "default"
+    bindsym r $run systemctl reboot; mode "default"
+    bindsym p $run systemctl poweroff; mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+x mode "system"
