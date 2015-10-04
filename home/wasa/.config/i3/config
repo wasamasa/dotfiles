@@ -150,11 +150,8 @@ bar {
         inactive_workspace #002b36 #073642 #839496
         urgent_workspace   #cb4b16 #dc322f #eee8d5
     }
-    output LVDS1
-    output DP2
-    output VGA1
     font pango:cure 8
     position top
-    tray_output LVDS1
+    tray_output primary
     status_command chicken-i3bar
 }
