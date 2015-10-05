@@ -11,7 +11,7 @@ set! browser.tabs.closeWindowWithLastTab=false
 "set! plugins.notify.MissingFlash=false
 
 "scrolling
-"set scrollsteps=1
+set scrollsteps=1
 nmap -b h 5h
 nmap -b j 5j
 nmap -b k 5k
