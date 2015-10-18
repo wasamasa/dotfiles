@@ -5,3 +5,5 @@ slang=en,eng
 osc=no
 keep-open
 screenshot-format=png
+osd-level=1
+osd-status-msg="${time-pos} ${?length:/${length}} ${?cache:(${cache}%)}"
