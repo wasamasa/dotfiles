@@ -1,4 +1,4 @@
-vo=opengl-old
+vo=opengl
 title="mpv: ${filename}"
 alang=jp,jpn,en,eng
 slang=en,eng
