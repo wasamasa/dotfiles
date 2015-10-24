@@ -128,3 +128,47 @@ This would allow for writing a tiling window manager for Wayland and Scheme!
 - http://youtu.be/s1eNjUgaB-g
 - http://youtu.be/rtR63-ecUNo
 
+* Pastebin
+
+- paste.brause.cc
+- put a file in a specific location (watched by inotify) and get it
+  copied to an uniquely named file
+- copy UI from ix.io/sprunge.us (minus the part of line numbers being copyable)
+- allow highlighting with language via pygments
+- allow highlighting line/range
+
+* GIF
+
+- write giflib C code
+- study other wrappers
+- write giflib wrapper
+
+* GUI
+
+- https://github.com/vurtun/zahnrad
+- this could be cool if it were usable from CHICKEN...
+- felix would be interested in any findings and comparisons to, say,
+  tcl/tk: http://www.call-with-current-continuation.org/ma
+
+* ZNC
+
+- I'd like having a queriable (SQLite) database
+- One approach would be watching files grow and adding their new
+  content to it
+- The other one to just write a ZNC module logging new stuff into the
+  database
+- Either way I'd need to deal with old data first
+- Once that's done, an UI for querying would be useful, maybe even
+  something on the web which supports predefined queries (like,
+  highlights, project requests, queries, work stuff, etc.)
+
+* nginx traffic logs
+
+- something is eating up a few gigabytes of transmitted traffic each month
+- analysis of logs should allow reconstruction by figuring out file
+  sizes and amounts and graphing these
+
+* SRFI-105
+
+- would be cool to have for maths
+- not too hard
