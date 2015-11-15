@@ -22,7 +22,6 @@ unset confirmappend
   set index_format      = "%3C %Z %[!%m/%d] %-25.25F %s"
   set ispell            = "aspell -e -c"
   set mail_check        = 0
-  set mailcap_path      = ~/.mutt/mailcap
 unset mark_old
 unset markers
   set message_cachedir  = ~/.mutt/cache/bodies
@@ -91,7 +90,7 @@ bind index J  next-unread
 bind index K  previous-unread
 bind index L  display-message
 bind index G  last-entry
-bind index n  next-new-then-unread
+bind index,pager n  next-new-then-unread
 bind pager i  exit
 bind pager q  toggle-quoted
 bind pager /  search
