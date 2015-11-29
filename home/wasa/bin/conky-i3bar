@@ -1,7 +1,0 @@
-#!/bin/sh
-echo '{"version":1}'
-echo '['
-echo '[],'
-if [[ -e $1 ]]; then
-    exec conky -c $1
-fi

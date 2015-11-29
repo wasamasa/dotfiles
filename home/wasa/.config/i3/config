@@ -158,5 +158,5 @@ bar {
     font pango:cure 8
     position top
     tray_output primary
-    status_command chicken-i3bar
+    status_command statusbar
 }
