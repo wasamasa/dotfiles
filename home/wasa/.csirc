@@ -1,0 +1,4 @@
+(load-verbose #f)
+(unless (get-environment-variable "INSIDE_EMACS")
+  (use readline)
+  (current-input-port (make-readline-port)))
