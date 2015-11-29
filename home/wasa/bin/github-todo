@@ -37,7 +37,7 @@
        (vector->list (alist-ref 'items issues))))
 
 (define (serialize-issues body)
-  (with-output-to-file (format "~a/org/github.md" (get-environment-variable "HOME"))
+  (with-output-to-file (format "~a/notes/github.md" (get-environment-variable "HOME"))
     (lambda () (write-string (string-concatenate body)))))
 
 (define (main)
