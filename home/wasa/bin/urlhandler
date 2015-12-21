@@ -2,28 +2,29 @@
 """Simple URL handler based on domains"""
 
 import argparse
-import os
 import subprocess
 import sys
 from urllib.parse import urlparse
 
 BROWSER = 'firefox'
-YOUTUBE_DOMAINS = ['youtube.com', 'youtu.be']
-SUPPORTED_DOMAINS = YOUTUBE_DOMAINS + ['vimeo.com', 'soundcloud.com']
+VIDEO_DOMAINS = ['youtube.com', 'youtu.be', 'vimeo.com']
+AUDIO_DOMAINS = ['soundcloud.com']
 
-def contains_any(element, choices):
-    """Checks whether the given element contains any of the choices"""
-    return any(choice in element for choice in choices)
 
-def play(url, seek=0):
+def play(url, audio=False):
     """Wraps youtube-dl and mpv"""
     output = subprocess.check_output(
         ['youtube-dl', '-e', '--user-agent', '', url],
         stderr=subprocess.STDOUT, universal_newlines=True).split('\n')
     title = output[0]
+    command = ['mpv', '--title', title, '--cache=8192']
 
-    command = ['mpv', '--title', title, '--cache=8192', url]
+    if audio:
+        command.append('--force-window=yes')
+    command.append(url)
+
     subprocess.call(command)
+
 
 def main():
     """main function"""
@@ -33,8 +34,10 @@ def main():
     domain = urlparse(args.url).netloc
     if not domain:
         sys.exit("invalid URL specified")
-    if contains_any(domain, SUPPORTED_DOMAINS):
+    if domain in VIDEO_DOMAINS:
         play(args.url)
+    elif domain in AUDIO_DOMAINS:
+        play(args.url, True)
     else:
         subprocess.call([BROWSER, args.url])
 
