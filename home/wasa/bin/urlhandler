@@ -15,40 +15,6 @@ def contains_any(element, choices):
     """Checks whether the given element contains any of the choices"""
     return any(choice in element for choice in choices)
 
-def parse_yt_timestamp(timestamp):
-    """Converts a youtube timestamp to a number of seconds"""
-    time = 0
-    while True:
-        if len(timestamp.split('h')) > 1:
-            time += int(timestamp.split('h')[0])*3600
-            timestamp = timestamp.split('h')[1]
-        elif len(timestamp.split('m')) > 1:
-            time += int(timestamp.split('m')[0])*60
-            timestamp = timestamp.split('m')[1]
-        elif len(timestamp.split('s')) > 1:
-            time += int(timestamp.split('s')[0])
-            break
-        else:
-            if timestamp:
-                time += int(timestamp)
-            break
-    return time
-
-def detect_youtube_timestamp(url):
-    """Retrieve the youtube timestamp"""
-    query, fragment = urlparse(url).query, urlparse(url).fragment
-    query_dict = {}
-    if '=' in query:
-        query_dict = dict((k, v) for k, v in (item.split('=')
-                                              for item
-                                              in query.split('&')))
-    if 't' in query_dict:
-        return parse_yt_timestamp(query_dict['t'])
-    elif 't=' in fragment:
-        return parse_yt_timestamp(fragment.split('=')[1])
-    else:
-        return 0
-
 def play(url, seek=0):
     """Wraps youtube-dl and mpv"""
     output = subprocess.check_output(
@@ -56,11 +22,7 @@ def play(url, seek=0):
         stderr=subprocess.STDOUT, universal_newlines=True).split('\n')
     title = output[0]
 
-    command = ['mpv']
-    if seek:
-        command.extend(['--start', str(seek)])
-    command.extend(['--title', title, '--cache=8192', url])
-    print(command)
+    command = ['mpv', '--title', title, '--cache=8192', url]
     subprocess.call(command)
 
 def main():
@@ -72,18 +34,9 @@ def main():
     if not domain:
         sys.exit("invalid URL specified")
     if contains_any(domain, SUPPORTED_DOMAINS):
-        if contains_any(domain, YOUTUBE_DOMAINS):
-            timestamp = detect_youtube_timestamp(args.url)
-            play(args.url, seek=timestamp)
-        else:
-            play(args.url)
+        play(args.url)
     else:
-        # os.execlp(BROWSER, url)
         subprocess.call([BROWSER, args.url])
 
 if __name__ == '__main__':
     main()
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument('url')
-    #args = parser.parse_args()
-    #subprocess.call(['mpv', args.url])
