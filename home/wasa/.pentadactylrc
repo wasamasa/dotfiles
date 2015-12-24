@@ -23,6 +23,9 @@ set passkeys=duckduckgo.com:<Space>
 nmap -b J gT
 nmap -b K gt
 
+nmap -b < :tabmove -1<return>
+nmap -b > :tabmove +1<return>
+
 " Open the current URL as an argument to the urlhandler
 nmap <S-q> -s -js <<EOF
 commands.execute('!urlhandler "' + content.location.href.replace(/([$`"\\])/g, "\\$1")
