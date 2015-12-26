@@ -12,6 +12,10 @@ always-download http://127.0.0.1:5000/feed
 
 bind-key j down
 bind-key k up
+bind-key g home
+bind-key G end
+bind-key s sort
+bind-key S save
 
 color background default default
 color listnormal default default
