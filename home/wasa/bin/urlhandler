@@ -7,7 +7,7 @@ import sys
 from urllib.parse import urlparse
 
 BROWSER = 'firefox'
-VIDEO_DOMAINS = ['youtube.com', 'youtu.be', 'vimeo.com']
+VIDEO_DOMAINS = ['www.youtube.com', 'youtube.com', 'youtu.be', 'vimeo.com']
 AUDIO_DOMAINS = ['soundcloud.com']
 
 
