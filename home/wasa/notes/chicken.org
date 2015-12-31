@@ -38,6 +38,10 @@ updating command and integration into the REPL.
 
 See also henrietta-cache: https://wiki.call-cc.org/running-an-egg-mirror
 
+Perhaps it's sufficient to add an option to that utility for fetching
+the last n revisions (and cleaning older releases!), then one could
+just run it periodically and maybe offer a tarball of it on a mirror...
+
 http://wiki.call-cc.org/chicken-projects/egg-index-4.html
 http://code.call-cc.org/svn/chicken-eggs/release/4/ (anonymous svn)
 http://code.call-cc.org/svn/chicken-eggs/release/4/egg-locations
