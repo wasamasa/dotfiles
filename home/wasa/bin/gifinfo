@@ -28,12 +28,17 @@
     (printf "Dimensions: ~a x ~a\n" (gif-width gif) (gif-height gif))
     (printf "Color resolution: ~a bits\n" (gif-resolution gif))
     (printf "Background color: ~a\n" (gif-bg-index gif))
+    (let ((aspect-ratio (gif-aspect-ratio gif)))
+      (if aspect-ratio
+          (printf "Aspect ratio: ~a\n" aspect-ratio)
+          (printf "Aspect ratio: unspecified\n")))
     (let ((color-map (gif-color-map gif)))
       (if color-map
           (begin
             (printf "Global Color Map:\n")
             (printf "  Count: ~a\n" (color-map-count color-map))
             (printf "  Resolution: ~a\n" (color-map-resolution color-map))
+            (printf "  Sorted: ~a\n" (if (color-map-sorted? color-map) "Yes" "No"))
             (printf "  Colors:\n")
             (color-map-for-each-indexed
              (lambda (color i)
@@ -56,6 +61,7 @@
                (printf "    Local Color Map:\n")
                (printf "      Count: ~a\n" (color-map-count color-map))
                (printf "      Resolution: ~a\n" (color-map-resolution color-map))
+               (printf "      Sorted: ~a\n" (if (color-map-sorted? color-map) "Yes" "No"))
                (printf "      Colors:\n")
                (color-map-for-each-indexed
                 (lambda (color i)
