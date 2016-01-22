@@ -1,0 +1,7 @@
+#!/bin/sh
+
+geometry=$(identify -format '%wx%h' "$1")
+filesize=$(du -Hh "$1" | cut -f 1)
+filename=$(basename "$1")
+
+echo "[${geometry}] [${filesize}] ${filename}"
