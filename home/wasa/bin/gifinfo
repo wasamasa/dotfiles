@@ -1,15 +1,10 @@
 #!/usr/bin/env chicken-scheme
 ;; -*- mode: scheme; -*-
 
-;; TODO: make use of getopt-long to specify verbosity and offer help
 (use (only ports with-output-to-port)
      (rename format (format cl-format))
+     getopt-long
      giflib)
-
-(define (error-message message)
-  (with-output-to-port (current-error-port)
-    (lambda () (print message)))
-  (exit 1))
 
 (define (color->hex color)
   (let ((red (color-red color))
@@ -21,7 +16,7 @@
 (define (u8vector->hex u8vector)
   (cl-format #f "~{~2,'0x~}" (u8vector->list u8vector)))
 
-(define (gif-info file-name)
+(define (gif-info file-name verbose?)
   (print file-name)
   (let ((gif (open-gif file-name)))
     (slurp-gif gif)
@@ -39,11 +34,12 @@
             (printf "  Count: ~a\n" (color-map-count color-map))
             (printf "  Resolution: ~a\n" (color-map-resolution color-map))
             (printf "  Sorted: ~a\n" (if (color-map-sorted? color-map) "Yes" "No"))
-            (printf "  Colors:\n")
-            (color-map-for-each-indexed
-             (lambda (color i)
-               (printf "    Color ~a: ~a\n" i (color->hex color)))
-             color-map))
+            (when verbose?
+              (printf "  Colors:\n")
+              (color-map-for-each-indexed
+               (lambda (color i)
+                 (printf "    Color ~a: ~a\n" i (color->hex color)))
+               color-map)))
           (printf "Global Color Map: absent\n")))
     (printf "Frames:\n")
     (printf "  Count: ~a\n" (gif-frame-count gif))
@@ -62,23 +58,25 @@
                (printf "      Count: ~a\n" (color-map-count color-map))
                (printf "      Resolution: ~a\n" (color-map-resolution color-map))
                (printf "      Sorted: ~a\n" (if (color-map-sorted? color-map) "Yes" "No"))
-               (printf "      Colors:\n")
-               (color-map-for-each-indexed
-                (lambda (color i)
-                  (printf "        Color ~a: ~a\n" i (color->hex color)))
-                color-map))
+               (when verbose?
+                 (printf "      Colors:\n")
+                 (color-map-for-each-indexed
+                  (lambda (color i)
+                    (printf "        Color ~a: ~a\n" i (color->hex color)))
+                  color-map)))
              (printf "    Local Color Map: absent\n")))
-       (printf "    Image Data:\n")
-       (let ((width (frame-width frame))
-             (height (frame-height frame)))
-         (let loop ((y 0))
-           (when (< y height)
-             (let loop ((x 0))
-               (when (< x width)
-                 (cl-format #t "~2,'0x" (frame-pixel frame x y))
-                 (loop (add1 x))))
-             (newline)
-             (loop (add1 y)))))
+       (when verbose?
+         (printf "    Image Data:\n")
+         (let ((width (frame-width frame))
+               (height (frame-height frame)))
+           (let loop ((y 0))
+             (when (< y height)
+               (let loop ((x 0))
+                 (when (< x width)
+                   (cl-format #t "~2,'0x" (frame-pixel frame x y))
+                   (loop (add1 x))))
+               (newline)
+               (loop (add1 y))))))
        (let ((extension-block-count (frame-extension-block-count frame)))
          (if (not (zero? extension-block-count))
              (begin
@@ -124,12 +122,49 @@
                 frame))
                (printf "    Frame Extension Blocks: absent\n"))))
      gif)
-    (printf "\n")
+    (newline)
     (close-gif gif)))
 
+(define usage-hint "Usage: gifinfo [option] [file ...]")
+
+(define options
+  '((verbose
+     "Increase verbosity"
+     (required #f)
+     (value #f)
+     (single-char #\v))
+    (help
+     "Prints this help"
+     (required #f)
+     (value #f)
+     (single-char #\h))))
+
+(define (print-error message)
+  (with-output-to-port (current-error-port)
+    (lambda () (print message))))
+
 (define (main)
-  (if (null? (command-line-arguments))
-      (error-message "No input file(s) specified")
-      (for-each gif-info (command-line-arguments))))
+  (let* ((opts
+          (condition-case
+           (getopt-long (command-line-arguments) options)
+           (e (exn)
+              (error-message
+               (print-error
+                (format "Error: ~a: ~a\n"
+                        ((condition-property-accessor 'exn 'message) e)
+                        ((condition-property-accessor 'exn 'arguments) e)))
+               (print-error usage-hint)
+               (print-error (usage options))
+               (exit 1)))))
+         (help? (alist-ref 'help opts))
+         (verbose? (alist-ref 'verbose opts))
+         (args (alist-ref '@ opts)))
+    (when help?
+      (print-error usage-hint (usage options))
+      (exit 0))
+    (when (null? args)
+      (print-error "No input file(s) specified")
+      (exit 1))
+    (for-each (lambda (arg) (gif-info arg verbose?)) args)))
 
 (main)
