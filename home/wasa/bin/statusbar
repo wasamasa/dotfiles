@@ -225,4 +225,7 @@
             last-downloads
             last-uploads))))
 
-(main)
+(condition-case (main)
+  (condition (exn)
+   (with-output-to-file "statusbar.log"
+     (lambda () (pp (condition->list condition))))))
