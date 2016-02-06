@@ -113,11 +113,14 @@
     (clamp (inexact->exact (round (* (/ used available) 100))))))
 
 (define (battery)
-  (let ((state (car (read-lines "/sys/class/power_supply/BAT0/status")))
-        (capacity
-         (string->number
-          (car (read-lines "/sys/class/power_supply/BAT0/capacity")))))
-    (list state (clamp capacity))))
+  (condition-case
+   ;; NOTE: unlike with /proc, /sys files are not guaranteed to exist
+   (let ((state (car (read-lines "/sys/class/power_supply/BAT0/status")))
+         (capacity
+          (string->number
+           (car (read-lines "/sys/class/power_supply/BAT0/capacity")))))
+     (list state (clamp capacity)))
+   ((exn i/o file) (list "Unavailable" 0))))
 
 (define (format-time)
   (time->string (seconds->local-time) "%H:%M"))
