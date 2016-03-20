@@ -7,13 +7,15 @@ BG="#073642"        # background colour of window
 FG="#eee8d5"        # foreground colour of text/icon
 BAR_FG="#eee8d5"    # foreground colour of volume bar
 BAR_BG="#93a1a1"    # background colour of volume bar
-XPOS="624"          # horizontal positioning
-YPOS="438"          # vertical positioning
 HEIGHT="24"         # window height
 WIDTH="192"         # window width
 BAR_WIDTH="160"     # width of volume bar
-ICON="~/bin/vol-hi.xbm"
 FONT="fixed"
+
+XY=$(xdpyinfo | grep 'dimensions:' | awk '{print $2}')
+IFS='x' read -r XPOS YPOS <<< "$XY"
+XPOS=$((($XPOS-$WIDTH)/2))
+YPOS=$((($YPOS-$HEIGHT)/2))
 
 #Probably do not customize
 PIPE="/tmp/dvolpipe"
@@ -73,4 +75,4 @@ if [ ! -e "$PIPE" ]; then
 fi
 
 #Feed the pipe!
-(echo "$VOL" | gdbar -h 8 -l "^i(${ICON})" -fg "$BAR_FG" -bg "$BAR_BG" -w "$BAR_WIDTH" ; sleep "$SECS") > "$PIPE"
+(echo "$VOL" | gdbar -h 8 -fg "$BAR_FG" -bg "$BAR_BG" -w "$BAR_WIDTH" ; sleep "$SECS") > "$PIPE"
