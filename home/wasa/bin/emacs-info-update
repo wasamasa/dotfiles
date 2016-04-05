@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -Ql emacs | grep '/usr/share/info/.*\.gz' | cut -d' ' -f2 | while IFS= read -r filename; do
+while read -r filename; do
   echo install-info $filename /usr/share/info/dir
   install-info $filename /usr/share/info/dir
-done
+done < <(pacman -Ql emacs | grep '/usr/share/info/.*\.gz' | cut -d' ' -f2)
