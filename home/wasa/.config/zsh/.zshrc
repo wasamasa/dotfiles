@@ -34,6 +34,8 @@ alias sc=systemctl
 alias jc=journalctl
 alias pc=pacman
 
+alias album-lengths="find ~/music/todo -mindepth 1 -type d -exec album-length '{}' \;"
+
 splice_frames() {
   ffmpeg -ss $2 -i "$1" -f image2 -t $3 -qscale 0 img%5d.png
 }
