@@ -22,6 +22,8 @@ HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 READNULLCMD=$PAGER
 
+unset zle_bracketed_paste
+
 alias sudo='sudo '
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
