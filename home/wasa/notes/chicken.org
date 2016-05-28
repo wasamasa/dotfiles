@@ -29,6 +29,8 @@
 
 * =chicken-src=
 
+** Notes
+
 The equivalent to =chicken-doc= for (definition) source lookup.
 
 It should use chicken-install to retrieve eggs to a source location
@@ -53,6 +55,23 @@ http://wiki.call-cc.org/chicken-projects/egg-rss-feed-5.xml
 <C-Keen> wasamasa:  (toplevel-command 'doc (lambda () (repl-doc-dwim (read)))
 <C-Keen>                     ",doc PATHSPEC     Describe identifier or path with chicken-doc"))
 #+END_SRC
+
+** Implementation
+
+- =henrietta-cache -c ~/.usr/share/chicken/cache -e https://anonymous@code.call-cc.org/svn/chicken-eggs/release/4/egg-locations=
+
+- Check whether last items are newest (otherwise implement version sort)
+- Implement download-last-release-files (default to 1)
+- Implement clean-cache (with option how many releases to keep,
+  default to 1)
+- Expose these through command-line arguments
+
+- Write tool going through that cache and guessing what defines an
+  exported identifier (typically it's a top-level (... IDENTIFIER ...) or
+  (... (IDENTIFIER ...) ...) form, top-level usually being inside a module)
+
+- How will this work on chicken-core itself?
+- These appear to be part of library.scm...
 
 * =moped=
 
@@ -141,11 +160,20 @@ This would allow for writing a tiling window manager for Wayland and Scheme!
 - allow highlighting with language via pygments
 - allow highlighting line/range
 
+* inotify egg
+
+- see https://github.com/xlevus/chicken-stuff/blob/master/inotify.scm
+- learn how callbacks would work
+
 * GIF
 
 - write giflib C code
 - study other wrappers
 - write giflib wrapper
+- write imlib interface
+- redo cssfuscator option parsing:
+  http://api.call-cc.org/doc/getopt-long
+  https://bitbucket.org/ckeen/pee/src/54dea32f4471a500d288579e9ac4596f51d92255/pee.scm?at=master&fileviewer=file-view-default
 
 * GUI
 
@@ -172,7 +200,153 @@ This would allow for writing a tiling window manager for Wayland and Scheme!
 - analysis of logs should allow reconstruction by figuring out file
   sizes and amounts and graphing these
 
-* SRFI-105
+* SRFI-105 (infix syntax)
 
 - would be cool to have for maths
 - not too hard
+
+* Interesting gazette episodes
+
+** #9 - chicken-doc
+
+http://gazette.call-cc.org/issues/9.html
+
+** #11 - autocompile
+
+http://gazette.call-cc.org/issues/11.html
+
+** #16 - modules
+
+http://gazette.call-cc.org/issues/16.html
+
+** #17 - slime
+
+http://gazette.call-cc.org/issues/17.html
+
+** #18 - exception handling
+
+http://gazette.call-cc.org/issues/18.html
+
+* Parsing mboxes for fun and profit
+
+ftp://lists.gnu.org/emacs-devel/
+http://wiki.call-cc.org/eggref/4/mbox
+http://userguide.icu-project.org/boundaryanalysis#TOC-Sentence-Boundary
+
+Purpose: Getting random emacs-devel quotes or markov-chain quotes.
+
+Problems:
+- Removing blockquotes (RMS has a very unusual style), attachments, signatures
+- Detecting sentences
+
+Alternatively:
+
+Search debbugs for reports with patches and check how many of these
+are closed/open
+
+https://lists.gnu.org/archive/html/bug-gnu-emacs/2016-02/threads.html
+
+* Write a tool for c4 remote control
+
+See http://autoc4/mate/ and https://github.com/Gordin/c4-mate
+
+- List all the names
+- Search for an user
+- Alter your own balance
+- Transfer money to someone else
+(- Alter someone else's balance)
+
+* Experiment with 9P as API
+
+- http://wiki.call-cc.org/eggref/4/9p
+
+* qq
+
+Port bb to CHICKEN (bb as name is already taken by the fltk wrapper egg)
+
+* MELPA Stable
+
+** Design
+
+- http://python3wos.appspot.com/
+- http://py3readiness.org/
+
+** Naming
+
+- ms-nss.brause.cc - MELPA not-so-stable
+- ms-wos.brause.cc - MELPA Stable - Wall of Shame
+- ms-ready.brause.cc - MELPA Stable Readyness
+
+** Idea
+
+- Display MELPA Stable packages
+- Highlight installable ones green and the others red
+- Sortable and pagination and toggling dependency view and stuff
+- A "MS Ready" badge to put on a package that can be safely installed?
+
+* Twitter Bot
+
+- Reuse SUPREMEGENTLEMAN (with Elliot Rodger + X?)
+- Implement Markov
+- https://github.com/n3mo/clucker/blob/master/clucker.scm <- missing writers
+- https://dev.twitter.com/rest/reference/post/statuses/update
+- http://wiki.call-cc.org/eggref/4/rest-bind
+
+* Write my own text editor
+
+** Names
+
+- RAGE (RAGE Ain't GNU Emacs)
+- ELLE (ELLE Looks Like Emacs)
+- TEM (TEM exasperates me) <- add undertale easter egg
+
+** Design
+
+- Modal editing
+- Entirely written in Scheme
+
+** Runtime extensibility
+
+This could be tricky (or not).  Time to write a PoC...
+
+- load works on Scheme files, compiled libraries and input ports
+  (which allows loading from a string)
+- Write program that defines a function, allow redefining it at
+  runtime, check whether redefined function behaves differently, time
+  performance differences
+- What about modules/namespaces/other separation?
+
+** Basis
+
+- SDL2, self-made widgets and pango?
+
+* Write another text editor
+
+- Goal: How well does 9p work for configuration?
+- http://wiki.call-cc.org/eggref/4/9p
+
+* EPUB viewer
+
+- solved with the webkit egg!
+- feature: double page spread?
+- feature: progress indicator (current chapter / total chapters)
+- feature: vim-style navigation (by reimplementing existing navigation)
+- feature: outline view (see ncx for that and transformation to
+  suitable HTML)
+- bug: flash of styled content (solvable by preprocessing)
+- bug: sometimes the mimetypes file is unreadable due to permissions
+  being wrong
+- wishlist: write libzip binding for not depending on unzip, inspect
+  basics for validation, extract files when everything is ok to /tmp
+
+* Jamming station
+
+A project with Vim-like keybindings for synthesizing and playing music.
+
+- https://github.com/ctford/klangmeister
+
+* Implement a C-style printf
+
+- no idea about the name
+- steal semantics from a simple libc, like musl
+- check SRFI-28 and SRFI-48 for implementation hints
