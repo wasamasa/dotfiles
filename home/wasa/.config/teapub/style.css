@@ -1,0 +1,10 @@
+body {
+  margin: 0 auto;
+  width: 40em;
+  font-family: serif;
+  font-size: 1.3em;
+}
+
+p {
+  text-align: justify;
+}
