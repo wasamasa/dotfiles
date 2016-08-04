@@ -1,0 +1,135 @@
+#+TODO: TODO INPROGRESS | DONE
+
+* Feature wish list for implementation candidates
+
+- Reading from stdin, printing to stdout and reading files
+- Loading code from other files or better, a module system
+- Regex
+- An usable type system or dynamic typing
+- User-defined exceptions
+- Closures
+- Higher-order functions or at least function pointers (functors can
+  work, but are yucky)
+- Apply
+- Records/structs/objects
+- Numbers(!), arrays(!!), hash tables (can be faked with arrays)
+- Measuring time, alternatively shelling out
+- Linux support for the CI to work
+
+* Languages to implement MAL in [1/25]
+
+** DONE Emacs Lisp
+
+That was pretty fun and educational.
+
+** INPROGRESS ChucK
+
+A nice audio programming language, with a focus on time.  Incidentally
+it appears to have everything needed for implementing MAL in it...
+
+This is harder than expected as it's neither C++ nor Java and not many
+people seem to have explored the (buggy) non-audio parts.
+
+** TODO Common Lisp
+
+A serious omission, given the existence of two Scheme (Racket, Guile)
+and a Clojure/ClojureScript implementation.
+
+** TODO Pony
+
+The new cool kid on the block.  It appears to have a significantly
+advanced type system and compiler, as well as support for
+capability-based programming and actors.
+
+** TODO Rebol / Red
+
+A language proposing DSLs as solution to everything with a syntax
+reminiscent of Tcl/Forth.
+
+** TODO Smalltalk
+
+The other alternative to Emacs...  It inspired Ruby.
+
+https://github.com/dubek/mal/tree/smalltalk/smalltalk
+
+** TODO Self
+
+Looks like Smalltalk, but goes for prototypical OO.  It inspired Io
+(which already got an implementation).
+
+** TODO eC / Ecere
+
+Like Tcl/Tk, it's mostly interesting due to its graphics support.  The
+language itself is reminiscent of C, but has some higher-level
+constructs, such as proper module support.  No exceptions or closures
+yet.
+
+http://ecere.org/tao.pdf
+
+** TODO FORTRAN
+
+ORLY?
+
+** TODO COBOL
+
+YARLY
+
+** TODO BCPL
+
+C predecessor
+
+** TODO x86 ASM
+
+Because you just hate yourself and deep down, machine code is untyped...
+
+** TODO PL/I
+
+RMS likes it!
+
+** TODO REXX
+
+Looks like a Tcl/Smalltalk predecessor...
+
+** TODO SNOBOL
+
+Made for string processing!
+
+** TODO MUMPS
+
+Got its own series of The Daily WTF posts...
+
+** TODO ALGOL
+
+Revolutionized classic programming syntax or something
+
+** TODO MODULA-2/MODULA-3
+
+A more modern Pascal?
+
+** TODO Pike
+
+I only know that Emacs supports it...
+
+** TODO Dylan
+
+The other way Lisp could have evolved...
+
+** TODO Squeak/Newsqueak
+
+Language used on Apple's Newton hardware.
+
+** TODO J/K/APL
+
+Yay, array processing.  Somewhat Scheme-inspired.
+
+** TODO Picolisp, Arc, Newlisp
+
+A few "minimal" Lisps that may be different enough from the rest used already.
+
+** TODO CHICKEN
+
+If Guile and Racket made it, why not CHICKEN, too?
+
+** TODO Arrowlisp
+
+Purely symbolic Lisp, so no numbers...
