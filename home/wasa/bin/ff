@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+
+from time import mktime
+from datetime import datetime
+import sys
+import feedparser
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+def entry_datetime(entry):
+    time_struct = entry['updated_parsed'] or entry['published_parsed']
+    return datetime.fromtimestamp(mktime(time_struct))
+
+def is_entry_ok(entry):
+    return (('updated_parsed' in entry or 'published_parsed' in entry) and
+            'title' in entry and 'link' in entry)
+
+def is_feed_ok(data):
+    return all([is_entry_ok(entry) for entry in data.entries])
+
+def process_url(url, timestamp):
+    data = feedparser.parse(url)
+    if not is_feed_ok(data):
+        eprint('Invalid feed at {0}'.format(url))
+        return
+
+    entries = [entry for entry in data.entries
+               if entry_datetime(entry) >= timestamp]
+    for entry in entries:
+        print(entry['title'])
+        print(entry['link'])
+
+def main():
+    if len(sys.argv) != 3:
+        print("usage: {0} <url_file> <timestamp>".format(sys.argv[0]))
+        exit(1)
+
+    url_file = sys.argv[1]
+    timestamp = datetime.strptime(sys.argv[2], '%Y-%m-%d %H:%M:%S')
+
+    with open(url_file) as f:
+        for line in f:
+            process_url(line.strip(), timestamp)
+
+if __name__ == '__main__':
+    main()
+
+# (let ((file (expand-file-name "~/tmp/feeds"))
+#       (timestamp "2016-10-09 00:00:00")
+#       data)
+#   (with-temp-buffer
+#     (call-process "ff" nil '(t nil) nil file timestamp)
+#     (goto-char (point-min))
+#     (while (not (eobp))
+#       (let ((key (buffer-substring (point) (line-end-position))))
+#         (forward-line 1)
+#         (let ((value (buffer-substring (point) (line-end-position))))
+#           (forward-line 1)
+#           (push (cons key value) data))))
+#     data))
