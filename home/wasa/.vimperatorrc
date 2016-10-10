@@ -1,0 +1,58 @@
+set gui=none
+set focuscontent
+
+" TODO: find a way to add these automatically
+" 10965: a
+" 13110: y
+" 13127: imdb
+" 14900: g
+" 14907: maps
+" 24854: disc
+" 25513: dict
+" 29720: d
+" 43012: we
+" 43722: wd
+" 45398: i
+" 45712: baka
+" 72736: e
+" 73601: r
+" 19493: anidb
+" 30014: manga
+" 23469: aur
+" 25517: pkg
+" 74926: aw
+" 50956: ew
+" 23736: git
+
+set defsearch=d
+set editor=em
+set hintchars=asdfghjkl;
+
+nnoremap h 5h
+nnoremap j 5j
+nnoremap k 5k
+nnoremap l 5l
+
+nmap J gT
+nmap K gt
+nmap < :tabmove -1<CR>
+nmap > :tabmove +1<CR>
+
+" screw you, github and stackexchange
+imap <A-i> <C-i>
+
+" TODO: left-align status bar (with CSS?)
+
+nmap s :open d 
+nmap S :tabopen d 
+
+" NOTE: unsafe
+nmap <S-q> :js io.run("urlhandler", [buffer.URI])
+
+nmap <S-y> :js util.copyToClipboard(content.document.title)<CR>
+
+nmap e :bmarks! -tags favorites
+nmap <S-e> :bmarks! -tags tracker
+
+" TODO: remove after fixed release is out
+js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
