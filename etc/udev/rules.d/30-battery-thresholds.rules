@@ -1,0 +1,2 @@
+ACTION!="remove", SUBSYSTEM=="platform", DRIVER=="smapi", ATTR{BAT0/start_charge_thresh}="40"
+ACTION!="remove", SUBSYSTEM=="platform", DRIVER=="smapi", ATTR{BAT0/stop_charge_thresh}="80"
