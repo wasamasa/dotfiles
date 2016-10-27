@@ -14,13 +14,14 @@
 - Records/structs/objects
 - Numbers(!), arrays(!!), hash tables (can be faked with arrays)
 - Measuring time, alternatively shelling out
-- Linux support for the CI to work
+- Linux support for the CI to work, alternatively Windows or OS X
 
 * Sources for further languages
 
 - http://rosettacode.org/wiki/Category:Programming_Languages
+- https://github.com/mame/quine-relay
 
-* Languages to implement MAL in [3/45]
+* Languages to implement MAL in [5/60]
 
 ** DONE Emacs Lisp
 
@@ -40,6 +41,18 @@ A serious omission, given the existence of two Scheme (Racket, Guile)
 and a Clojure/ClojureScript implementation.
 
 edit: Done by one of my blog readers...
+
+** DONE Powershell
+
+Open-source and running on Linux now!
+
+Considering that the original author of MAL did implement it in Bash,
+Powershell should be a piece of cake.
+
+** DONE Picolisp
+
+Alex Burger is a pretty cool guy, so let's see how usable his creation
+is...
 
 ** TODO Pony
 
@@ -132,9 +145,9 @@ Language used on Apple's Newton hardware.
 
 Yay, array processing.  Somewhat Scheme-inspired.
 
-** TODO Picolisp, Arc, Newlisp
+** TODO Arc, Newlisp
 
-A few "minimal" Lisps that may be different enough from the rest used already.
+Minimal Lisp dialects that may be different enough from the rest used already.
 
 ** TODO CHICKEN
 
@@ -240,6 +253,75 @@ Welcome to the Turing tarpit!
 ** TODO Eiffel
 
 Contracts?
+
+** TODO Standard ML
+
+The language that inspired Ocaml.  Not sure which implementation to
+pick, there's Mythril, Moscow ML, PolyML, MLton, etc.
+
+** TODO F#
+
+Microsoft has open-sourced tons of things, so that one becomes another
+possible Ocaml-like language.
+
+** TODO Yeti
+
+A ML on the JVM
+
+** TODO Clay (2011)
+
+https://github.com/jckarter/clay
+
+System programming language with all the high-level constructs one
+wants?  Want.
+
+** TODO Zig
+
+http://ziglang.org/
+
+Another too high-level looking system programming language.  Made by
+Mr. libsoundio
+
+** TODO s-lang
+
+http://www.jedsoft.org/slang/doc/html/slang.html
+
+** TODO TypeScript
+
+JavaScript with an actually useful type system.  Makes for better tooling?
+
+** TODO Portable R7RS Scheme
+
+This should support all the required things (jiffies, command
+arguments, file IO, modules, etc.), for regex one can vendor irregex?
+
+Make sure to test this with chibi, maybe CHICKEN, Racket and Guile as well...
+
+** TODO Kernel
+
+vau, vau!
+
+** TODO None
+
+https://bitbucket.org/duangle/nonelang/src
+
+Used in http://www.duangle.com/nowhere
+
+See also
+http://blog.duangle.com/2015/01/conspire-programming-environment-for.html
+and http://blog.duangle.com/2015/04/towards-realtime-deformable-worlds-why.html
+
+** TODO Cobra
+
+http://cobra-language.com/
+
+** TODO Whiley
+
+http://whiley.org/
+
+** TODO Pliant
+
+http://www.fullpliant.org/
 
 * Spin-Off Material
 
