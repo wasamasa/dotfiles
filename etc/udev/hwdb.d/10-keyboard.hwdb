@@ -1,0 +1,7 @@
+evdev:atkbd:dmi:*
+ KEYBOARD_KEY_3a=leftctrl # capslock to leftctrl
+ KEYBOARD_KEY_dd=rightmeta # menu to rightmeta (super)
+
+evdev:input:b0003v04B4p0101*
+ KEYBOARD_KEY_70039=leftctrl # capslock to leftctrl
+ KEYBOARD_KEY_70065=102nd # menu to <> (compose)
