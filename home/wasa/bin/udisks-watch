@@ -1,16 +1,23 @@
-#!/bin/bash
-pattern='sd[a-z][1-9]?$'
-coproc inotifywait --monitor --event create,delete --format '%e %w%f' /dev
+#!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
 
-while read -r -u "${COPROC[0]}" event file; do
-  if [[ $file =~ $pattern ]]; then
-    case $event in
-      CREATE)
-        udevadm settle -t 1
-        udisksctl mount --block-device $file --no-user-interaction
-        ;;
-      DELETE)
-        ;;
-    esac
-  fi
-done
+(use irregex inotify scsh-process srfi-18)
+
+(init!)
+(on-exit clean-up!)
+(add-watch! "/dev" '(create))
+
+(define re '(or (: "sd" alpha (? num))
+                (: "mmcblk" num "p" num)))
+
+(define timeout 3)
+
+(let loop ()
+  (let* ((event (next-event!))
+         (device (event-name event))
+         (path (format "/dev/~a" device)))
+    (when (irregex-match re device)
+      (printf "Attempting to mount ~a at ~a\n" device path)
+      (thread-sleep! timeout)
+      (run (udisksctl mount "--block-device" ,path "--no-user-interaction"))))
+  (loop))
