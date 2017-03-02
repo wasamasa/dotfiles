@@ -22,9 +22,8 @@
 (define (schema-check db)
   (let ((rss-feed-cols (table-columns db "rss_feed"))
         (rss-item-cols (table-columns db "rss_item")))
-    (and (lset<= string=? '("rssurl" "url" "title") rss-feed-cols)
-         (lset<= string=? '("title" "author" "url" "feedurl" "content" "unread")
-                 rss-item-cols))))
+    (and (lset<= string=? '("rssurl") rss-feed-cols)
+         (lset<= string=? '("title" "url" "feedurl" "unread") rss-item-cols))))
 
 (define (sanity-check)
   (when (not (file-exists? urls-file))
