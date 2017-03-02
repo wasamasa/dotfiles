@@ -1,0 +1,92 @@
+#!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
+
+(use files srfi-1 data-structures
+     sql-de-lite scsh-process)
+
+(define home (get-environment-variable "HOME"))
+
+;; NOTE: you might want to customize this
+(define urls-file (make-pathname home ".config/newsbeuter/urls"))
+(define db-file (make-pathname home ".local/share/newsbeuter/cache.db"))
+
+(define (error-message message . args)
+  (with-output-to-port (current-error-port)
+    (lambda () (apply print message args)))
+  (exit 1))
+
+(define (table-columns db table)
+  (query fetch-column
+         (sql db "SELECT name FROM pragma_table_info(?);") table))
+
+(define (schema-check db)
+  (let ((rss-feed-cols (table-columns db "rss_feed"))
+        (rss-item-cols (table-columns db "rss_item")))
+    (and (lset<= string=? '("rssurl" "url" "title") rss-feed-cols)
+         (lset<= string=? '("title" "author" "url" "feedurl" "content" "unread")
+                 rss-item-cols))))
+
+(define (sanity-check)
+  (when (not (file-exists? urls-file))
+    (error-message "No URLs file at " urls-file))
+  (when (not (file-exists? db-file))
+    (error-message "No DB file at " db-file))
+  (when (not (call-with-database db-file schema))
+    (error-message "No schema found for DB"))
+  (when (not (call-with-database db-file schema-check))
+    (error-message "Unexpected schema")))
+
+(define (add-feed! url)
+  (let ((fd (file-open urls-file (+ open/wronly open/append))))
+    (file-write fd (string-append url "\n"))
+    (file-close fd)))
+
+(define (reload-feeds!)
+  (run (newsbeuter "-x" "reload") (> "/dev/null")))
+
+(define (unread-feeds db)
+  (query fetch-all
+         (sql db "SELECT url, title FROM rss_item WHERE unread = 1;")))
+
+(define (print-unread!)
+  (for-each
+   (lambda (row) (apply printf "~a ~a\n" row))
+   (call-with-database db-file unread-feeds)))
+
+(define (catch-up-with-all! db)
+  (exec (sql db "UPDATE rss_item SET unread = 0 WHERE unread = 1;")))
+
+(define (known-feed? db feed-url)
+  (query fetch-value
+         (sql db "SELECT 1 FROM rss_feed WHERE rssurl = ?;") feed-url))
+
+(define (catch-up-with-feed! db feed-url)
+  (when (not (known-feed? db feed-url))
+    (error-message "Unknown feed url"))
+  (exec (sql db "UPDATE rss_item SET unread = 0 WHERE unread = 1 AND feedurl = ?;") feed-url))
+
+(define (catch-up! #!optional feed-url)
+  (if (not feed-url)
+      (call-with-database db-file catch-up-with-all!)
+      (call-with-database db-file (cut catch-up-with-feed! <> feed-url))))
+
+(define (main)
+  (sanity-check)
+  (when (null? (command-line-arguments))
+    (error-message "No command given"))
+  (let ((command (string->symbol (car (command-line-arguments))))
+        (args (cdr (command-line-arguments))))
+    (case command
+      ((add-feed)
+       (when (null? args)
+         (error-message "add-url command requires an URL argument"))
+       (add-feed! (car args)))
+      ((reload-feeds) (reload-feeds!))
+      ((print-unread) (print-unread!))
+      ((catch-up)
+       (if (null? args)
+           (catch-up!)
+           (catch-up! (car args))))
+      (else (error-message "Invalid command given")))))
+
+(main)
