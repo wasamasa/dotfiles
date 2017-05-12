@@ -1,11 +1,10 @@
 [user]
-	email = v.schneidermann@gmail.com
 	name = Vasilij Schneidermann
+	email = mail@vasilij.de
+[includeIf "gitdir:~/code/work/"]
+	email = vasilij.schneidermann@bevuta.com
 [core]
 	autocrlf = input
 	safecrlf = true
-[alias]
-	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
-	p = push origin master
 [push]
         default = current
