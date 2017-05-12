@@ -2,7 +2,7 @@
 	name = Vasilij Schneidermann
 	email = mail@vasilij.de
 [includeIf "gitdir:~/code/work/"]
-	email = vasilij.schneidermann@bevuta.com
+	path = ~/.config/git/work
 [core]
 	autocrlf = input
 	safecrlf = true
