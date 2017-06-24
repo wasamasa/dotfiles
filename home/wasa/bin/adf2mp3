@@ -1,0 +1,26 @@
+#!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
+
+(use extras)
+
+;; adf is just mp3 with each byte xored by 34
+;; proof: mp3 header has 0xff as first byte, but in adf it's 0xdd
+;; 0xdd^0xff is 0x22, 0x22^0xff is 0xdd
+
+(define (convert in-file out-file)
+  (with-output-to-file out-file
+    (lambda ()
+      (with-input-from-file in-file
+        (lambda ()
+          (let loop ()
+            (when (not (eof-object? (peek-char)))
+              (write-byte (bitwise-xor (read-byte) 34))
+              (loop))))))))
+
+(define (main)
+  (when (not (= (length (command-line-arguments)) 2))
+    (display "Usage: adf2mp3 <infile> <outfile>\n" (current-error-port))
+    (exit 1))
+  (apply convert (command-line-arguments)))
+
+(main)

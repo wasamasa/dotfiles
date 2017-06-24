@@ -1,0 +1,19 @@
+#!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
+
+(use inotify utils)
+
+(init!)
+(on-exit clean-up!)
+
+(define path (car (command-line-arguments)))
+(add-watch! path '(modify))
+
+(with-input-from-file path
+  (lambda ()
+    (let loop ()
+      (display (read-all))
+      (flush-output)
+      (next-event!)
+      (set-file-position! (current-input-port) 0 seek/cur)
+      (loop))))

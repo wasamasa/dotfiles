@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd $(csi -p '(chicken-home)')
+curl http://3e8.org/pub/chicken-doc/chicken-doc-repo.tgz | tar -xz
