@@ -13,19 +13,10 @@
 # General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with PulseAudio; if not, write to the Free Software Foundation,
-# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+# along with PulseAudio; if not, see <http://www.gnu.org/licenses/>.
 
 # This startup script is used only if PulseAudio is started per-user
 # (i.e. not in system mode)
-
-.nofail
-
-### Load something into the sample cache
-#load-sample-lazy x11-bell /usr/share/sounds/gtk-events/activate.wav
-#load-sample-lazy pulse-hotplug /usr/share/sounds/startup3.wav
-#load-sample-lazy pulse-coldplug /usr/share/sounds/startup3.wav
-#load-sample-lazy pulse-access /usr/share/sounds/generic.wav
 
 .fail
 
@@ -53,8 +44,7 @@ load-module module-switch-on-port-available
 
 ### Automatically load driver modules depending on the hardware available
 .ifexists module-udev-detect.so
-#load-module module-udev-detect
-load-module module-udev-detect tsched=0
+load-module module-udev-detect
 .else
 ### Use the static hardware detection module (for systems that lack udev support)
 load-module module-detect
@@ -126,9 +116,7 @@ load-module module-suspend-on-idle
 ### If autoexit on idle is enabled we want to make sure we only quit
 ### when no local session needs us anymore.
 .ifexists module-console-kit.so
-.nofail
 load-module module-console-kit
-.fail
 .endif
 .ifexists module-systemd-login.so
 load-module module-systemd-login
@@ -147,30 +135,8 @@ load-module module-role-cork
 load-module module-filter-heuristics
 load-module module-filter-apply
 
-### Load DBus protocol
-.ifexists module-dbus-protocol.so
-load-module module-dbus-protocol
-.endif
-
-# X11 modules should not be started from default.pa so that one daemon
-# can be shared by multiple sessions.
-
-### Load X11 bell module
-#load-module module-x11-bell sample=bell-windowing-system
-
-### Register ourselves in the X11 session manager
-#load-module module-x11-xsmp
-
-### Publish connection data in the X11 root window
-#.ifexists module-x11-publish.so
-#.nofail
-#load-module module-x11-publish
-#.fail
-#.endif
-
 ### Make some devices default
 #set-default-sink output
 #set-default-source input
 
-set-sink-port alsa_output.pci-0000_00_1b.0.analog-stereo analog-output-speaker
 load-module module-switch-on-connect
