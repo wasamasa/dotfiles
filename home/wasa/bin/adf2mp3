@@ -1,12 +1,12 @@
 #!/usr/bin/env chicken-scheme
 ;; -*- mode: scheme; -*-
 
-(use extras)
+;; AUTOCOMPILE: -C -O2
 
-;; adf is just mp3 with each byte xored by 34
-;; proof: mp3 header has 0xff as first byte, but in adf it's 0xdd
-;; 0xdd^0xff is 0x22, 0x22^0xff is 0xdd
+(import foreign)
+(use extras posix)
 
+;; naive solution takes 12s on 50M
 (define (convert in-file out-file)
   (with-output-to-file out-file
     (lambda ()
@@ -16,6 +16,28 @@
             (when (not (eof-object? (peek-char)))
               (write-byte (bitwise-xor (read-byte) 34))
               (loop))))))))
+
+;; better solution takes 0.07s on 50M
+(define buffer-size 4096)
+(define buffer (make-blob buffer-size))
+
+(define xor-blob
+  (foreign-lambda* void ((blob buffer) (size_t count) (unsigned-byte value))
+    "for (int i = 0; i < count; ++i) buffer[i] ^= value;"))
+
+(define (convert in-file out-file)
+  (let ((in (file-open in-file open/rdonly))
+        (out (file-open out-file
+                        (+ open/wronly open/creat open/trunc)
+                        (+ perm/irusr perm/iwusr))))
+    (let loop ()
+      (let ((count (cadr (file-read in buffer-size buffer))))
+        (when (positive? count)
+          (xor-blob buffer count 34)
+          (file-write out buffer count)
+          (loop))))
+    (file-close in)
+    (file-close out)))
 
 (define (main)
   (when (not (= (length (command-line-arguments)) 2))
