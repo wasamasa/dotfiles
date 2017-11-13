@@ -1,0 +1,68 @@
+# permanently set alternative root dir
+# root=/path/to/root
+
+# rofi command. Make sure to have "$@" as last argument
+_rofi () {
+    rofi -matching fuzzy -kb-accept-entry "!Return" "$@"
+}
+
+# If you want rofi-pass to set keyboard layout, enable this
+# However It's recommended to call setxkbmap on login manually
+# Setting it in Xorg config is not sufficient for some reason
+fix_layout=false
+
+# rofi-pass tries to detect keyboard layout automatically
+# if this fails try to set it manually here.
+# keyboard=us
+
+# fields to be used
+URL_field='url'
+USERNAME_field='user'
+AUTOTYPE_field='autotype'
+
+# delay to be used for :delay keyword
+delay=2
+
+## Programs to be used
+# Editor
+EDITOR='em'
+
+# Browser
+BROWSER='urlhandler'
+
+## Misc settings
+
+default_do='autotype' # menu, autotype, copyPass, typeUser, typePass, copyUser, copyUrl, viewEntry, typeMenu, actionMenu, copyMenu, openUrl
+auto_enter='true'
+notify='false'
+
+# color of the help messages
+# leave empty for autodetection
+help_color="#4872FF"
+
+# Clipboard settings
+# Possible options: primary, clipboard, both
+clip=clipboard
+
+# Options for generating new password entries
+default_user=wasamasa
+default_user2=standard
+password_length=25
+
+# Custom Keybindings
+autotype="Alt+1"
+type_user="Alt+2"
+type_pass="Alt+3"
+open_url="Alt+4"
+copy_name="Alt+u"
+copy_url="Alt+l"
+copy_pass="Alt+p"
+show="Alt+o"
+copy_entry="Alt+2"
+type_entry="Alt+1"
+copy_menu="Alt+c"
+action_menu="Alt+a"
+type_menu="Alt+t"
+help="Alt+h"
+switch="Alt+x"
+insert_pass="Alt+n"
