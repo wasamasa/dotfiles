@@ -1,0 +1,2 @@
+#!/bin/bash
+pass local/$USER@$HOST | head -n1 | tee /tmp/sudo-askpass

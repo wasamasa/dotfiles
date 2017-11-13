@@ -3,9 +3,9 @@
 
 require 'open3'
 
-MONITORS = Dir['/sys/class/drm/card*/status']
-           .select { |p| File.open(p, &:read).chomp == 'connected' }
-           .map { |p| p.match(%r{card\d+-(.*)/})[1] }
+MONITORS = `xrandr`.split("\n").grep(/\Wconnected/) do |line|
+  line.split(' ')[0]
+end
 
 def single_monitor_command(selected)
   command = "xrandr --output #{selected} --auto "
@@ -39,7 +39,7 @@ def clone_monitor_commands
   result = {}
   MONITORS.each do |a|
     MONITORS.each do |b|
-      label = "Clone Screen #{a} -> #{b}" 'foo'
+      label = "Clone Screen #{a} -> #{b}"
       command = "xrandr --output #{a} --auto --output #{b} --auto --same-as #{a}"
       result[label] = command if a != b
     end

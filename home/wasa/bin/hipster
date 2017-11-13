@@ -1,6 +1,0 @@
-#!/bin/bash
-
-blag=~/web/hipster/output/
-while inotifywait -qre close_write,delete,move $blag; do
-  rsync -auz --chmod=a+r --delete -e ssh $blag wasa@minimalr.net:html/hipster/
-done

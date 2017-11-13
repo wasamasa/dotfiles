@@ -1,0 +1,100 @@
+#!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
+
+(use tcp extras posix matchable sdl2)
+
+(define width 1024)
+(define height 768)
+
+(on-exit quit!)
+
+(set-main-ready!)
+(init! '(video))
+
+(define window (create-window! "FLUTER" 0 0 width height))
+(define renderer (create-renderer! window -1 '(accelerated target-texture)))
+;;(define canvas (window-surface window))
+(define canvas (create-texture renderer 'rgba8888 'target width height))
+
+(define port (if (< (length (argv)) 2) 8080 (second (argv))))
+(define listener (tcp-listen port))
+
+(tcp-accept-timeout 20)
+
+(set-signal-handler! signal/int (lambda (_) (exit 0)))
+
+(fprintf (current-error-port) "[INFO] Listening on port ~a~%" port)
+(fprintf (current-error-port) "[INFO] Renderer flags: ~a~%" (renderer-info-flags (get-renderer-info renderer)))
+(define (pad n)
+  (string-append (if (< n 16) "0" "") (sprintf "~x" n)))
+
+(define-record-printer sdl2:color
+  (lambda (c p)
+    (fprintf p "~a~a~a~a"
+             (pad (color-a c))
+             (pad (color-r c))
+             (pad (color-g c))
+             (pad (color-b c)))))
+
+;; TODO: check whether replacing string->number helps
+;; NOTE: as every input is two chars, one can use string-ref,
+;; char->integer, subtraction and bit shifting to convert
+
+(define (handle-client i o)
+  (define $-> string->number)
+  (let loop ()
+    (if (and i o (not (eof-object? (condition-case
+                                      (peek-char i)
+                                      ((exn i/o net) #!eof)))))
+          ;; TODO: check whether this needs condition-case
+        (let ((line (string-split (read-line i))))
+;            (fprintf (current-error-port) "[line]: ~a~%" line)
+          (match
+           line
+           (("SIZE")
+            (fprintf (current-error-port) "[SIZE] ~a ~a\n" width height)
+            (fprintf o "SIZE ~a ~a~%~!" width height))
+           ;; (("PX" (? $-> x) (? $-> y))
+           ;;  (let* ((c (surface-ref canvas ($-> x) ($-> y))))
+           ;;    (fprintf o "~a~%~!" c)))
+           (("PX" (? $-> x) (? $-> y) col)
+            (fprintf (current-error-port) "[PX] ~a ~a\n" x y)
+            (let* ((r (string-chop col 2))
+                   (rgb (map (cut string->number <> 16) r))
+                   (rgba (if (= (length rgb) 3)
+                             (append rgb (list 255))
+                             (append (cdr rgb) (list (car rgb))))))
+              (when (and (<= 0 ($-> x) (sub1 width))
+                         (<= 0 ($-> y) (sub1 height)))
+                    (printf "XXX: ~a ~a ~a\n" x y rgba)
+                    (render-draw-color-set! renderer (apply make-color rgba))
+                    (render-draw-point! renderer ($-> x) ($-> y))
+;                    (surface-set! canvas ($-> x) ($-> y) (apply make-color rgba))
+                    )))
+           (else (fprintf (current-error-port) "[???] ~a~%" line)))
+          (loop))
+          (begin
+            (fprintf (current-error-port) "Ports closing~%")
+            (close-input-port i)
+            (close-output-port o)))))
+
+(let ((t (current-milliseconds)))
+  (printf "~a\n" (render-target-supported? renderer))
+  (render-target-set! renderer canvas)
+  (let loop ()
+    (let ((n (current-milliseconds)))
+       (when (> (- n t) 20)
+;             (update-window-surface! window)
+             (render-copy! renderer canvas)
+             (render-present! renderer)
+             (set! t n)))
+    (receive
+     (i o)
+     (condition-case
+      (tcp-accept listener)
+      ((exn i/o net) (loop)))
+     (thread-start!
+      (make-thread
+       (lambda ()
+         (handle-client i o)))))
+    (loop)))

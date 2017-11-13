@@ -1,4 +1,0 @@
-cmd=notify-send
-title="Nothing to see here"
-index=("First Value" "Hurr"
-       "Second Value" "Durr")

@@ -1,0 +1,6 @@
+#!/bin/sh
+ffcast -s trim png /tmp/ocr-area.png &> /dev/null
+convert /tmp/ocr-area.png -negate -fx '.8*r+.8*g+0*b' -resize 300% -morphology dilate disk:${@:-0.5} -depth 8 /tmp/ocr-area.png
+# sxiv /tmp/ocr-area.png &
+tesseract -l jpn -psm 6 /tmp/ocr-area.png stdout
+rm /tmp/ocr-area.png

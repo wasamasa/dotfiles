@@ -1,2 +1,0 @@
-#!/bin/bash
-(echo CPU hogs; cpuhogs) | dzen2 -l 6 -e onstart=uncollapse -fn cure -w 250 -x 595 -y 387 -p 2

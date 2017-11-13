@@ -1,7 +1,0 @@
-#!/bin/bash
-if [[ $(xrandr | grep mm | wc -l) -eq 2 ]]; then
-  xrandr --output $(xrandr | grep mm | tail -n 1 | awk '{print $1}') --off
-fi
-xrandr --output DP2 --off --output LVDS1 --auto --mode 1440x900 --primary --preferred
-sleep 1
-feh --bg-fill ~/images/wallpapers/pixelmavs.png

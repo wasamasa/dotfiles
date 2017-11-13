@@ -1,0 +1,131 @@
+#!/usr/bin/env ruby
+
+require 'haml'
+require 'parser/ruby19'
+
+INDENT = ' ' * 4
+
+def attributes_to_string(attributes)
+  ' ' + attributes.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')
+end
+
+def flatten_attributes(attributes, prefix = '')
+  result = {}
+  attributes.each do |key, value|
+    if value.is_a?(Hash)
+      result = result.merge(flatten_attributes(value, "#{prefix}#{key}-"))
+    else
+      result["#{prefix}#{key}"] = value
+    end
+  end
+  result
+end
+
+def unparse(node)
+  case node.type
+  when :hash
+    node.children.map { |child| unparse(child) }.to_h
+  when :pair
+    node.children.map { |child| unparse(child) }
+  when :sym, :str, :int
+    node.children[0]
+  else
+    "@#{node.location.expression.source}"
+  end
+end
+
+def dynamic_attributes(node)
+  attributes = node.value[:dynamic_attributes].old
+  if attributes
+    flatten_attributes(unparse(Parser::Ruby19.parse(attributes)))
+  else
+    {}
+  end
+end
+
+def tag_to_string(node)
+  name = node.value[:name]
+  value = node.value[:value]
+  value = "@#{value.strip}" if value && node.value[:parse]
+  opener = "<#{name}"
+  attributes = node.value[:attributes]
+  extra_attributes = dynamic_attributes(node)
+  attributes.merge!(extra_attributes) { |_key, old, new| "#{old} #{new}" }
+  opener += attributes_to_string(attributes) unless attributes.empty?
+  opener += '>'
+  ender = "</#{name}>"
+  if value
+    ["#{opener}#{value}#{ender}"]
+  else
+    [opener, ender]
+  end
+end
+
+def script_to_string(node)
+  if node.children.empty?
+    ["@#{node.value[:text].strip}"]
+  else
+    ["@#{node.value[:text].strip}{", '}']
+  end
+end
+
+def filter_to_string(node)
+  case node.value[:name]
+  when 'plain'
+    [node.value[:text]]
+  when 'css'
+    ["<style>\n#{node.value[:text].strip}\n</style>"]
+  else
+    abort("Unknown filter name: #{node.value[:name]}, node: #{node.inspect}")
+  end
+end
+
+def plain_to_string(node)
+  [node.value[:text]]
+end
+
+def comment_to_string(node)
+  comment_lines = node.value[:text].split("\n")
+  [comment_lines.map { |line| "<!-- #{line} -->" }.join("\n")]
+end
+
+def node_to_string(node)
+  case node.type
+  when :tag
+    tag_to_string(node)
+  when :script, :silent_script
+    script_to_string(node)
+  when :filter
+    filter_to_string(node)
+  when :plain
+    plain_to_string(node)
+  when :doctype
+    '<!DOCTYPE html>' # html5 is all you need
+  when :haml_comment
+    comment_to_string(node)
+  else
+    abort("Unknown HAML node type: #{node.type}, node: #{node.inspect}")
+  end
+end
+
+def visit_node(node, file, depth = 0)
+  opener, ender = node_to_string(node)
+  file.puts(INDENT * depth + opener) if opener
+  node.children.each { |child| visit_node(child, file, depth + 1) }
+  file.puts(INDENT * depth + ender) if ender
+end
+
+USAGE = 'usage: haml2twirl <infile> <outfile>'.freeze
+abort(USAGE) if ARGV.length.zero? || ARGV.length > 2
+
+infile, outfile = ARGV
+outfile ||= infile.sub(/\.html\.haml$/, '.scala.html')
+puts "#{infile} -> #{outfile}"
+
+input = File.open(infile, &:read)
+parser = Haml::Parser.new(Haml::Options.new)
+root = parser.call(input)
+
+File.open(outfile, 'w') do |file|
+  root.children.each { |child| visit_node(child, file) }
+end

@@ -1,0 +1,186 @@
+#!/usr/bin/env chicken-scheme
+;; -*- mode: scheme; -*-
+
+(use tcp extras data-structures
+     imlib2 ;giflib giflib-imlib2
+     srfi-18)
+
+;; (define host "151.217.20.67")
+(define host "127.0.0.1")
+;; (define host "151.217.20.86")
+(define port 8080)
+
+(define-values (in out) (tcp-connect host port))
+
+(define (request payload read?)
+  (write-line payload out)
+  (when read?
+    (let loop ((i 0)
+               (lines '()))
+      (if (< i read?)
+          (loop (add1 i) (cons (read-line in) lines))
+          lines))))
+
+(define (size)
+  (map string->number (cdr (string-split (car (request "SIZE" 1))))))
+
+(define (put x y c)
+  (request (format "PX ~a ~a ~a" x y c) #f))
+
+(define (get x y)
+  (request (format "PX ~a ~a" x y) 1))
+
+(define batch-size 50)
+
+(define (->messages template data)
+  (map
+   (lambda (batch)
+     (let ((lines (map (lambda (args) (apply format template args)) batch)))
+       (string-intersperse lines "\n")))
+   (chop data batch-size)))
+
+(define (put* messages)
+  (for-each (lambda (message) (request message #f)) messages))
+
+(define (get* proc messages)
+  (for-each (lambda (message) (for-each proc (request message batch-size))) messages))
+
+#;(define (pixels x y w h)
+  (get*
+   (let ((size (* w h)))
+     (let loop ((i 0)
+                (messages '()))
+       (if (< i size)
+           (let* ((row (quotient i w))
+                  (col (remainder i w))
+                  (message (list (+ x col) (+ y row))))
+             (loop (add1 i) (cons message messages)))
+           (->messages "PX ~a ~a" messages))))))
+
+(define width #;1920 640)
+(define height #;1080 480)
+
+(define (hex a r g b)
+  (string-append
+   (if (< a 16)
+       (format "0~x" a)
+       (format "~x" a))
+   (if (< r 16)
+       (format "0~x" r)
+       (format "~x" r))
+   (if (< g 16)
+       (format "0~x" g)
+       (format "~x" g))
+   (if (< b 16)
+       (format "0~x" b)
+       (format "~x" b))))
+
+(define (image-data img x y)
+  (let* ((w (image-width img))
+         (h (image-height img))
+         (size (* w h)))
+    (let loop ((i 0)
+               (messages '()))
+      (if (< i size)
+          (let ((row (quotient i w))
+                (col (remainder i w)))
+            (receive
+             (r g b a)
+             (image-pixel/rgba img col row)
+             (let* ((c (hex a r g b))
+                    (message (list (+ x col) (+ y row) c)))
+               (loop (add1 i) (cons message messages)))))
+          (->messages "PX ~a ~a ~a" messages)))))
+
+(define (gif-data path x y)
+  (let ((gif (open-gif path)))
+    (slurp-gif gif)
+    (map (lambda (img) (image-data img 300 700)) (gif->imlib2-images gif))))
+
+(define (box-data x y w h c)
+  (let ((size (* w h)))
+    (let loop ((i 0)
+               (messages '()))
+      (if (< i size)
+          (let* ((row (quotient i w))
+                 (col (remainder i w))
+                 (message (list (+ x col) (+ y row) c)))
+            (loop (add1 i) (cons message messages)))
+          (->messages "PX ~a ~a ~a" messages)))))
+
+(define (censorship)
+  (let* ((dog (image-data (image-load "/home/wasa/fallkiste/skype_avatar.png") 1300 800))
+         (putin (image-data (image-load "/home/wasa/fallkiste/putin.png") 1310 520))
+         (box (box-data 725 650 100 30 "000000"))
+         (box1 (box-data 800 870 100 30 "000000"))
+         (box2 (box-data 1300 720 100 30 "000000"))
+         (box3 (box-data 1350 830 100 30 "000000")))
+    (let loop ()
+      (put* dog)
+      ;; (put* putin)
+      ;; (put* box1)
+      ;; (put* box2)
+      ;; (put* box3)
+      (loop))))
+
+(define (cool-dog)
+  (let loop ()
+    ;(for-each put* (gif-data "/home/wasa/fallkiste/skype_avatar.gif" 300 300))
+    (put* (image-data (image-load "/home/wasa/fallkiste/skype_avatar.png") 300 300))
+    (loop)))
+
+(define (bouncy-box)
+  (let ((xr 20)
+        (yr 40))
+    (let loop ((x 0)
+               (y 0))
+      (when (or (< x 0) (> x width))
+        (set! xr (- xr)))
+      (when (or (< y 0) (> y height))
+        (set! yr (- yr)))
+      (let ((x* (+ x xr))
+            (y* (+ y yr)))
+        (put* (box-data x y 80 80 "000000"))
+        (put* (box-data x* y* 80 80 "ff00ff"))
+        (loop x* y*)))))
+
+(define bg "ffffff")
+
+(define (clear)
+  (put* (box-data 0 0 width height bg)))
+
+(define (coords x y w h)
+  (let ((size (* w h)))
+    (let loop ((i 0)
+               (coords '()))
+      (if (< i size)
+          (let ((row (quotient i h))
+                (col (remainder i h)))
+            (loop (add1 i) (cons (list row col) coords)))
+          (->messages "PX ~a ~a" coords)))))
+
+(define (scrot path)
+  (let ((img (image-create width height)))
+    (get*
+     (lambda (pixel)
+       (let* ((data (cdr (string-split pixel)))
+              (x (string->number (car data)))
+              (y (string->number (cadr data)))
+              (c (list-ref data 2))
+              (len (string-length c))
+              (r (string->number (if (= len 6) (substring c 0 2) (substring c 2 4)) 16))
+              (g (string->number (if (= len 6) (substring c 2 4) (substring c 4 6)) 16))
+              (b (string->number (if (= len 6) (substring c 4 6) (substring c 6 8)) 16))
+              (a (string->number (if (= len 6) "ff" (substring c 0 2)) 16)))
+         (image-draw-pixel img (color/rgba r g b a) x y)))
+     (coords 0 0 width height))
+    (image-save img path)))
+
+;(scrot "scrot.png")
+
+;(bouncy-box)
+(cool-dog)
+(pp (size))
+
+(close-input-port in)
+(close-output-port out)

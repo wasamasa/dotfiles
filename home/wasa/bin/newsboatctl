@@ -1,14 +1,17 @@
 #!/usr/bin/env chicken-scheme
 ;; -*- mode: scheme; -*-
 
-(use files srfi-1 data-structures
+(use files srfi-1 data-structures extras utils
      sql-de-lite scsh-process)
 
-(define home (get-environment-variable "HOME"))
+(define (xdg-path environment-variable fallback path)
+  (let ((home (get-environment-variable environment-variable)))
+    (if (and home (eqv? (string-ref home 0) #\/))
+        (string-append home path)
+        (string-append (get-environment-variable "HOME") fallback path))))
 
-;; NOTE: you might want to customize this
-(define urls-file (make-pathname home ".config/newsbeuter/urls"))
-(define db-file (make-pathname home ".local/share/newsbeuter/cache.db"))
+(define urls-file (xdg-path "XDG_CONFIG_HOME" "/.config" "/newsboat/urls"))
+(define db-file (xdg-path "XDG_DATA_HOME" "/.local/share" "/newsboat/cache.db"))
 
 (define (error-message message . args)
   (with-output-to-port (current-error-port)
@@ -41,7 +44,7 @@
     (file-close fd)))
 
 (define (reload-feeds!)
-  (run (newsbeuter "-x" "reload") (> "/dev/null")))
+  (run (newsboat "-x" "reload") (> "/dev/null")))
 
 (define (unread-feeds db)
   (query fetch-all
@@ -69,6 +72,28 @@
       (call-with-database db-file catch-up-with-all!)
       (call-with-database db-file (cut catch-up-with-feed! <> feed-url))))
 
+(define (db-feed-urls)
+  (call-with-database db-file
+    (lambda (db) (query fetch-column (sql db "SELECT rssurl FROM rss_feed;")))))
+
+(define (url? line)
+  (and-let* ((index (substring-index "http" line 0)))
+    (zero? index)))
+
+(define (file-feed-urls)
+  (let* ((lines (read-lines urls-file))
+         (url-lines (filter url? lines)))
+    (map (lambda (line) (car (string-split line))) url-lines)))
+
+(define ie10-user-agent "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)")
+
+(define (check-feeds!)
+  (for-each (lambda (url)
+              (when (not (zero? (run (curl "-fsA" ie10-user-agent ,url)
+                                     (> "/dev/null"))))
+                (print url)))
+            (file-feed-urls)))
+
 (define (main)
   (sanity-check)
   (when (null? (command-line-arguments))
@@ -86,6 +111,7 @@
        (if (null? args)
            (catch-up!)
            (catch-up! (car args))))
+      ((check-feeds) (check-feeds!))
       (else (error-message "Invalid command given")))))
 
 (main)
