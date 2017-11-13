@@ -1,26 +1,33 @@
 * Build system and packaging work
 
-- =chicken= is using a positional argument for the file name... (note
+- [ ] =chicken= is using a positional argument for the file name... (note
   the confusing error message when you try specifying an option first)
-- Missing LICENSE in egg tarballs
-- Implement an option for =chicken-install= to not fetch/install any
+- [ ] Missing LICENSE in egg tarballs
+- [X] Implement an option for =chicken-install= to not fetch/install any
   dependencies
-- http://code.call-cc.org/egg-tarballs/ should be official (see
+- [ ] Implement an option for =chicken-install= to retrieve eggs to
+  install from a file (like with =@requirements.txt= or =<
+  requirements.txt= or =-f requirements.txt=), with each line looking
+  like =name[:version]=
+- [ ] Implement an option for =chicken-status= to list versions in
+  that format
+- [ ] Report a bug for eggs installed via C5 not having a version
+- [ ] http://code.call-cc.org/egg-tarballs/ should be official (see
   http://www.more-magic.net/posts/vcs-independent-distribution.html
   for details)
-- Same goes for
+- [ ] Same goes for
   http://code.call-cc.org/cgi-bin/gitweb.cgi?p=chicken-core.git;a=tree;hb=HEAD
-- Source links in the wiki (svnwiki hacking?)
-- Do something against the hardcoded locations (having a globally
+- [ ] Source links in the wiki (svnwiki hacking?)
+- [ ] Do something against the hardcoded locations (having a globally
   installed CHICKEN and locally installed libraries doesn't mix as
   they're looked up in the global location unless you use environment
   variables, perhaps an approach à la =pip install --user= or =gem=
   and its user option could work)
-- Eggs using =setup-helper= (like, =posix-utils=) are considered
+- [ ] Eggs using =setup-helper= (like, =posix-utils=) are considered
   broken (as it's going for the =(include ...)= approach instead of
   the recommended =(use ...)=) and would need to be fixed before
   someone attempts packaging it as make dependency!
-- Use =<chicken/chicken.h>= in generated sources
+- [ ] Use =<chicken/chicken.h>= in generated sources
 
 #+BEGIN_SRC
 <Earnestly> wasamasa: All chicken needs is the ability for -p to be an actual prefix and an install location
@@ -92,6 +99,9 @@ support for archives by using the great [[http://libarchive.org/][libarchive]]),
 language (maybe graph-style or something simpler?) and doesn't require
 a database server.
 
+- https://github.com/fullstackio/cq (very simple query language for js)
+- https://github.com/hchasestevens/astpath (xpath for python)
+
 * Fuzzy matcher
 
 That would be nice to have as basis for fuzzy completion inside Emacs,
@@ -140,17 +150,6 @@ See http://code.call-cc.org/cgi-bin/gitweb.cgi?p=chicken-core.git;a=blob;f=misc/
 
 This would allow for writing a tiling window manager for Wayland and Scheme!
 
-* 32C3
-
-- bring switch and cat5 cables
-- bring beamer/screen
-- bring a stuffed alien/chicken (ente suggested two parentheses as
-  sculptures on the ends of the table)
-- procedural image/sound generation
-- maybe even a dsl for interactive debugging?
-- http://youtu.be/s1eNjUgaB-g
-- http://youtu.be/rtR63-ecUNo
-
 * Pastebin
 
 - paste.brause.cc
@@ -160,12 +159,12 @@ This would allow for writing a tiling window manager for Wayland and Scheme!
 - allow highlighting with language via pygments
 - allow highlighting line/range
 
-* inotify egg
+* DONE inotify egg
 
 - see https://github.com/xlevus/chicken-stuff/blob/master/inotify.scm
 - learn how callbacks would work
 
-* GIF
+* DONE GIF
 
 - write giflib C code
 - study other wrappers
@@ -175,7 +174,7 @@ This would allow for writing a tiling window manager for Wayland and Scheme!
   http://api.call-cc.org/doc/getopt-long
   https://bitbucket.org/ckeen/pee/src/54dea32f4471a500d288579e9ac4596f51d92255/pee.scm?at=master&fileviewer=file-view-default
 
-* GUI
+* DONE GUI
 
 - https://github.com/vurtun/zahnrad
 - this could be cool if it were usable from CHICKEN...
@@ -264,6 +263,13 @@ See http://autoc4/mate/ and https://github.com/Gordin/c4-mate
 
 Port bb to CHICKEN (bb as name is already taken by the fltk wrapper egg)
 
+* MELPA
+
+- Alternative MELPA interface
+- Define an API for paginated package list, package details, etc.
+- Make it fast
+- Maybe extend it to all archives?
+
 * MELPA Stable
 
 ** Design
@@ -287,6 +293,8 @@ Port bb to CHICKEN (bb as name is already taken by the fltk wrapper egg)
 * Twitter Bot
 
 - Reuse SUPREMEGENTLEMAN (with Elliot Rodger + X?)
+- Alternatively/additionally make one based on John[Lisbeth] and
+  classic buddhist texts, maybe erowid
 - Implement Markov
 - https://github.com/n3mo/clucker/blob/master/clucker.scm <- missing writers
 - https://dev.twitter.com/rest/reference/post/statuses/update
@@ -325,7 +333,7 @@ This could be tricky (or not).  Time to write a PoC...
 - Goal: How well does 9p work for configuration?
 - http://wiki.call-cc.org/eggref/4/9p
 
-* EPUB viewer
+* DONE EPUB viewer
 
 - solved with the webkit egg!
 - feature: double page spread?
@@ -359,6 +367,79 @@ the webkit egg and webaudio...
 
 * Implement a C-style printf
 
-- no idea about the name
+- no idea about the name (tarmoff?)
 - steal semantics from a simple libc, like musl
-- check SRFI-28 and SRFI-48 for implementation hints
+- check SRFI-28 and SRFI-48 (and eformat?) for implementation hints
+
+* Porting old eggs
+
+- aalib
+- syntax-case (for fame?)
+- eprintf/eformat
+
+* Writing a meme generator with imlib2/cairo
+
+* Writing an userbar generator with imlib2/cairo
+
+http://www.userbars.be/resources
+http://images.google.de/imgres?imgurl=http%3A%2F%2Ffindicons.com%2Ffiles%2Ficons%2F2807%2Fmetronome%2F128%2Ffirefox.png&imgrefurl=http%3A%2F%2Ffindicons.com%2Fsearch%2Ffirefox%2F5&h=128&w=128&tbnid=RWfMxjdzIvidKM%3A&docid=gfIDnCoopxMOVM&hl=en&ei=7MN1V43eGsvXgAb0iqLYBg&tbm=isch&iact=rc&uact=3&dur=533&page=1&start=0&ndsp=37&ved=0ahUKEwiNhLqmi9HNAhXLK8AKHXSFCGsQMwhjKCAwIA&safe=images&bih=865&biw=1440
+
+* Write blog post on combining pango and cairo
+
+https://dthompson.us/font-rendering-in-opengl-with-pango-and-cairo.html
+
+* Write blog post on combining sdl2 and cairo
+
+- first step: using common pixel format, then render with cairo on sdl2 texture
+- <wasamasa> apparently both have rgb16_565/rgb565, rgb24 and argb32/argb8888
+- https://www.cairographics.org/SDL/
+- http://stackoverflow.com/questions/24316393/can-cairo-use-sdl-texture-as-a-render-target
+
+* Write blog post on combining glfw3 and nanovg
+
+- https://www.upyum.com/cgit.cgi/poulexagone/commit/?id=1567b1df26999275c48bc6e65669d2828f077cac
+
+* Write a irregex visualizer
+
+Not sure whether to console (with fmt?), a web thing (with spock?) or with emacs
+
+* Blog post on REBOL and GUI
+
+- rebol3 doesn't support it, red only supports windows, so rebol2 it is...
+- downloaded from http://www.rebol.com/download-view.html
+- requires lib32(!) stuff, including xt, xmu, xaw
+- crashes with http://www.rebol.com/article/0545.html
+- solved with installing xorg-fonts-type1
+- to use these right away, use =xset +fp /usr/share/fonts/Type1= and
+  verify with =xlsfonts | grep courier=
+- alternatively, just reboot your xorg session and these should be found
+- execute =rebol= and witness double-free crashes!
+- alternatively, =./rebol -v= for console
+
+* Port cool nuklear/dear imgui stuff
+
+- https://github.com/fabioarnold/TwoTriangles
+
+* NFO/ASCII/ANSI art viewer
+
+http://sixteencolors.net/
+http://pelulamu.net/unscii/
+
+* Optimize blog source rendering throughput
+
+Currently I'm using =rst2html= which requires pygments for syntax
+highlighting.  Starting a process over and over again takes time
+(TODO: benchmark whether that's really the bottleneck), perhaps a
+better solution is needed
+
+** DONE Run =rst2html= code with pyffi egg
+
+Just forget about it, that thing isn't even close to bullet-proof.
+
+** TODO Write a persistent process converting stuff
+
+I've had some sort of success with communicating by sending a line and
+receiving output, integrating that into hyde poses some challenges (as
+it's sending the whole file contents, not just a file name).  In other
+words, I need to think up a better protocol than that.
+
