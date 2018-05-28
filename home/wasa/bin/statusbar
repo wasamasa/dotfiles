@@ -75,8 +75,12 @@
                   (string->number (list-ref (string-split line) column)))
                 lines)))
       (fold + 0 columns)))
-  ;; drop first two header lines, drop last line (which is always lo)
-  (let* ((lines (drop-right (drop (read-lines "/proc/net/dev") 2) 1))
+  (let* (;; drop first two header lines
+         (lines (drop (read-lines "/proc/net/dev") 2))
+         ;; keep wlan0 and eth0 interfaces
+         (lines (filter (lambda (line)
+                          (member (car (string-split line)) '("wlan0:" "eth0:")))
+                        lines))
          (downloads (process-net-dev lines download-column))
          (download (if last-downloads
                        (/ (- downloads last-downloads) sleep-time)
