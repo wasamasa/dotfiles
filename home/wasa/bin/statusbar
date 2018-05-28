@@ -107,6 +107,11 @@
                          0))) ;; hack for displaying 0% at beginning
     (list used (clamp (inexact->exact (round percentage))))))
 
+(define thermal-path "/sys/bus/acpi/devices/LNXTHERM:00/thermal_zone/temp")
+(define (cpu-temperature)
+  (let ((line (car (read-lines thermal-path))))
+    (/ (string->number line) 1000)))
+
 (define (used-ram-percentage)
   (let* ((lines (read-lines "/proc/meminfo"))
          (available (string->number (cadr (string-split (car lines)))))
@@ -143,6 +148,7 @@
                 ((last-downloads download-speed last-uploads upload-speed)
                  (internet-speed last-downloads last-uploads))
                 ((last-cpu-usage cpu-percentage) (cpu-usage last-cpu-usage))
+                (cpu-temp (cpu-temperature))
                 (ram (used-ram-percentage))
                 ((battery-state battery-percentage) (battery))
                 (time (format-time))
@@ -203,7 +209,10 @@
                `((full_text . ,(number->string cpu-percentage))
                  (color . ,(if (>= cpu-percentage 50) red foreground))
                  (separator . #f) (separator_block_width . 1))
-               `((full_text . "%") (color . ,foreground))
+               `((full_text . "%") (color . ,foreground)
+                 (separator . #f) (separator_block_width . 1))
+               `((full_text . ,(format " (~d°C)" cpu-temp))
+                 (color . ,(if (>= cpu-temp 80) red foreground)))
                `((full_text . "RAM: ") (color . ,red)
                  (separator . #f) (separator_block_width . 1))
                `((full_text . ,(number->string ram))
