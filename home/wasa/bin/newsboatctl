@@ -1,8 +1,8 @@
 #!/usr/bin/env chicken-scheme
 ;; -*- mode: scheme; -*-
 
-(use files srfi-1 data-structures extras utils
-     sql-de-lite scsh-process)
+(use files srfi-1 data-structures extras utils posix irregex
+     scsh-process sql-de-lite)
 
 (define (xdg-path environment-variable fallback path)
   (let ((home (get-environment-variable environment-variable)))
@@ -86,12 +86,40 @@
     (map (lambda (line) (car (string-split line))) url-lines)))
 
 (define ie10-user-agent "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)")
+(define custom-user-agent "linux:newsboatctl:0.0.1 (wasamasa)")
+
+(define (http-status line)
+  (let ((match (irregex-search "^HTTP/[0-9](.[0-9])? ([0-9]+) " line)))
+    (if match
+        (string->number (irregex-match-substring match 2))
+        #f)))
+
+(define (check-feed url)
+  (receive
+   (in out pid)
+   (process "curl" (list "-sLIA" custom-user-agent url))
+   (close-output-port out)
+   (let ((lines (read-lines in)))
+     (close-input-port in)
+     (if (null? lines)
+         #f
+         (let ((status-codes (filter-map http-status lines)))
+           (map (lambda (status)
+                  (cond
+                   ((< status 300) 'ok)
+                   ((< status 400) 'redirect)
+                   (else 'error)))
+                status-codes))))))
 
 (define (check-feeds!)
   (for-each (lambda (url)
-              (when (not (zero? (run (curl "-fsA" ie10-user-agent ,url)
-                                     (> "/dev/null"))))
-                (print url)))
+              (let ((status-list (check-feed url)))
+                (when (memq 'ok status-list)
+                  (print "OK: " url))
+                (when (memq 'redirect status-list)
+                  (print "Redirect: " url))
+                (when (memq 'error status-list)
+                  (print "Error: " url))))
             (file-feed-urls)))
 
 (define (main)
