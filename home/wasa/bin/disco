@@ -1,0 +1,10 @@
+#!/bin/bash
+while true
+do
+    echo 255 > /sys/class/leds/tpacpi::thinklight/brightness
+    echo 0 > /sys/class/backlight/intel_backlight/brightness
+    sleep 0.03
+    echo 0 > /sys/class/leds/tpacpi::thinklight/brightness
+    echo 3000 > /sys/class/backlight/intel_backlight/brightness
+    sleep 0.03
+done

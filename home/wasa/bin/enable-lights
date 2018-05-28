@@ -1,0 +1,5 @@
+#!/bin/bash
+chmod 664 /sys/class/leds/tpacpi::thinklight/brightness
+chown root:wheel /sys/class/leds/tpacpi::thinklight/brightness
+chmod 664 /sys/class/backlight/intel_backlight/brightness
+chown root:wheel /sys/class/backlight/intel_backlight/brightness
