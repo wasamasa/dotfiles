@@ -77,9 +77,8 @@
       (fold + 0 columns)))
   (let* (;; drop first two header lines
          (lines (drop (read-lines "/proc/net/dev") 2))
-         ;; keep wlan0 and eth0 interfaces
-         (lines (filter (lambda (line)
-                          (member (car (string-split line)) '("wlan0:" "eth0:")))
+         ;; remove loopback interface
+         (lines (remove (lambda (line) (equal? (car (string-split line)) "lo:"))
                         lines))
          (downloads (process-net-dev lines download-column))
          (download (if last-downloads
