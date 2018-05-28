@@ -1,8 +1,8 @@
-# 
-# /etc/fstab: static file system information
+# Static information about the filesystems.
+# See fstab(5) for details.
 #
 # <file system>	<dir>	<type>	<options>	<dump>	<pass>
 # /dev/sda1
-UUID=e88f86d7-f0be-4303-9a0e-3d160c0931b3	/         	ext4      	rw,relatime,data=ordered,discard	0 1
+UUID=f0867519-bf2b-4926-b877-d677462f4196	/         	ext4      	rw,relatime,data=ordered,discard	0 1
 /swap none swap defaults 0 0
 

@@ -1,3 +1,5 @@
+ACTION=="add", SUBSYSTEM=="usb", ATTRS{product}=="ThinkPad USB Laser Mouse", ATTR{power/autosuspend}="0"
+ACTION=="add", SUBSYSTEM=="usb", ATTRS{product}=="ThinkPad USB Laser Mouse", ATTR{power/control}="on"
 ACTION=="add", SUBSYSTEM=="usb", ATTRS{product}=="USB-PS/2 Optical Mouse", ATTR{power/autosuspend}="0"
 ACTION=="add", SUBSYSTEM=="usb", ATTRS{product}=="USB-PS/2 Optical Mouse", ATTR{power/control}="on"
 ACTION=="add", SUBSYSTEM=="usb", ATTRS{product}=="USB Keyboard", ATTR{power/autosuspend}="0"

@@ -5,3 +5,8 @@ evdev:atkbd:dmi:*
 evdev:input:b0003v04B4p0101*
  KEYBOARD_KEY_70039=leftctrl # capslock to leftctrl
  KEYBOARD_KEY_70065=102nd # menu to <> (compose)
+ KEYBOARD_KEY_7004b=insert # pgup to ins
+ KEYBOARD_KEY_7004e=delete # pgdn to del
+ KEYBOARD_KEY_70049=pageup # ins to pgup
+ KEYBOARD_KEY_7004c=pagedown # del to pgdn
+ 
