@@ -1,0 +1,3 @@
+cache=${HOME}/.cache/npm
+prefix=${HOME}/.usr
+progress=false
