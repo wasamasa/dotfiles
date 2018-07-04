@@ -1,7 +1,8 @@
+# ln -s ~/.XCompose ~/.config/gtk-3.0/Compose
 # shorthand
 <Multi_key> <l> <o> <o> <k>           : "ಠ_ಠ"
 <Multi_key> <p> <o> <o>               : "💩"
-<Multi_key> <s> <h> <r> <u> <g>       : "¯\_(ツ)_/¯"
+<Multi_key> <s> <h> <r> <u> <g>       : "¯\\_(ツ)_/¯"
 
 # silly signs
 <Multi_key> <c> <c> <c> <p>           : "☭"
@@ -32,8 +33,8 @@
 <Multi_key> <equal> <e>               : "€"
 <Multi_key> <l> <minus>               : "£"
 <Multi_key> <minus> <l>               : "£"
-<Multi_key> <l> <equal>               : "¥"
-<Multi_key> <equal> <l>               : "¥"
+<Multi_key> <y> <equal>               : "¥"
+<Multi_key> <equal> <y>               : "¥"
  
 # quotes
 <Multi_key> <greater> <space>         : "›"
