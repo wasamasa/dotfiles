@@ -1,0 +1,3 @@
+sudo() {
+  /usr/bin/sudo --askpass "$@"
+}
