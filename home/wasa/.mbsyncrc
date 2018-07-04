@@ -1,32 +1,10 @@
-# Work account
-
-IMAPAccount work
-Host mail.networkname.de
-User vasilij.schneidermann@bevuta.com
-PassCmd "sed -n -e 's,^machine mail.networkname.de login vasilij.schneidermann@bevuta.com password \(.*\),\1,p' < ~/.netrc"
-CertificateFile ~/.mail/networkname.pem
-
-IMAPStore work-remote
-Account work
-
-MaildirStore work-local
-Path ~/.mail/work/
-Inbox ~/.mail/work/inbox
-
-Channel work
-Master :work-remote:
-Slave :work-local:
-Patterns *
-Create Both
-SyncState *
-
 # Private account
 
 IMAPAccount private
 Host imap.gmail.com
 User hurrus.durrus@gmail.com
-PassCmd "sed -n -e 's,^machine mail.gmail.com login hurrus.durrus@gmail.com password \(.*\),\1,p' < ~/.netrc"
-UseIMAPS yes
+PassCmd "passjar mail/hurrus.durrus@gmail.com | head -n1"
+SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore private-remote
@@ -79,8 +57,8 @@ Channel private-trash
 IMAPAccount public
 Host imap.gmail.com
 User v.schneidermann@gmail.com
-PassCmd "sed -n -e 's,^machine mail.gmail.com login v.schneidermann@gmail.com password \(.*\),\1,p' < ~/.netrc"
-UseIMAPS yes
+PassCmd "passjar mail/v.schneidermann@gmail.com | grep mbsync | sed 's/mbsync: //'"
+SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore public-remote
@@ -127,3 +105,50 @@ Channel public-archive
 Channel public-sent
 Channel public-drafts
 Channel public-trash
+
+# bevuta account
+
+IMAPAccount bevuta
+Host mail.networkname.de
+User vasilij.schneidermann@bevuta.com
+PassCmd "passjar mail/bevuta.com | head -n1"
+AuthMechs LOGIN
+SSLType IMAPS
+#CertificateFile ~/.mail/networkname.pem
+
+IMAPStore bevuta-remote
+Account bevuta
+
+MaildirStore bevuta-local
+Path ~/.mail/bevuta/
+Inbox ~/.mail/bevuta/inbox
+
+Channel bevuta
+Master :bevuta-remote:
+Slave :bevuta-local:
+Patterns *
+Create Both
+SyncState *
+
+# Mailbox
+
+IMAPAccount mailbox
+Host imap.mailbox.org
+User mail@vasilij.de
+PassCmd "passjar mail/mailbox.org | head -n1"
+AuthMECHS LOGIN
+SSLType IMAPS
+
+IMAPStore mailbox-remote
+Account mailbox
+
+MaildirStore mailbox-local
+Path ~/.mail/mailbox/
+Inbox ~/.mail/mailbox/Inbox
+
+Channel mailbox
+Master :mailbox-remote:
+Slave :mailbox-local:
+Patterns *
+Create Both
+SyncState *

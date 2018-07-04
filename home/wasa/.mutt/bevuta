@@ -1,0 +1,14 @@
+# vim: ft=muttrc
+
+  set from      = "vasilij.schneidermann@bevuta.com"
+  set sendmail  = "/usr/bin/msmtp -a bevuta"
+  set mbox      = "+bevuta/inbox"
+  set record    = "+bevuta/sent"
+  set postponed = "+bevuta/drafts"
+  set realname  = "Vasilij Schneidermann"
+  set sig_dashes
+  set signature = ~/.mutt/bevuta_sig
+  set trash = "+bevuta/Trash"
+
+color status cyan default
+macro index a "<save-message>+bevuta/archive<return>" "archive mail"

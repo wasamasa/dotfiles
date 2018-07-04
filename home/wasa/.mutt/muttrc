@@ -1,10 +1,10 @@
-# vim: ft=muttrc
-
+  set abort_noattach    = ask-yes
   set alias_file        = ~/.mutt/aliases
   set alias_format      = "%4n %t %-20a %r"
   set ascii_chars       = no
   set askcc
   set assumed_charset   = "utf-8:us-ascii:iso-8859-1"
+  set attach_keyword    = "\\<(attach(|ed|ments?)|patch)\\>"
   set beep_new
 unset collapse_unread
 unset confirmappend
@@ -15,6 +15,7 @@ unset confirmappend
   set editor            = "/usr/bin/vim +:silent+?^$"
   set fast_reply
   set folder            = ~/.mail
+  set folder_format     = "%2C %8s %d %f"
   set forward_format    = "Fwd: %s"
   set forward_quote
   set header_cache      = ~/.mutt/cache/headers
@@ -22,6 +23,8 @@ unset confirmappend
   set index_format      = "%3C %Z %[!%m/%d] %-25.25F %s"
   set ispell            = "aspell -e -c"
   set mail_check        = 0
+  set mail_check_stats
+  set mail_check_stats_interval = 10
 unset mark_old
 unset markers
   set message_cachedir  = ~/.mutt/cache/bodies
@@ -42,13 +45,13 @@ unset markers
   set sendmail_wait     = -1
   set send_charset      = "utf-8:us-ascii:iso-8859-1"
   set sleep_time        = 0
-  set sidebar_delim     = '│'
+  set sidebar_divider_char = '│'
+  set sidebar_format    = "%B%?F? [%F]?%* %?N?%N/?%S"
   set sidebar_visible   = no
   set sidebar_width     = 24
 unset sig_dashes        # empty signatures, use set sig_dashes otherwise
   set sort              = threads
   set strict_threads    = yes
-  set sort_browser      = reverse-date
   set sort_aux          = reverse-last-date-received
 unset sort_re
   set spoolfile         = "+private/inbox"
@@ -57,7 +60,7 @@ unset sort_re
   set thorough_search
   set thread_received
   set tilde
-  set timeout           = 3
+  set timeout           = 30
   set tmpdir            = ~/.mutt/temp
   set uncollapse_jump
   set use_envelope_from
@@ -69,10 +72,11 @@ auto_view text/html text/plain text/enriched
 #alternative_order text/enriched text/html text/plain
 alternative_order text/plain text/enriched
 
-folder-hook private/*  source ~/.mutt/private
-folder-hook public/* source ~/.mutt/public
-folder-hook work/* source ~/.mutt/work
-folder-hook * "exec collapse-all"
+folder-hook private/* "source ~/.mutt/private"
+folder-hook public/* "source ~/.mutt/public"
+folder-hook bevuta/* "source ~/.mutt/bevuta"
+folder-hook mailbox/* "source ~/.mutt/mailbox"
+folder-hook . "exec collapse-all"
 
 ignore *
 unignore from: to: cc: date: subject:
@@ -81,10 +85,12 @@ hdr_order from: to: cc: date: subject:
 
 mailboxes +private/inbox +private/archive +private/sent +private/trash
 mailboxes +public/inbox +public/archive +public/sent +public/trash
-mailboxes +work/inbox +work/sent
+mailboxes +bevuta/inbox +bevuta/sent
+mailboxes +mailbox/Inbox +mailbox/Sent
 
 bind index i  noop
 bind index x  noop
+bind index g  noop
 bind index gg first-entry
 bind index J  next-unread
 bind index K  previous-unread
@@ -98,12 +104,13 @@ bind pager j  next-line
 bind pager k  previous-line
 bind pager J  next-undeleted
 bind pager K  previous-undeleted
+bind pager g  noop
 bind pager gg top
 bind pager G  bottom
 bind index,pager \# noop
 bind index,pager \& noop
 bind index,pager R  group-reply
-#bind attach <return> view-mailcap
+bind index,pager @ compose-to-sender
 
 macro index ,i "<change-folder>!<return>" "go to inbox"
 macro index ,p "<pipe-message>cat > ~/" "save message as"
@@ -129,12 +136,14 @@ macro index,pager 5 "<change-folder>+public/inbox<return>" "go to public inbox"
 macro index,pager 6 "<change-folder>+public/archive<return>" "go to public archive"
 macro index,pager 7 "<change-folder>+public/sent<return>" "go to public sent"
 macro index,pager 8 "<change-folder>+public/trash<return>" "go to public trash"
-macro index,pager 9 "<change-folder>+work/inbox<return>" "go to work inbox"
-macro index,pager 0 "<change-folder>+work/sent<return>" "go to work sent"
+macro index,pager 9 "<change-folder>+bevuta/inbox<return>" "go to bevuta inbox"
+macro index,pager 0 "<change-folder>+bevuta/sent<return>" "go to bevuta sent"
+macro index,pager - "<change-folder>+mailbox/Inbox<return>" "go to mailbox inbox"
+macro index,pager = "<change-folder>+mailbox/Sent<return>" "go to mailbox sent"
 
-macro index b "<enter-command>toggle sidebar_visible<enter>" "toggle sidebar"
-macro pager b "<enter-command>toggle sidebar_visible<enter>" "toggle sidebar"
+macro index,pager b "<enter-command>toggle sidebar_visible<enter>" "toggle sidebar"
 
+source /usr/share/doc/neomutt/samples/gpg.rc
 source $alias_file
 source ~/.mutt/colors
 source ~/.mutt/private

@@ -4,11 +4,11 @@
   set sendmail  = "/usr/bin/msmtp -a public"
   set mbox      = "+public/archive"
 unset record
-  set postponed     = "+public/drafts"
-  set realname      = "Vasilij Schneidermann"
-  set signature     = ~/.mutt/public_sig
+  set postponed = "+public/drafts"
+  set realname  = "Vasilij Schneidermann"
+unset sig_dashes
+  set signature = ~/.mutt/public_sig
+  set trash = "+public/trash"
 
 color status green default
-
-macro index ,c "<change-folder>+private/inbox<return>" "change accounts"
-macro index D "<save-message>+public/trash<enter>" "move message to the trash"
+bind index a purge-message
