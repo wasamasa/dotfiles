@@ -1,0 +1,7 @@
+[Match]
+Name=eth0
+[Network]
+DHCP=v4
+[DHCP]
+UseDomains=true
+
