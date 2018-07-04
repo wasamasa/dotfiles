@@ -6,8 +6,6 @@ Xft.rgba: rgb
 !Emacs settings
 Emacs.background: #002b36
 Emacs.cursorBlink: off
-Emacs.Fontset-0: -*-DejaVu Sans Mono-*-*-*-*-14-*-*-*-*-*-fontset-dejavu14, symbol:-*-DejaVu Sans-*-*-*-*-14-*-*-*-*-*-*, symbol:-*-Symbola-*-*-*-*-14-*-*-*-*-*-*
-Emacs.font: fontset-dejavu14
 Emacs.menuBar: off
 Emacs.toolBar: off
 Emacs.verticalScrollBars: off
@@ -15,3 +13,6 @@ Emacs.verticalScrollBars: off
 Emacs.mode-line.attributeForeground: #93a1a1
 Emacs.mode-line.attributeBackground: #002b36
 Emacs.mode-line.attributeBox: (:line-width 1 :color "#073642")
+
+! fix xterm interpreting meta like altgr
+XTerm.VT100.EightBitInput: false
