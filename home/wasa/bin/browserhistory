@@ -2,7 +2,8 @@
 ;; -*- mode: scheme; -*-
 
 (use srfi-1 srfi-69 data-structures extras ports
-     sql-de-lite getopt-long)
+     (except sql-de-lite error-message)
+     getopt-long)
 
 (define (xdg-path environment-variable fallback path)
   (let ((home (get-environment-variable environment-variable)))
