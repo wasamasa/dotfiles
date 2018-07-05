@@ -1,6 +1,6 @@
 #!/bin/bash
 
-scrot_path="$HOME/scrots/$(date +%F_%T).png"
+scrot_path="$HOME/scrots/$(date +%Y%m%d_%H%M%S).png"
 if [[ $1 == '-s' ]]; then
   maim --hidecursor -s $scrot_path
 else
