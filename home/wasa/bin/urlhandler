@@ -6,7 +6,7 @@ import subprocess
 import sys
 from urllib.parse import urlparse
 
-BROWSER = 'firefox'
+BROWSER = 'qutebrowser'
 VIDEO_DOMAINS = ['www.youtube.com', 'youtube.com', 'youtu.be', 'vimeo.com']
 AUDIO_DOMAINS = ['soundcloud.com']
 
