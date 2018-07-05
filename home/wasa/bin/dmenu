@@ -1,5 +1,5 @@
 #!/bin/sh
-# dmenu wrapper, assing some options if they weren't given.
+# dmenu wrapper, passing some options if they weren't given.
 # thanks to Cloudef for this one
 
 main() {
