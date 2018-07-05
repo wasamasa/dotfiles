@@ -12,11 +12,12 @@ FAVORITES = {
     "Wario Land [GB]":                                      "~/roms/GB/Wario Land/Wario Land - Super Mario Land 3 (World).gb",
     "Deja Vu I & II [GBC]":                                 "~/roms/GBC/Deja Vu I & II/Deja Vu I & II - The Casebooks of Ace Harding (USA).gbc",
     "Pokemon Crystal [GBC]":                                "~/roms/GBC/Pokemon Crystal/Pokemon Crystal (U) [C][!].gbc",
+    "Pokemon Crystal (Vietnamese Bootleg) [GBC]":           "~/roms/GBC/Pokemon Crystal (Vietnamese Bootleg)/Pokemon Vietnamese Crystal.gbc",
     "Pokemon Gold [GBC]":                                   "~/roms/GBC/Pokemon Gold/Pokemon Gold (U) [C][!].gbc",
     "Pokemon Silver [GBC]":                                 "~/roms/GBC/Pokemon Silver/Pokemon Silver (U) [C][!].gbc",
     "Pokemon Yellow [GBC]":                                 "~/roms/GBC/Pokemon Yellow/Pokemon Yellow (U) [C][!].gbc",
     "Stranded Kids [GBC]":                                  "~/roms/GBC/Stranded Kids/Stranded Kids (Europe) (En,Fr,De).gb",
-    "The Legend of Zelda - Link's Awakening (DX) [GBC]":    "~/roms/GBC/The Legend of Zelda - Link's Awakening (DX)/Legend of Zelda, The - Link's Awakening DX (V1.1) (U) [C][!].gb",
+    "The Legend of Zelda - Link's Awakening (DX) [GBC]":    "~/roms/GBC/The Legend of Zelda - Link's Awakening (DX)/Legend of Zelda, The - Link's Awakening DX (V1.1) (U) [C][!].gbc",
     "The Legend of Zelda - Oracle of Ages [GBC]":           "~/roms/GBC/The Legend of Zelda - Oracle of Ages/Legend of Zelda, The - Oracle of Ages (U) [C][!].gb",
     "The Legend of Zelda - Oracle of Seasons [GBC]":        "~/roms/GBC/The Legend of Zelda - Oracle of Seasons/Legend of Zelda, The - Oracle of Seasons (U) [C][!].gb",
 
@@ -165,24 +166,23 @@ FAVORITES = {
 
 DIRECTORIES = {
     'images': (['/usr/bin/sxiv'],         ['~/images/']),
-    'pdfs':   (['/usr/bin/llpp'],         ['~/org/docs']),
-    'comics': (['/usr/bin/mcomix'],       ['~/comics/', '/media/neue/Comics/']),
-    'manga':  (['/usr/bin/mcomix', '-m'], ['~/manga/', '/media/neue/Mango/']),
-    'movies': (['/usr/bin/mplayer'],      ['~/animu/', '~/tv/', '/media/neue/Animu', '/media/neue/TV'])
+    'pdfs':   (['/usr/bin/llpp'],         ['~/org/docs', '~/books']),
+    'comics': (['/usr/bin/mcomix'],       ['/mnt/neue/Comics/']),
+    'manga':  (['/usr/bin/mcomix', '-m'], ['~/manga', '/mnt/neue/Mango/']),
+    'movies': (['/usr/bin/mplayer'],      ['/mnt/neue/Animu', '/mnt/neue/TV'])
 }
 
 SYSTEMS = {
-    'GB':   ('/usr/lib/libretro/libretro-gambatte.so',    None),
-    'GBC':  ('/usr/lib/libretro/libretro-gambatte.so',    None),
-    'GBA':  ('/usr/lib/libretro/libretro-vba.so',         None),
-#   'NES':  ('/usr/lib/libretro/libretro-fceu.so',        None),
-    'NES':  ('/usr/lib/libretro/libretro-nestopia.so',    None),
-    'SNES': ('/usr/lib/libretro/libretro-snes9x-next.so', None),
-    'SMD':  ('/usr/lib/libretro/libretro-genplus.so',     None),
-    'SMS':  ('/usr/lib/libretro/libretro-genplus.so',     None),
-    'MAME': ('/usr/lib/libretro/libretro-imame4all.so',   None),
-    'FBA':  ('/usr/lib/libretro/libretro-fba.so',         '~/roms/cfg/no_rewind'),
-    'NX':   ('/usr/lib/libretro/libretro-nx.so',          '~/roms/cfg/cavestory')
+    'GB':    ('/usr/lib/libretro/gambatte_libretro.so',        None),
+    'GBC':   ('/usr/lib/libretro/gambatte_libretro.so',        None),
+    'GBA':   ('/usr/lib/libretro/vba_next_libretro.so',        None),
+    'NES':   ('/usr/lib/libretro/nestopia_libretro.so',        None),
+    'SNES':  ('/usr/lib/libretro/snes9x2010_libretro.so',      None),
+    'SMD':   ('/usr/lib/libretro/genesis_plus_gx_libretro.so', None),
+    'SMS':   ('/usr/lib/libretro/genesis_plus_gx_libretro.so', None),
+    'MAME':  ('/usr/lib/libretro/libretro-imame4all.so',       None),
+    'FBA':   ('/usr/lib/libretro/fbalpha_libretro.so',         '~/roms/cfg/no_rewind'),
+    'NX':    ('/usr/lib/libretro/nxengine_libretro.so',        '~/roms/cfg/cavestory')
 }
 
 ARGPARSE_DESCRIPTION = "python-based dmenu wrapper"
