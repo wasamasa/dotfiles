@@ -3,12 +3,13 @@
 require 'dimensions'
 require 'filemagic'
 require 'fileutils'
-require 'natural_sort_kernel'
+require 'natural_sort'
 require 'open3'
 require 'pathname'
 require 'slop'
 
-KOBO_PATH = '/media/KOBOeReader'
+#KOBO_PATH = '/media/KOBOeReader'
+KOBO_PATH = '/home/wasa'
 
 def pad_width(size)
   [2, Math.log10(size).floor + 1].max
@@ -54,8 +55,8 @@ def process(file, digit, title)
   # do a pass to copy every image file naturally sorted to a flattened directory
   digits = pad_width(Dir.glob('/tmp/beam/unpack/**/*').size)
   FileUtils.mkdir_p('/tmp/beam/flatten')
-  Dir.glob('/tmp/beam/unpack/**/*').reject { |f| File.directory?(f) }
-                                   .natural_sort.each_with_index do |f, i|
+  files = Dir.glob('/tmp/beam/unpack/**/*').reject { |f| File.directory?(f) }
+  NaturalSort.sort(files).each_with_index do |f, i|
     index = "%0#{digits}i" % i
     FileUtils.cp(f, "/tmp/beam/flatten/#{index}_#{Pathname(f).basename}")
   end
@@ -111,16 +112,13 @@ if opts[:title] && !File.exist?("#{KOBO_PATH}/#{opts[:title]}")
   Dir.mkdir("#{KOBO_PATH}/#{opts[:title]}")
 end
 
-files = files.map { |f| Pathname(f).realpath.to_s }.natural_sort
+# TODO: sort case-insensitively
+files = NaturalSort.sort(files.map { |f| Pathname(f).realpath.to_s })
 
 number_of_files = files.size + opts[:start] - 1
 files.each_index do |index|
   file = files[index]
   digit = "%0#{pad_width(number_of_files)}i" % (index + opts[:start])
-  puts "Processing file ##{digit}/#{number_of_files}..."
+  puts "Processing file ##{digit} (#{index + opts[:start]}/#{number_of_files}): #{file}"
   process(file, digit, opts[:title])
 end
-
-# another thing that would nice to have would be is database support
-# would be nice to create collections after importing a set of books with one common title and add them to the newly created collection
-# there's some stupid default sorting method, would be nice to set it to something more sensible for every collection
