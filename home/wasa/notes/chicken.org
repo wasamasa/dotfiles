@@ -359,7 +359,7 @@ the webkit egg and webaudio...
   whatever else chiptune artists use)
 - Allow playing with that preset on the keyboard or via MIDI/OSC (for
   instrument/automation support)
-- Write sdl2_mixer or [[http://libsound.io/][libsoundio]] bindings if no SDL2 (what else then,
+- Write sdl2_mixer or [[http://libsound.io/][libsoundio]] or [[https://xiph.org/ao/doc/][libao]] bindings if no SDL2 (what else then,
   GLFW or maybe even one of my own GUI bindings?)
 - Allow recording what you've played and sequencing your output (not
   sure whether sequencer/tracker-style...), ideally with Vim-style
