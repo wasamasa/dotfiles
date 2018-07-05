@@ -1,3 +1,2 @@
 #!/bin/bash
-ping -c1 8.8.8.8 &> /dev/null && /usr/bin/newsbeuter -x reload &> /dev/null
-newsbeuter -x print-unread | awk '{print $1}' > ~/var/feeds
+ping -c1 8.8.8.8 &> /dev/null && pgrep newsboat || newsboat -x reload &> /dev/null
