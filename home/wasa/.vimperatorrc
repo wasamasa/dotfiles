@@ -13,7 +13,6 @@ set focuscontent
 " 43012: we
 " 43722: wd
 " 45398: i
-" 45712: baka
 " 72736: e
 " 73601: r
 " 19493: anidb
@@ -22,7 +21,8 @@ set focuscontent
 " 25517: pkg
 " 74926: aw
 " 50956: ew
-" 23736: git
+" 23766: git
+" 70236: mdn
 
 set defsearch=d
 set editor=em
