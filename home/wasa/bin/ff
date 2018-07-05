@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# TODO: rework by keeping the last successfully fetched list of feed
+# items per feed and diffing against it
+
 from time import mktime
 from datetime import datetime
 import sys
@@ -45,17 +48,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# (let ((file (expand-file-name "~/tmp/feeds"))
-#       (timestamp "2016-10-09 00:00:00")
-#       data)
-#   (with-temp-buffer
-#     (call-process "ff" nil '(t nil) nil file timestamp)
-#     (goto-char (point-min))
-#     (while (not (eobp))
-#       (let ((key (buffer-substring (point) (line-end-position))))
-#         (forward-line 1)
-#         (let ((value (buffer-substring (point) (line-end-position))))
-#           (forward-line 1)
-#           (push (cons key value) data))))
-#     data))
