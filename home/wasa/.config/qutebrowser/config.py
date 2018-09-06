@@ -44,6 +44,9 @@ config.bind('zsu', 'config-cycle -p -t -u {url} content.javascript.enabled ;; re
 c.auto_save.session = True
 
 c.content.host_blocking.lists = ['http://sbc.io/hosts/alternates/fakenews-gambling-porn-social/hosts']
+c.downloads.location.prompt = False
+c.downloads.location.directory = os.path.expanduser('~/downloads')
+c.downloads.location.remember = False
 
 c.editor.command = ['em', '{}']
 
@@ -63,10 +66,6 @@ c.fonts.prompts = '11pt monospace'
 
 c.hints.uppercase = True
 
-c.downloads.location.prompt = False
-c.downloads.location.directory = os.path.expanduser('~/downloads')
-# TODO: look into downloads.open_dispatcher
-# TODO: find some way to run a program *after* downloads finish
 
 # settings.html has a typo in hints.next_regexes for >
 
