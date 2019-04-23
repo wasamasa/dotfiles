@@ -9,4 +9,8 @@
 127.0.0.1	localhost.localdomain	odonien
 ::1		localhost.localdomain	odonien
 
+212.110.186.28  readscheme.org
+212.110.186.28  library.readscheme.org
+212.110.186.28  repository.readscheme.org
+
 # End of file
