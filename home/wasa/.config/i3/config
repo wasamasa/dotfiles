@@ -8,68 +8,70 @@ new_window pixel 1
 new_float pixel 1
 hide_edge_borders both
 
-# we don't need no startup tracking
-set $run exec --no-startup-id
-set $run_always exec_always --no-startup-id
-
 # autostart
-$run_always xrdb ~/.Xresources
-$run_always xsetroot -cursor_name left_ptr
-$run_always feh --bg-fill ~/images/wallpapers/pixelmavs.png
-#$run hhpc -i 2
-$run fallkiste
-$run mpd
-$run udiskie
-$run xset r rate 300 40
-$run em
-$run scratchpad
+exec_always --no-startup-id xrdb ~/.Xresources
+exec_always --no-startup-id xsetroot -cursor_name left_ptr
+exec_always --no-startup-id wallpaper
+exec_always --no-startup-id fixmouse
+exec --no-startup-id numlockx
+# exec --no-startup-id xset r rate 300 40
+exec --no-startup-id unclutter --timeout 3
+exec --no-startup-id mpd
+exec --no-startup-id udisks-watch
+exec --no-startup-id downloads-watch
+exec --no-startup-id redshift
+exec --no-startup-id em
+exec --no-startup-id scratchpad
+exec --no-startup-id compton
+exec --no-startup-id passjar
+exec --no-startup-id fallkiste
 
 # interesting binds
-bindsym Print $run scr
-bindsym Shift+Print $run scr -s
+bindsym Print exec --no-startup-id scr
+bindsym Shift+Print exec --no-startup-id scr -s
 bindsym Pause exec i3lock --color="#000000"
-bindsym XF86AudioMute $run dvolume -t
-bindsym XF86AudioRaiseVolume $run dvolume -i 5
-bindsym XF86AudioLowerVolume $run dvolume -d 5
-bindsym $mod+Return $run termite
-bindsym $mod+o $run dfavourites
-bindsym $mod+Shift+o $run dmenu_run
-bindsym $mod+c $run dcpu
-bindsym $mod+m $run dmpc music
-bindsym $mod+Shift+m $run dmpc todo
-bindsym $mod+Control+m $run dmpc bootlegs
-bindsym $mod+u $run dumount
+bindsym XF86AudioMute exec --no-startup-id dvolume -t
+bindsym XF86AudioRaiseVolume exec --no-startup-id dvolume -i 5
+bindsym XF86AudioLowerVolume exec --no-startup-id dvolume -d 5
+bindsym $mod+Return exec --no-startup-id termite
+bindsym $mod+o exec --no-startup-id dfavourites
+bindsym $mod+p exec --no-startup-id rofi-pass
+bindsym $mod+Shift+o exec --no-startup-id dmenu_run
+bindsym $mod+m exec --no-startup-id dmpc music
+bindsym $mod+Shift+m exec --no-startup-id dmpc todo
+bindsym $mod+Control+m exec --no-startup-id dmpc bootlegs
+bindsym $mod+u exec --no-startup-id dumount
 bindsym $mod+q kill
 bindsym $mod+Shift+q exit
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
-bindsym $mod+Left $run mpc prev
-bindsym $mod+Right $run mpc next
-bindsym $mod+Up $run mpc pause
-bindsym $mod+Down $run mpc stop
-bindsym $mod+Shift+Left $run mpc seek -5 && sleep 1
-bindsym $mod+Shift+Right $run mpc seek +5 && sleep 1
-bindsym $mod+Shift+Up $run mpc play
-bindsym $mod+Shift+Down $run mpc update
+bindsym $mod+Left exec --no-startup-id mpc prev
+bindsym $mod+Right exec --no-startup-id mpc next
+bindsym $mod+Up exec --no-startup-id mpc pause
+bindsym $mod+Down exec --no-startup-id mpc stop
+bindsym $mod+Shift+Left exec --no-startup-id mpc seek -10 #&& sleep 1
+bindsym $mod+Shift+Right exec --no-startup-id mpc seek +10 #&& sleep 1
+bindsym $mod+Shift+Up exec --no-startup-id mpc play
+bindsym $mod+Shift+Down exec --no-startup-id mpc update
 
 # bertha mode
 mode "bertha" {
-    bindsym g $run bertha --mode=retroarch favorites; mode "default"
-    bindsym Shift+g $run bertha --mode=retroarch general; mode "default"
-    bindsym c $run bertha --mode=directory comics; mode "default"
-    bindsym m $run bertha --mode=directory manga; mode "default"
-    bindsym p $run bertha --mode=directory pdfs; mode "default"
-    bindsym i $run bertha --mode=directory images; mode "default"
-    bindsym v $run bertha --mode=directory movies; mode "default"
+    bindsym g exec --no-startup-id bertha --mode=retroarch favorites; mode "default"
+    bindsym Shift+g exec --no-startup-id bertha --mode=retroarch general; mode "default"
+    bindsym m exec --no-startup-id bertha --mode=directory manga; mode "default"
+    bindsym p exec --no-startup-id bertha --mode=directory pdfs; mode "default"
+    bindsym i exec --no-startup-id bertha --mode=directory images; mode "default"
+    bindsym v exec --no-startup-id bertha --mode=directory movies; mode "default"
     bindsym Escape mode "default"
-} bindsym $mod+b mode "bertha"
+}
+bindsym $mod+b mode "bertha"
 
 # system mode
 mode "system" {
-    bindsym s $run systemctl suspend; mode "default"
-    bindsym h $run systemctl hibernate; mode "default"
-    bindsym r $run systemctl reboot; mode "default"
-    bindsym p $run systemctl poweroff; mode "default"
+    bindsym s exec --no-startup-id systemctl suspend; mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate; mode "default"
+    bindsym r exec --no-startup-id systemctl reboot; mode "default"
+    bindsym p exec --no-startup-id systemctl poweroff; mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+x mode "system"
@@ -85,10 +87,12 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # scratchpad
-for_window [class="scratchpad_termite"] move to scratchpad
-bindsym $mod+grave [class="scratchpad_termite"] scratchpad show
+for_window [title="scratchpad_termite"] move to scratchpad
+bindsym $mod+grave scratchpad show
+bindsym $mod+Escape scratchpad show
 
 # fixing some annoyances
+for_window [class="Pinentry"] floating enable
 for_window [class="skype"] floating enable
 
 # boring binds
@@ -138,11 +142,11 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # colors
-# color class           border  background text    indicator
-client.focused          #eee8d5 #93a1a1    #073642 #93a1a1
-client.focused_inactive #657b83 #586e75    #eee8d5 #657b83
-client.unfocused        #073642 #002b36    #839496 #073642
-client.urgent           #cb4b16 #dc322f    #eee8d5 #dc322f
+# color class           border  background text    indicator child_border
+client.focused          #eee8d5 #93a1a1    #073642 #93a1a1   #93a1a1
+client.focused_inactive #657b83 #586e75    #eee8d5 #657b83   #93a1a1
+client.unfocused        #073642 #002b36    #839496 #073642   #93a1a1
+client.urgent           #cb4b16 #dc322f    #eee8d5 #dc322f   #93a1a1
 
 # bar settings
 bar {

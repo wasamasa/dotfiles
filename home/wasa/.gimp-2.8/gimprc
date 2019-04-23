@@ -6,6 +6,16 @@
 # Most values can be set within GIMP by changing some options in the
 # Preferences dialog.
 
+(default-grid
+    (style solid)
+    (fgcolor (color-rgba 0.000000 0.000000 0.000000 1.000000))
+    (bgcolor (color-rgba 1.000000 1.000000 1.000000 1.000000))
+    (xspacing 16.000000)
+    (yspacing 16.000000)
+    (spacing-unit points)
+    (xoffset 0.000000)
+    (yoffset 0.000000)
+    (offset-unit inches))
 (default-view
     (show-menubar yes)
     (show-statusbar yes)
@@ -30,9 +40,9 @@
     (show-sample-points yes)
     (padding-mode default)
     (padding-color (color-rgb 1.000000 1.000000 1.000000)))
-(default-snap-to-grid no)
 (default-snap-to-canvas yes)
 (save-tool-options yes)
+(user-manual-online yes)
 (dock-window-hint normal)
 
 

@@ -1,1 +1,1 @@
-#include "/usr/share/rofi/themes//solarized_alternate.theme"
+rofi.theme: /usr/share/rofi/themes/solarized_alternate.rasi
