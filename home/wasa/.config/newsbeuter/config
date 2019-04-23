@@ -1,14 +1,13 @@
-auto-reload yes 
-reload-time 10 
-reload-threads 2 
+# auto-reload yes 
+# reload-time 10 
+reload-threads 4
 notify-beep yes
 confirm-exit yes
 browser "urlhandler %u"
 prepopulate-query-feeds yes
 # articlelist-format  "%4i %f %D   %t"
-reset-unread-on-update http://127.0.0.1:5000/feed
-always-download http://127.0.0.1:5000/feed
 # reset-unread-on-update http://blog.fefe.de/rss.xml?html
+keep-articles-days 30
 
 bind-key j down
 bind-key k up
@@ -19,6 +18,6 @@ bind-key S save
 
 color background default default
 color listnormal default default
-color listfocus  black   yellow
-color info       black   yellow
+color listfocus  black   white
+color info       black   white
 color article    default default
