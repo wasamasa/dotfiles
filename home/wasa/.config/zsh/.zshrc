@@ -60,6 +60,6 @@ eval $(keychain --eval --quiet id_ed25519)
 fortune
 stty -ixon
 xrdb ~/.Xresources
-PROMPT='%(?.%F{green}^_^.%F{red}¬_¬)%f '
+PROMPT="%(?.%F{green}^_^.%F{red}¬_¬)%f ${RANGER_LEVEL:+"($RANGER_LEVEL) "}"
 RPROMPT='${vcs_info_msg_0_}'
 PS2='... '
