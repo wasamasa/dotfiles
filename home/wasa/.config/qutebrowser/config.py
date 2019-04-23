@@ -53,6 +53,7 @@ config.bind('zsu', 'config-cycle -p -t -u {url} content.javascript.enabled ;; re
 
 c.auto_save.session = True
 
+c.content.autoplay = False
 c.content.host_blocking.lists = ['https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts']
 c.content.host_blocking.whitelist = ['piwik.org', 'www.oglaf.com']
 
@@ -78,10 +79,6 @@ c.fonts.prompts = '11pt monospace'
 
 c.hints.uppercase = True
 
-
-# settings.html has a typo in hints.next_regexes for >
-
-c.qt.args = ['autoplay-policy=user-gesture-required']
 
 c.session.lazy_restore = True
 
