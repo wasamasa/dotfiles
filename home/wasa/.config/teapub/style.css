@@ -1,10 +1,14 @@
 body {
-  margin: 0 auto;
-  width: 40em;
-  font-family: serif;
-  font-size: 1.3em;
+  margin: 0 auto !important;
+  width: 40em !important;
+  font-family: serif !important;
+  font-size: 1.3em !important;
 }
 
 p {
-  text-align: justify;
+  text-align: justify !important;
+}
+
+img {
+  max-width: 40em !important;
 }
