@@ -1,6 +1,6 @@
 #!/bin/sh
 
-geometry=$(identify -format '%wx%h' "$1")
+geometry=$(identify -format '%wx%h' "$1[0]") # select first frame
 filesize=$(du -Hh "$1" | cut -f 1)
 filename=$(basename "$1")
 
