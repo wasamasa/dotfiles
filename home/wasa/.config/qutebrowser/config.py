@@ -20,6 +20,9 @@ config.bind('Y', 'yank')
 
 config.bind('q', 'set-cmd-text :spawn mpv {url}')
 
+config.unbind('<Ctrl-V>')
+config.bind('<Shift-Escape>', 'enter-mode passthrough')
+
 config.bind('O', 'set-cmd-text :open {url}')
 config.bind('t', 'set-cmd-text -s :open -t')
 config.bind('T', 'set-cmd-text :open -t {url}')
