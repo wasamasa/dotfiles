@@ -1,10 +1,16 @@
 [user]
 	name = Vasilij Schneidermann
 	email = mail@vasilij.de
-[includeIf "gitdir:~/code/work/"]
+	signingkey = 1667C983ACC289FA
+[includeIf "gitdir:~/code/bevuta/"]
 	path = ~/.config/git/work
+[includeIf "gitdir:~/code/other/"]
+	path = ~/.config/git/other
 [core]
 	autocrlf = input
 	safecrlf = true
 [push]
         default = current
+[credential]
+	helper = !pass-git-helper $@
+	useHttpPath = true
