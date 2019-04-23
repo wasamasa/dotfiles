@@ -29,6 +29,10 @@ config.bind('T', 'set-cmd-text :open -t {url}')
 config.bind('s', 'set-cmd-text -s :open d')
 config.bind('S', 'set-cmd-text -s :open -t d')
 
+# old bindings on []
+config.bind('((', 'navigate prev')
+config.bind('))', 'navigate next')
+
 # old bindings on t
 config.bind('zPH', 'config-cycle -p -u *://*.{url:host}/* content.plugins ;; reload')
 config.bind('zPh', 'config-cycle -p -u *://{url:host}/* content.plugins ;; reload')
