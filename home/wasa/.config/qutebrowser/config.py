@@ -19,6 +19,7 @@ config.bind('yy', 'spawn -u yank-clean')
 config.bind('Y', 'yank')
 
 config.bind('q', 'set-cmd-text :spawn mpv {url}')
+config.bind('gu', 'jseval -q document.activeElement.blur()')
 
 config.unbind('<Ctrl-V>')
 config.bind('<Shift-Escape>', 'enter-mode passthrough')
