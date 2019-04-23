@@ -1,4 +1,4 @@
-autoload -U tetriscurses
+autoload -U tetris
 autoload -U compinit promptinit colors
 autoload -Uz vcs_info
 compinit
