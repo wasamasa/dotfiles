@@ -25,7 +25,9 @@ HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 READNULLCMD=$PAGER
 
-unset zle_bracketed_paste
+if [[ $TERM == dumb ]]; then
+  unset zle_bracketed_paste
+fi
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
