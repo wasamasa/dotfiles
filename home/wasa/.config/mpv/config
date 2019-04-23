@@ -1,9 +1,18 @@
-vo=opengl
+vo=gpu
 title="mpv: ${filename}"
 alang=jp,jpn,en,eng
 slang=en,eng
 osc=no
 keep-open
-screenshot-format=png
+screenshot-directory=~/scrots
+screenshot-format=jpg
 osd-level=1
-osd-status-msg="${time-pos} ${?length:/${length}} ${?cache:(${cache}%)}"
+osd-status-msg="${time-pos} ${?duration:/${duration}} ${?cache:(${cache-used}/${cache-free})}"
+
+# ass-force-style=FontName=Fontin
+
+[cache]
+cache=8192
+cache-pause=yes
+demuxer-readahead-secs=20
+framedrop=no
