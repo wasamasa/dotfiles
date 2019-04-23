@@ -24,7 +24,6 @@ READNULLCMD=$PAGER
 
 unset zle_bracketed_paste
 
-alias sudo='sudo '
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
@@ -36,16 +35,21 @@ alias sc=systemctl
 alias jc=journalctl
 alias pc=pacman
 
+alias newsboat="newsboat -q"
+alias aurget="auracle -r -C ~/tmp download"
+
 alias album-lengths="find ~/music/todo -mindepth 1 -type d -exec album-length '{}' \;"
 
-splice_frames() {
-  ffmpeg -ss $2 -i "$1" -f image2 -t $3 -qscale 0 img%5d.png
-}
-musicvideo() {
-  ffmpeg -shortest -loop 1 -i $1 -i $2 -acodec copy -vcodec libx264 $3
+pb() {
+  curl -sF "file=@${1:--}" 'https://0x0.st' -o /dev/stderr | xclip -selection clipboard
 }
 
-rm() { echo Use del }
+enable_networks() {
+  for i in $(wpa_cli list_networks | tail -n+3 | cut -f1); do
+    wpa_cli enable_network $i >/dev/null
+  done
+}
+
 eval $(keychain --eval --quiet id_ed25519)
 
 fortune
