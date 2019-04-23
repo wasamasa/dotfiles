@@ -31,15 +31,22 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('url')
     args = parser.parse_args()
-    domain = urlparse(args.url).netloc
-    if not domain:
-        sys.exit("invalid URL specified")
-    if domain in VIDEO_DOMAINS:
-        play(args.url)
-    elif domain in AUDIO_DOMAINS:
-        play(args.url, True)
-    else:
+    url = urlparse(args.url)
+    domain = url.netloc
+    scheme = url.scheme
+    if scheme == 'file':
         subprocess.call([BROWSER, args.url])
+    elif scheme in ['http', 'https']:
+        if not domain:
+            sys.exit("invalid URL specified")
+        if domain in VIDEO_DOMAINS:
+            play(args.url)
+        elif domain in AUDIO_DOMAINS:
+            play(args.url, True)
+        else:
+            subprocess.call([BROWSER, args.url])
+    else:
+        sys.exit('unknown scheme')
 
 if __name__ == '__main__':
     main()
