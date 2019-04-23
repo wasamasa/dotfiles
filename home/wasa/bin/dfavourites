@@ -1,3 +1,3 @@
 #!/bin/bash
-favourites="em\nemacs\n|\nqutebrowser\nfirefox-developer-edition\nprn\nchromium\n|\ngimp\nfoobar2000\nphotoshop\n|\nscratchpad\nmonitor-layout"
+favourites="em\nemacs\n|\nqutebrowser\nfirefox-developer-edition\nprn\nchromium\n|\ngimp\nfoobar2000\nphotoshop\n|\nscratchpad\nmonitor-layout\nteatime"
 exec $(echo -ne $favourites | dmenu)

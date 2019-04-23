@@ -1,0 +1,2 @@
+#!/bin/bash
+sleep 240 && i3-nagbar -t warning -m 'Tea time!'
