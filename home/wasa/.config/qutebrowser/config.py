@@ -80,6 +80,7 @@ c.fonts.prompts = '11pt monospace'
 
 c.hints.uppercase = True
 
+c.input.partial_timeout = 15000
 
 c.session.lazy_restore = True
 
