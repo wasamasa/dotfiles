@@ -3,24 +3,25 @@
 require 'uri'
 require 'open3'
 
-BASE_DIR = '/home/wasa/fallkiste/'
+BASE_DIR = '/home/wasa/fallkiste/'.freeze
 
-if ARGV.empty?
-  puts "Usage: permalink FILE1 ..."
-else
-  ARGV.each do |file|
-    f = File.expand_path(file)
-    if File.fnmatch("#{BASE_DIR}**", f)
-      name = f.split(BASE_DIR)[1]
-      url = URI.join('http://brause.cc/', URI.encode_www_form_component(name))
-               .to_s.gsub('%2F', '/')
-      Open3.popen2('xclip') do |stdin, _, _|
-        stdin.print url
-      end
-      Open3.popen2('xclip', '-selection', 'clipboard') do |stdin, _, _|
-        stdin.print url
-      end
-      puts url
-    end
+def die(msg)
+  STDERR.puts(msg)
+  exit(1)
+end
+
+die('Usage: permalink FILE1 ...') if ARGV.empty?
+ARGV.each do |file|
+  f = File.expand_path(file)
+  next unless File.fnmatch("#{BASE_DIR}**", f)
+  name = f.split(BASE_DIR)[1]
+  url = URI.join('http://x32.be/', URI.encode_www_form_component(name))
+           .to_s.gsub('%2F', '/')
+  Open3.popen2('xclip') do |stdin, _, _|
+    stdin.print url
   end
+  Open3.popen2('xclip', '-selection', 'clipboard') do |stdin, _, _|
+    stdin.print url
+  end
+  puts url
 end
