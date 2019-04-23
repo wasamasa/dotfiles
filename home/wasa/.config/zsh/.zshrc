@@ -11,8 +11,11 @@ zstyle ':vcs_info:*' enable hg git bzr svn
 precmd() {
   vcs_info
 }
+setopt COMPLETE_ALIASES
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' rehash true
+
+ZLE_REMOVE_SUFFIX_CHARS=$' \t\n;'
 
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
