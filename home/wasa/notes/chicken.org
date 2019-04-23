@@ -443,3 +443,91 @@ receiving output, integrating that into hyde poses some challenges (as
 it's sending the whole file contents, not just a file name).  In other
 words, I need to think up a better protocol than that.
 
+* NES emulator
+
+** Names
+
+- boNkErS
+- erNESto
+- magNESium
+- miNEStrone
+- NEScaline
+- NEStination
+- noNsEnSe
+- TripleNES
+
+* GB emulator
+
+** Names
+
+- buGBear
+- GumBall
+- oGBo
+- raGBag
+
+* Programming in Scheme [0/9]
+
+** TODO Chapter 4: Making Choices [0/1]
+
+- [ ] days alive
+
+** TODO Chapter 5: Recursion [0/1]
+
+- [ ] random walk
+
+** TODO Chapter 7: Sample Projects II [2/8]
+
+- [ ] Color mode
+- [ ] B/W mode
+- [ ] Color bias
+- [ ] Different formulas
+- [X] Batch drawing
+- [X] Interactive mode
+- [ ] Combined program doing both
+- [ ] Screenshots in interactive mode creating new files
+
+Exercise text:
+
+5. Try other formulas instead of $x^2 + y^2$ as the basis of your
+   test. What happens if you try, say, $x^2 - y^2$? Or $x^3 + y^3$? Or
+   $x^2 + y^2 + |x| + |y|$?
+6. Change the =choose-pen-color= procedure so that it's more likely to
+   choose black (as suggested earlier). Suppose, for example, that you
+   truncate $x^2 + y^2$ and take the remainder when divided by 7
+   instead of 4; and if the result is 3 or less the pen color will be
+   set to 0 (if the result is 4, 5, or 6 we set the pen color to 1, 2,
+   or 3, respectively). How does this change the pictures drawn?
+
+** TODO Chapter 8: Pairs, Lists and Symbols [0/3]
+
+- [ ] molecular weight
+- [ ] DNA translator
+- [ ] sentence generator
+
+** TODO Chapter 10: Sample Projects III [0/1]
+
+- [ ] Who's on first?
+
+** TODO Chapter 12: Procedures [0/3]
+
+- [ ] deal cards
+- [ ] lissajous plotter
+- [ ] cryptograms
+
+** TODO Chapter 13: Altering Bindings, Altering Projects [0/6]
+
+- [ ] turtle
+- [ ] hangman
+- [ ] c-curves
+- [ ] dragon-curves
+- [ ] slot-machine
+- [ ] hotel
+
+** TODO Chapter 15: Sample Projects IV [0/1]
+
+- [ ] pattern matching
+
+** TODO Chapter 16: A Sampler of Advanced Topics [0/2]
+
+- [ ] solitaire
+- [ ] calendar
