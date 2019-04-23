@@ -54,6 +54,7 @@ config.bind('zsu', 'config-cycle -p -t -u {url} content.javascript.enabled ;; re
 c.auto_save.session = True
 
 c.content.autoplay = False
+c.content.cookies.accept = 'no-unknown-3rdparty'
 c.content.host_blocking.lists = ['https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts']
 c.content.host_blocking.whitelist = ['piwik.org', 'www.oglaf.com']
 
