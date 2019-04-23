@@ -1,6 +1,4 @@
 typeset -U path
-envoy -t ssh-agent
-source <(envoy -p)
 path=(~/bin
       ~/.cask/bin
       ~/.chickens/5.0.0/bin

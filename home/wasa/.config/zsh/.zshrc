@@ -46,6 +46,7 @@ musicvideo() {
 }
 
 rm() { echo Use del }
+eval $(keychain --eval --quiet id_ed25519)
 
 fortune
 stty -ixon
