@@ -1,119 +1,17 @@
+(import (chicken load))
 (load-verbose #f)
-(use (only chicken-doc)) ; no imports, ,doc only
-
-(use (prefix parley "pl-")
-     (prefix parley-auto-completion "pl-")
-     (only srfi-1 append-map)
-     (only srfi-13 string-replace)
-     (only srfi-18 thread-sleep!)
-     (only apropos apropos-list)
-     (only data-structures substring-index substring=? o alist-ref))
-
-(define (pl-completer prefix)
-  (define (apropos-completions prefix)
-    (let ((candidates (apropos-list `(: bos ,prefix) #:macros? #t)))
-      (remove
-       (lambda (candidate) (substring-index "#" candidate))
-       (map symbol->string candidates))))
-  (define (current-environment-completions prefix)
-    (let ((size (string-length prefix)))
-      (filter
-       (lambda (candidate) (substring=? prefix candidate 0 0 size))
-       (map (o symbol->string car) (##sys#current-environment)))))
-  (append (apropos-completions prefix)
-          (current-environment-completions prefix)))
-
-;; TODO: signal completions like in bash/zsh
-;; TODO: implement M-f/M-b and del/pos1/end
-;; NOTE: del is different from C-d as C-d quits on eob and del doesn't
-;; FIXME: if reading in large history file, the first n candidates are
-;; taken (as opposed to the last n)
-;; FIXME: truncation only happens if the history gained an extra entry
-;; TODO: add file completer
-;; TODO: check in completion-choices whether in string (like by
-;; subtracting the word size from point and if non-negative, checking
-;; the character preceding word) and if yes, use file completer
-;; TODO: implement a single-line C-r like in txr-lisp
-
-(define (pl-setup)
-  ;; (pl-refresh-line pl-multiline-refresh)
-  (pl-word-class '($ (+ (~ (" \t\n\"\\'`;|(")))))
-  (pl-completion-choices
-   (lambda (_input _position last-word)
-     (pl-completer last-word)))
-  (pl-add-key-binding! #\tab pl-auto-completion-handler)
-  (let ((old (current-input-port))
-        (history-file (format "~a/.csi_history"
-                              (get-environment-variable "HOME"))))
-    (current-input-port (pl-make-parley-port old
-                                             prompt: "#;> "
-                                             prompt2: "... "
-                                             history-file: history-file))))
-
-;; (define pl-quoters '(#\"))
-
-;; (define pl-closer->opener-alist
-;;   '((#\) . #\()
-;;     (#\] . #\[)
-;;     (#\} . #\{)))
-
-;; (define (pl-find-opener line closer)
-;;   (let ((opener (alist-ref closer pl-closer->opener-alist)))
-;;     (let loop ((pos (sub1 (string-length line)))
-;;                (depth 1)
-;;                (in-string? #f))
-;;       (cond
-;;        ((zero? depth) (add1 pos))
-;;        ((negative? pos) #f)
-;;        (else
-;;         (let ((char (string-ref line pos)))
-;;           (cond
-;;            ((eqv? char closer)
-;;             (if in-string?
-;;                 (loop (sub1 pos) depth in-string?)
-;;                 (loop (sub1 pos) (add1 depth) in-string?)))
-;;            ((eqv? char opener)
-;;             (if in-string?
-;;                 (loop (sub1 pos) depth in-string?)
-;;                 (loop (sub1 pos) (sub1 depth) in-string?)))
-;;            ((memv char pl-quoters)
-;;             (loop (sub1 pos) depth (not in-string?)))
-;;            (else
-;;             (loop (sub1 pos) depth in-string?)))))))))
-
-;; (define (pl-self-insert s c)
-;;   (define (string-insert s i t) (string-replace s t i i))
-;;   (let ((s2 s)
-;;         (line (pl-state-line s))
-;;         (pos (pl-state-pos s)))
-;;     (pl-state-line-set! s2 (string-insert line pos (string c)))
-;;     (pl-state-pos-set! s2 (add1 pos))
-;;     (pl-state-dirty?-set! s2 #t)
-;;     s2))
-
-;; (for-each
-;;  (lambda (closer)
-;;    (pl-add-key-binding!
-;;     closer
-;;     (lambda (state)
-;;       (let ((opening-pos (pl-find-opener (pl-state-line state) closer))
-;;             (state (pl-self-insert state closer)))
-;;         ((pl-refresh-line) state redraw-line: #t)
-;;         (when opening-pos
-;;           (let ((out (pl-state-out state))
-;;                 (offset (+ (string-length (pl-state-prompt state))
-;;                            (pl-state-offset state))))
-;;             (display ((pl-esc-seq 'move-to-col)
-;;                       (+ offset opening-pos 1))
-;;                      out)
-;;             ;; TODO: stop sleeping if another bounce happens
-;;             ;; immediately afterwards
-;;             (thread-sleep! 0.05)
-;;             (display ((pl-esc-seq 'move-to-col)
-;;                       (+ offset (pl-state-pos state)))
-;;                      out)))
-;;           state))))
-;;  (map car pl-closer->opener-alist))
-
-(when (not (get-environment-variable "INSIDE_EMACS"))
-  (pl-setup))
+(let ()
+  (import (chicken format))
+  (import (chicken process-context))
+  (unless (get-environment-variable "INSIDE_EMACS")
+    (import breadline)
+    (import breadline-scheme-completion)
+    (import (only chicken-doc)) ; no imports, ,doc only
+    (history-file (format "~a/.csi_history" (get-environment-variable "HOME")))
+    (stifle-history! 10000)
+    (completer-word-break-characters-set! "\"\'`;|(")
+    (completer-set! scheme-completer)
+    (basic-quote-characters-set! "\"|")
+    (variable-bind! "blink-matching-paren" "on")
+    (paren-blink-timeout-set! 200000)
+    (current-input-port (make-readline-port))))
