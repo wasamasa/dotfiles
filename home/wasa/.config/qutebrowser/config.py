@@ -83,7 +83,6 @@ c.hints.uppercase = True
 c.session.lazy_restore = True
 
 c.tabs.background = True
-c.tabs.new_position.unrelated = 'next'
 c.tabs.show = 'never'
 
 c.url.searchengines['d'] = 'https://duckduckgo.com/?q={}'
