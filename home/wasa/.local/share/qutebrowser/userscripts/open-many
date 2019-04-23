@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+
+QUTE_FIFO = ENV['QUTE_FIFO']
+CONFIG = YAML.load_file("#{File.dirname(__FILE__)}/config.yaml")
+
+def snd(path, msg)
+  File.open(path, 'w') { |f| f.puts msg }
+end
+
+def open_all(ary)
+  ary.each { |url| snd(QUTE_FIFO, ":open -b #{url}") }
+  snd(QUTE_FIFO, ':tab-focus -1')
+end
+
+exit(1) if ARGV.size != 1
+choice = ARGV[0]
+exit(1) unless CONFIG.include?(choice)
+open_all(CONFIG[choice])

@@ -12,8 +12,11 @@ config.bind('J', 'tab-prev')
 config.bind('K', 'tab-next')
 config.bind('<', 'tab-move -')
 config.bind('>', 'tab-move +')
-config.bind('e', 'spawn -u open-many favorites')
-config.bind('E', 'spawn -u open-many trackers')
+config.bind('e', 'set-cmd-text :spawn -u open-many favorites')
+config.bind('E', 'set-cmd-text :spawn -u open-many trackers')
+
+config.bind('yy', 'spawn -u yank-clean')
+config.bind('Y', 'yank')
 
 config.bind('q', 'set-cmd-text :spawn mpv {url}')
 

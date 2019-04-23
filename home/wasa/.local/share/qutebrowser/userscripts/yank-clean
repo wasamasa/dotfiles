@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'open3'
+
+QUTE_FIFO = ENV['QUTE_FIFO']
+
+def die(msg)
+  STDERR.puts(msg)
+  exit(1)
+end
+
+def snd(path, msg)
+  File.open(path, 'w') { |f| f.puts msg }
+end
+
+def copy(str)
+  Open3.popen2('xclip', '-selection', 'clipboard') do |stdin, _, _|
+    stdin.print str
+  end
+end
+
+url = ENV['QUTE_URL']
+die('no url') unless url
+
+case url
+when %r{^https?://www\.reddit\.com/}
+  url = url.sub('www.reddit.com', 'old.reddit.com')
+when %r{^(https?)://www\.amazon\.([^/]+)/(?:[^/]+)/dp/([^/]+)/}
+  url = "#{$1}://www.amazon.#{$2}/dp/#{$3}/"
+when %r{^(https?)://www\.ebay\.([^/]+)/itm/(?:[^/]+)/([0-9]+)}
+  url = "#{$1}://www.ebay.#{$2}/itm/#{$3}"
+end
+
+copy(url)
+snd(QUTE_FIFO, ":message-info 'Yanked URL to clipboard: #{url}'")
