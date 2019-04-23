@@ -81,6 +81,8 @@ c.fonts.prompts = '11pt monospace'
 c.hints.uppercase = True
 
 c.input.partial_timeout = 15000
+# workaround for websites stealing focus as you type
+c.input.insert_mode.leave_on_load = False
 
 c.session.lazy_restore = True
 
