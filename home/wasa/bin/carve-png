@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+def find_in_io(io, s, bufsz = 4096)
+  buf1 = ''
+  until io.eof?
+    buf2 = io.read(bufsz)
+    buf = buf1 + buf2
+    pos = buf.index(s)
+    if pos
+      ret = io.pos - buf.size + pos
+      io.seek(ret + s.size)
+      return ret
+    end
+    buf1 = buf2
+  end
+  nil
+end
+
+def carve(io_in, io_out, from, to, bufsz = 4096)
+  count = to - from
+  io_in.seek(from)
+  while count > 0
+    chunksz = [bufsz, count].min
+    io_out.write(io_in.read(chunksz))
+    count -= chunksz
+  end
+end
+
+PNG_START = "\x89PNG\r\n\x1A\n".b
+PNG_END = 'IEND'.b
+
+def carve_pngs(io)
+  1.step do |i|
+    break unless (start_pos = find_in_io(io, PNG_START))
+    break unless (end_pos = find_in_io(io, PNG_END))
+    end_pos += 8 # 4 bytes chunk name, 4 bytes CRC32 checksum
+    File.open(format('%i.png', i), 'wb') { |f| carve(io, f, start_pos, end_pos) }
+  end
+end
+
+def die(msg)
+  STDERR.puts(msg)
+  exit(1)
+end
+
+die("usage: #{$PROGRAM_NAME} <infile>") unless ARGV.count == 1
+File.open(ARGV[0], 'rb') { |f| carve_pngs(f) }
+
