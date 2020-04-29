@@ -1,1 +1,1 @@
-Nothing to see here.
+Moved to https://depp.brause.cc/dotfiles/
